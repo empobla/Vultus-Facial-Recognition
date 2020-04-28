@@ -1,0 +1,4 @@
+#!/bin/bash
+
+xhost +
+sudo docker run -it --privileged --device /dev/video0:/dev/video0 -v $(pwd):/root/workspace -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -p 5000:5000 -p 8888:8888 robtry/opencv-420
