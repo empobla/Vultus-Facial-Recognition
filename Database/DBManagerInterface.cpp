@@ -1,4 +1,4 @@
-#include "DBManagerInterface.h"
+#include "include/DBManagerInterface.h"
 
 DBManagerInterface::DBManagerInterface(std::string uri, std::string database, std::string collection)
 {
@@ -18,8 +18,8 @@ void DBManagerInterface::create(std::string nombre, int edad, std::string matric
 {
     bsoncxx::oid _oid;
     // //WRITE yml to store
-    std::string matRoute = "./MatFiles/" + _oid.to_string() + ".xml.gz";
-    std::string imgRoute = "./ImgFiles/" + _oid.to_string() + ".xml.gz";
+    std::string matRoute = "../storage/MatFiles/" + _oid.to_string() + ".xml.gz";
+    std::string imgRoute = "../storage/ImgFiles/" + _oid.to_string() + ".xml.gz";
     cv::FileStorage featureStorage(matRoute, cv::FileStorage::WRITE | cv::FileStorage::FORMAT_YAML);
     cv::FileStorage imgStorage(imgRoute, cv::FileStorage::WRITE | cv::FileStorage::FORMAT_YAML);
     featureStorage << "data" << feature;
