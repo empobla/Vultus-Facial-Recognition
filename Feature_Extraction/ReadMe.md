@@ -71,7 +71,12 @@ Computer Vision related scripts, developed for Software Engineering course at "T
 
 ## Requirements 
 1. Download dlib
-
+```bash
+cd /opt/
+git clone https://github.com/davisking/dlib
+cd ~/workspace/
+cp -r /opt/dlib/dlib/ 
+```
 2. Include the following "#include "feature_extraction.h"
 3. Have the "dlib_face_recognition_resnet_model_v1.dat" model path 
 
@@ -104,13 +109,13 @@ make
 FeatureDetection *d = new FeatureDetection("net/dlib_face_recognition_resnet_model_v1.dat"); 
 ```
 
---Then call the methods:
- * Calculate face descriptor returned in MAT format 
-  - using elbp -> getFeatures(Mat input) 
-  - using dlib -> getFeatures(Mat input) 
+-Then call the methods:
+  * Calculate face descriptor returned in MAT format 
+     - using elbp -> getFeatures(Mat input) 
+     - using dlib -> getFeatures(Mat input) 
  * Calculate double determining distance between two vector (the smaller teh value the more similar the two pictures are)-> compareFeatures(Mat input_A, Mat input_B, int method)
- - 6: Euclidian distance
- - 3: Battacharya
+    - 6: Euclidian distance
+    - 3: Battacharya
  
 ```bash
 //This method uses the dlib library 
