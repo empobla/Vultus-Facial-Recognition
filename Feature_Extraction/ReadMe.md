@@ -94,7 +94,7 @@ cp -r /opt/dlib/dlib/
  sudo docker run -it -v $(pwd):/root/workspace -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=docker.for.mac.host.internal:0 -p 5000:5000 -p 8888:8888 robtry/opencv-420
  ```
 
-## Docker container command for MAC
+## Running
 - Clone repository
 - Inside the Computer_Vision folder run the followinfg commands:
 ```bash
@@ -118,12 +118,12 @@ make
 ./FaceDetection <name_second_image>.png <name_second_image>.png
 ```
 
---Create an instance of the class FeatureDetection passing the model you are using to call its methods. 
+- Create an instance of the class FeatureDetection passing the model you are using to call its methods. 
 ```bash
 FeatureDetection *d = new FeatureDetection("net/dlib_face_recognition_resnet_model_v1.dat"); 
 ```
 
--Then call the methods:
+- Then call the methods:
   * Calculate face descriptor returned in MAT format 
      - using elbp -> getFeatures(Mat input) 
      - using dlib -> getFeatures(Mat input) 
