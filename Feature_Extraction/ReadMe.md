@@ -69,7 +69,7 @@ Computer Vision related scripts, developed for Software Engineering course at "T
 
 # Instructions and Tests 
 
-## Requirements 
+## Required
 1. Download dlib
 ```bash
 cd /opt/
@@ -80,7 +80,7 @@ cp -r /opt/dlib/dlib/
 2. Include the following "#include "feature_extraction.h"
 3. Have the "dlib_face_recognition_resnet_model_v1.dat" model path 
 4. Run in docker container
-   - Pull
+  - Pull
     ```bash
     docker pull https://hub.docker.com/repository/docker/robtry/opencv-420
     ```
@@ -89,7 +89,7 @@ cp -r /opt/dlib/dlib/
     xhost +
    ```
   NOTE: if in mac, remember to download xquartz and open xquartz before running command: https://www.xquartz.org/
-   - Run container (MAC)
+  - Run container (MAC)
   ```bash
  sudo docker run -it -v $(pwd):/root/workspace -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=docker.for.mac.host.internal:0 -p 5000:5000 -p 8888:8888 robtry/opencv-420
  ```
