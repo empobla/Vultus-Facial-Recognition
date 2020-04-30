@@ -1,7 +1,7 @@
 
 # Feature Extraction
 
-## Authors:
+## Authors
 [Alejandra Nissan](https://github.com/AlejandraNissan) <br/>
 [Carla Pérez](https://github.com/CarlaPerezGavilan) <br/>
 [Carlos García](https://github.com/cxrlos)                                                                           
@@ -177,7 +177,6 @@ We decided to use the eucledean method to compare de two image descriptors. The 
 | ------------- |:-------------:| -------------:| -------------:|   
 | Euclidiana    | 0             | 0.900375      | 0.717888      |
 
-## Instructions to run build
 
 ## New Library source
 http://dlib.net/dnn_face_recognition_ex.cpp.html
