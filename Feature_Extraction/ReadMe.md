@@ -18,10 +18,6 @@ Computer Vision related scripts, developed for Software Engineering course at "T
 ### Non-Functional
 * FENF-001 The main purpose of the segment of the system is to extract data from a MAT object into a processed MAT object
 * FENF-002 The program depends on the following face recognizing libraries:
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> cea74e4... update feature extraction
 * opencv2/opencv.hpp
 * opencv2/face.hpp
 * opencv2/imgcodecs.hpp
@@ -75,6 +71,7 @@ Computer Vision related scripts, developed for Software Engineering course at "T
 
 ## Requirements 
 1. Download dlib
+
 2. Include the following "#include "feature_extraction.h"
 3. Have the "dlib_face_recognition_resnet_model_v1.dat" model path 
 
