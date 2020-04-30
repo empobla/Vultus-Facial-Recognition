@@ -1,24 +1,18 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 # Feature Extraction
 
-=======
-# Computer Vision Project
->>>>>>> d8e17a6... Carpeta Feature Extraction de Equipo 3
-=======
-# Feature Extraction
-
->>>>>>> cea74e4... update feature extraction
 ## Authors:
 [Alejandra Nissan](https://github.com/AlejandraNissan) <br/>
 [Carla Pérez](https://github.com/CarlaPerezGavilan) <br/>
 [Carlos García](https://github.com/cxrlos)                                                                           
 
 ## Description
-Computer Vision related scripts, developed for Software Engineering course at "Tecnológico de Monterrey".
+Module with two main functionalities: 
 
-## Instructions
-All of the instructions are in the ReadMe.md file on the source folder.
+- return face descriptor when recieving face image (MAT)
+- return if faces are the same or different comparing two face descriptors
+
+Computer Vision related scripts, developed for Software Engineering course at "Tecnológico de Monterrey".
 
 ## Requirements
 ### Non-Functional
@@ -44,8 +38,7 @@ All of the instructions are in the ReadMe.md file on the source folder.
 * dlib/opencv.h
 * dlib/image_transforms.h
 * LBP implementation found at https://github.com/bytefish/opencv/blob/master/lbp/lbp.cpp imported as a library
-<<<<<<< HEAD
-=======
+
   * opencv2/opencv.hpp
   * opencv2/face.hpp
   * opencv2/imgcodecs.hpp
@@ -62,9 +55,6 @@ All of the instructions are in the ReadMe.md file on the source folder.
   * dlib/opencv.h
   * dlib/image_transforms.h
   * LBP implementation found at https://github.com/bytefish/opencv/blob/master/lbp/lbp.cpp imported as a library
->>>>>>> d8e17a6... Carpeta Feature Extraction de Equipo 3
-=======
->>>>>>> cea74e4... update feature extraction
 * FENF-003 MAT structures will be used
 * FENF-004 The program will be written in C++
 * FENF-005 The program must run on a 4GB RAM and Intel Core i3 computer
@@ -80,12 +70,13 @@ All of the instructions are in the ReadMe.md file on the source folder.
 * FEF-004 The system will provide a differential result between the two input images
 * FEF-005 The histograms will be used to give the resultant difference between the two images
 * FEF-006 The exit interface gives a MAT object containing the feature-extraction data. A MAT image after being processed by the LBPH algorithm
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> cea74e4... update feature extraction
 
 # Instructions and Tests 
+
+## Requirements 
+1. Download dlib
+2. Include the following "#include "feature_extraction.h"
+3. Have the "dlib_face_recognition_resnet_model_v1.dat" model path 
 
 ## Docker container command for MAC
 - Clone repository
@@ -117,6 +108,13 @@ FeatureDetection *d = new FeatureDetection("net/dlib_face_recognition_resnet_mod
 ```
 
 --Then call the methods:
+ * Calculate face descriptor returned in MAT format 
+  - using elbp -> getFeatures(Mat input) 
+  - using dlib -> getFeatures(Mat input) 
+ * Calculate double determining distance between two vector (the smaller teh value the more similar the two pictures are)-> compareFeatures(Mat input_A, Mat input_B, int method)
+ - 6: Euclidian distance
+ - 3: Battacharya
+ 
 ```bash
 //This method uses the dlib library 
 Mat result = d->getFeatures2(input);
@@ -124,8 +122,11 @@ Mat result = d->getFeatures2(input);
 // Calculate comparison between two descriptors with euclidian distance 
 double final_result = d->compareFeatures(result, result2, 5);
 ```
---You can review an example of this in the main file. 
-
+-You can review an example of this in the main file. 
+## File Structure
+- main.cpp - test 
+- feature_extraction.cpp- implementation of methods
+- feature_extraction.cpp -declaration 
 ## Tests 
 We used four methods to compare the histograms of the images, each of them has a different meaning in the return value. 
 * Correlation goes from -1 (worst match) to 1 (best match)
@@ -160,14 +161,7 @@ We decided to use the eucledean method to compare de two image descriptors. The 
 | ------------- |:-------------:| -------------:| -------------:|   
 | Euclidiana    | 0             | 0.900375      | 0.717888      |
 
-## Determining correct acceptance rate through tests
-
 ## Instructions to run build
 
-## New Library
+## New Library source
 http://dlib.net/dnn_face_recognition_ex.cpp.html
-<<<<<<< HEAD
-=======
->>>>>>> d8e17a6... Carpeta Feature Extraction de Equipo 3
-=======
->>>>>>> cea74e4... update feature extraction
