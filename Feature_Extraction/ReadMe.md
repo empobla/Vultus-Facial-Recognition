@@ -79,6 +79,12 @@ cp -r /opt/dlib/dlib/
 ```
 2. Include the following "#include "feature_extraction.h"
 3. Have the "dlib_face_recognition_resnet_model_v1.dat" model path 
+4. Run in docker container
+  a. Pull
+  b. Run container (MAC)
+  ```bash
+ sudo docker run -it -v $(pwd):/root/workspace -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=docker.for.mac.host.internal:0 -p 5000:5000 -p 8888:8888 robtry/opencv-420
+ ```
 
 ## Docker container command for MAC
 - Clone repository
