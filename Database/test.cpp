@@ -1,4 +1,4 @@
-#include "DBManagerInterface.cpp"
+#include "src/DBManagerInterface.cpp"
 
 using namespace cv;
 using namespace cv::xfeatures2d;
@@ -6,22 +6,42 @@ using namespace std;
 
 int main()
 {
+    //Example of mat
+    Mat M(2, 2, CV_8UC3, Scalar(0, 0, 255));
+
+    //------------------ Class Cuatec ---------------------
+    //Cuatec receives name(string), age(int), matricula(string),
+    // image from TecId(cv::Mat) and features(cv::Mat)
+    Cuatec nuevoCatec("Saul Montes De Oca", 22, "A01025975", M, M);
+
+    //Getters
+    // string nombre = nuevoCatec.getNombre();
+    // string matricula = nuevoCatec.getMatricula();
+    // int edad = nuevoCatec.getEdad();
+    // Mat img = nuevoCatec.getImg();
+    // Mat features = nuevoCatec.getFeatures();
+
+    //Setters
+    //nuevoCatec.setNombre(string nuevoNombre);
+    //nuevoCatec.setMatricula(string nuevoMatricula);
+    //nuevoCatec.setEdad(int nuevaEdad);
+    //nuevoCatec.setImg(Mat nuevaImagen);
+    //nuevoCatec.setFeatures(Mat nuevoFeatures);
+
     //You need to instance de class once like this:
     //DBManagerInterface dbManager(URI, DATABASE, COLLECTION);
 
     //Methods:
 
     //-------------------- Create ------------------------
-
-    //Create method receives the name(string), age(int), matricula(string),
-    // image from TecId(cv::Mat) and features(cv::Mat)
-    //dbManager.create("cmake", 11, "cmake", m2, m);
+    //Create method receives a Cuatec object
+    //dbManager.create(nuevoCatec);
 
     //-------------------- Read ------------------------
     //Prints all the data (JSON format)
     //dbManager.readAll();
-    //Prints object by matricula
-    //dbManager.readOne("A01021111");
+    //Returns a Cuatec object found in the DB
+    //Cuatec nuevoCuatec = dbManager.readOne("A01021111");
     //Returns ObjectId (string format) by matricula
     //std::string oid = dbManager.readOid("A01021111");
 
