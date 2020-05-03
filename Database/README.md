@@ -1,3 +1,16 @@
+# Face Recognition Database
+### To build:
+```sh
+mkdir build
+cd build
+cmake ..
+make
+./Database
+```
+### Authors
+Víctor Adrián Coeto Gardea \
+Saul Montes de Oca\
+Juan Carlos Hurtado
 # Instalar el Driver de MongoCxx
 ## Prerequisitos
 - Tener instalado 
