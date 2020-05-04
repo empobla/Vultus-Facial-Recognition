@@ -14,59 +14,6 @@ Module with two main functionalities:
 
 Computer Vision related scripts, developed for Software Engineering course at "Tecnológico de Monterrey".
 
-## Requirements
-### Non-Functional
-* FENF-001 The main purpose of the segment of the system is to extract data from a MAT object into a processed MAT object
-* FENF-002 The program depends on the following face recognizing libraries:
-* opencv2/opencv.hpp
-* opencv2/face.hpp
-* opencv2/imgcodecs.hpp
-* opencv2/highgui.hpp
-* opencv2/imgproc.hpp
-* dlib/image_processing.h
-* dlib/opencv/cv_image.h
-* dlib/dnn.h
-* dlib/gui_widgets.h
-* dlib/clustering.h
-* dlib/string.h
-* <dlib/image_io.h
-* dlib/image_processing/frontal_face_detector.h
-* dlib/opencv.h
-* dlib/image_transforms.h
-* LBP implementation found at https://github.com/bytefish/opencv/blob/master/lbp/lbp.cpp imported as a library
-
-  * opencv2/opencv.hpp
-  * opencv2/face.hpp
-  * opencv2/imgcodecs.hpp
-  * opencv2/highgui.hpp
-  * opencv2/imgproc.hpp
-  * dlib/image_processing.h
-  * dlib/opencv/cv_image.h
-  * dlib/dnn.h
-  * dlib/gui_widgets.h
-  * dlib/clustering.h
-  * dlib/string.h
-  * <dlib/image_io.h
-  * dlib/image_processing/frontal_face_detector.h
-  * dlib/opencv.h
-  * dlib/image_transforms.h
-  * LBP implementation found at https://github.com/bytefish/opencv/blob/master/lbp/lbp.cpp imported as a library
-* FENF-003 MAT structures will be used
-* FENF-004 The program will be written in C++
-* FENF-005 The program must run on a 4GB RAM and Intel Core i3 computer
-* FENF-006 All the information given by the client will remain confidential
-* FENF-007 Working team: 3 people
-* FENF-008 No inappropriate use of the electronic equipment during the development process
-* FENF-009 Name: Vultus
-
-### Functional
-* FEF-001 The main purpose of the segment of the system is to extract data from a MAT object into a processed MAT object
-* FEF-002 The entry interface recieves an aligned image represented as a MAT object
-* FEF-003 The program will implement a developed dlib method to abstract the features from the input
-* FEF-004 The system will provide a differential result between the two input images
-* FEF-005 The histograms will be used to give the resultant difference between the two images
-* FEF-006 The exit interface gives a MAT object containing the feature-extraction data. A MAT image after being processed by the LBPH algorithm
-
 # Instructions and Tests 
 
 ## Required
@@ -180,3 +127,56 @@ We decided to use the eucledean method to compare de two image descriptors. The 
 
 ## New Library source
 http://dlib.net/dnn_face_recognition_ex.cpp.html
+
+## Requirements
+### Non-Functional
+* FENF-001 The main purpose of the segment of the system is to extract data from a MAT object into a processed MAT object
+* FENF-002 The program depends on the following face recognizing libraries:
+* opencv2/opencv.hpp
+* opencv2/face.hpp
+* opencv2/imgcodecs.hpp
+* opencv2/highgui.hpp
+* opencv2/imgproc.hpp
+* dlib/image_processing.h
+* dlib/opencv/cv_image.h
+* dlib/dnn.h
+* dlib/gui_widgets.h
+* dlib/clustering.h
+* dlib/string.h
+* <dlib/image_io.h
+* dlib/image_processing/frontal_face_detector.h
+* dlib/opencv.h
+* dlib/image_transforms.h
+* LBP implementation found at https://github.com/bytefish/opencv/blob/master/lbp/lbp.cpp imported as a library
+
+  * opencv2/opencv.hpp
+  * opencv2/face.hpp
+  * opencv2/imgcodecs.hpp
+  * opencv2/highgui.hpp
+  * opencv2/imgproc.hpp
+  * dlib/image_processing.h
+  * dlib/opencv/cv_image.h
+  * dlib/dnn.h
+  * dlib/gui_widgets.h
+  * dlib/clustering.h
+  * dlib/string.h
+  * <dlib/image_io.h
+  * dlib/image_processing/frontal_face_detector.h
+  * dlib/opencv.h
+  * dlib/image_transforms.h
+  * LBP implementation found at https://github.com/bytefish/opencv/blob/master/lbp/lbp.cpp imported as a library
+* FENF-003 MAT structures will be used
+* FENF-004 The program will be written in C++
+* FENF-005 The program must run on a 4GB RAM and Intel Core i3 computer
+* FENF-006 All the information given by the client will remain confidential
+* FENF-007 Working team: 3 people
+* FENF-008 No inappropriate use of the electronic equipment during the development process
+* FENF-009 Name: Vultus
+
+### Functional
+* FEF-001 The main purpose of the segment of the system is to extract data from a MAT object into a processed MAT object
+* FEF-002 The entry interface recieves an aligned image represented as a MAT object
+* FEF-003 The program will implement a developed dlib method to abstract the features from the input
+* FEF-004 The system will provide a differential result between the two input images
+* FEF-005 The histograms will be used to give the resultant difference between the two images
+* FEF-006 The exit interface gives a MAT object containing the feature-extraction data. A MAT image after being processed by the LBPH algorithm
