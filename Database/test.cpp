@@ -1,18 +1,17 @@
 #include "src/DBManagerInterface.cpp"
 
 using namespace cv;
-using namespace cv::xfeatures2d;
 using namespace std;
 
 int main()
 {
     //Example of mat
-    Mat M(2, 2, CV_8UC3, Scalar(0, 0, 255));
+    //Mat M(2, 2, CV_8UC3, Scalar(0, 0, 255));
 
     //------------------ Class Cuatec ---------------------
     //Cuatec receives name(string), age(int), matricula(string),
     // image from TecId(cv::Mat) and features(cv::Mat)
-    Cuatec nuevoCatec("Saul Montes De Oca", 22, "A01025975", M, M);
+    //Cuatec nuevoCatec("Saul Montes De Oca", 22, "A01025975", M, M);
 
     //Getters
     // string nombre = nuevoCatec.getNombre();
