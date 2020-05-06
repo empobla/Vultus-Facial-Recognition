@@ -21,7 +21,7 @@ Juan Carlos Hurtado
 #### Paso 1. Instalar el Driver de MongoC (libmongoc y libbson)
 - Descargas el archivo comprimido de la version más reciente de la libreria:
 ```sh
-curl -LO https://github.com/mongodb/mongo-c-driver/releases/download/x.y.z/mongo-c-driver-1.16.2.tar.gz`
+curl -LO https://github.com/mongodb/mongo-c-driver/releases/download/1.16.2/mongo-c-driver-1.16.2.tar.gz
 ```
 - Lo descomprimes
 ```sh
