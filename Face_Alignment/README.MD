@@ -1,5 +1,98 @@
 # Face Alignment
-## Start:
+
+## How to use 
+
+Just copy the foler `src/faceAlignment` and `models` to your project. Then in you `main.cpp`
+
+```c++
+#include "faceAlignment/align.hpp"
+#include <iostream>
+
+using namespace cv;
+using namespace std;
+
+int main(int argc, char **argv)
+{
+  //something important here
+  // detect face areas ...
+
+  // 
+  /**
+   * option 1
+   * note: if initialized like this, the method will assume is in build folder
+   * the go ../models/ to find shape_predictor_5_face_landmarks.dat
+  */
+  FaceAlignment align;
+
+  // option 2
+  /**
+   * You can pass the path to one of two models
+   * shape_predictor_5_face_landmarks.dat
+   * shape_predictor_68_face_landmarks.dat
+   * FaceAlignment align("<some_path>/shape_predictor_68_face_landmarks.dat");
+   FaceAlignment align("<some_path>/shape_predictor_5_face_landmarks.dat");
+  */
+
+  //store result, aligned face
+  Mat result;
+
+  for ( size_t i = 0; i < faces.size(); i++ )
+  {
+    /*
+     * This should be used in production
+    */
+    //aling.alignFace(image, faces[i], 200, result);
+
+    /*
+     * This should be user to get log information
+    */
+    //aling.alignFaceDebugMode(image, faces[i], 150, result, false);
+
+    /*
+     * This should be use if you want to see the final result
+    */
+    aling.alignFaceDebugMode(image, faces[i], 150, result, true);
+  }
+
+  return 0;
+}
+```
+
+## Tests
+
+| Case | Time (ms) |
+|------|-----------|
+| 1    | 4         |
+| 2    | 2         |
+| 3    | 2         |
+| 4    | 4         |
+| 5    | 1         |
+| 6    | 2         |
+| 7    | 1         |
+| 8    | 2         |
+
+Avg: 2.25 ms
+
+
+### Dependencies
+
+- [opencv](https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html)
+- [dlib](https://github.com/davisking/dlib)
+
+### Compile
+
+```sh
+# using cmake
+mkdir build
+cd build
+cmake ..
+make
+./FaceAlignment <img>
+```
+
+## Development
+
+- You have to install [opencv](https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html), if you do not want to mess your computer up with extra libraries and environments use docker:
 
 ```sh
 # Get the image
@@ -15,34 +108,7 @@ docker run --privileged --device /dev/video0:/dev/video0 -v $(pwd):/root/workspa
 sudo docker run -it -v $(pwd):/root/workspace -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=docker.for.mac.host.internal:0  -p 5000:5000 -p 8888:8888 robtry/opencv-420
 ```
 
-## Compile
-
-You can follow one the next options:
-
-```sh
-#inside docker | only opencv
-g++ <file>.cpp `pkg-config --cflags --libs opencv4`
-```
-
-Compiling using dlib
-
-```sh
-# use cmake
-```
-
-### Compile the module
-
-*note:* In `models` folder you need to download and extract the model, you can find the link in `models/_download.txt`
-
-```sh
-# using cmake
-# inside docker, you don't need to download dlib repo
-mkdir build
-cd build
-cmake ..
-make
-./FaceAlignment <img>
-```
+*note: for more information you can see [this tutorial](https://youtu.be/NryxTs2OYPI)*
 
 ## Autocomplete in vscode:
 
@@ -72,58 +138,13 @@ Then add to configuration file:
   }
 ```
 
-## How to use 
-
-Just copy the foler `src/faceAlignment` to your project. Then in you `main.cpp`
-
-```c++
-#include "faceAlignment/align.hpp"
-#include <iostream>
-
-using namespace std;
-
-int main(int argc, char **argv)
-{
-  //something important here
-  //...
-
-
-  //Aling face
-
-  // option 1
-  /**
-   * note: if initialized like this the method will assume is in build folder
-   * the go ../models/ to find shape_predictor_5_face_landmarks.dat
-  */
-  FaceAlignment aling;
-
-  // option 2
-  /**
-   * You can pass the path to one of two models
-   * shape_predictor_5_face_landmarks.dat
-   * shape_predictor_68_face_landmarks.dat
-  */
-  //FaceAlignment aling("<some_path>/shape_predictor_68_face_landmarks.dat");
-
-	//store result
-	Mat result;
-
-  for ( size_t i = 0; i < faces.size(); i++ )
-  {
-    //aling.alignFace(image, faces[i], 200, result);
-    //aling.alignFaceDebugMode(image, faces[i], 150, result, false);
-    aling.alignFaceDebugMode(image, faces[i], 150, result, true);
-  }
-
-  return 0;
-}
-```
-
 ## Authors:
 
 [Roberto Gervacio](https://github.com/robtry)
 
 [Jorge Palacios](https://github.com)
+
+[Diego moreno](https://github.com/Diego212)
 
 ## To Do
 

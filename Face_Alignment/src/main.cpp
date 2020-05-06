@@ -33,11 +33,11 @@ int main(int argc, char **argv)
 
 	for ( size_t i = 0; i < faces.size(); i++ )
 	{
-		aling.alignFace(image, faces[i], 200, result);
-		//aling.alignFaceDebugMode(image, faces[i], 150, result, true);
-		namedWindow("Face Aligned", WINDOW_AUTOSIZE);
-		imshow("Face Aligned", result);
-		waitKey(0); // Wait for a keystroke in the window
+		//aling.alignFace(image, faces[i], 200, result);
+		aling.alignFaceDebugMode(image, faces[i], 150, result, false);
+		// namedWindow("Face Aligned", WINDOW_AUTOSIZE);
+		// imshow("Face Aligned", result);
+		// waitKey(0); // Wait for a keystroke in the window
 	}
 
 	return 0;
