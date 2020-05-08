@@ -1,5 +1,7 @@
 # Face Recognition Database
+
 ### To build:
+
 ```sh
 mkdir build
 cd build
@@ -7,70 +9,164 @@ cmake ..
 make
 ./Database
 ```
+
+## How to use
+
+```c++
+//Make sure to include this file
+#include "src/DBManagerInterface.cpp"
+
+using namespace cv;
+using namespace std;
+
+int main()
+{
+    //Example of mat
+    Mat ImgMat;
+    Mat FeaturesMat;
+
+    //------------------------ Class Cuatec ---------------------------
+    //Cuatec receives name(string), age(int), matricula(string),
+    // image from TecId(cv::Mat) and features(cv::Mat)
+    Cuatec nuevoCatec("Saul Montes De Oca", 22, "A01025975", ImgMat, FeaturesMat);
+
+    //Getters
+    string nombre = nuevoCatec.getNombre();
+    string matricula = nuevoCatec.getMatricula();
+    int edad = nuevoCatec.getEdad();
+    Mat img = nuevoCatec.getImg();
+    Mat features = nuevoCatec.getFeatures();
+
+    //Setters
+    nuevoCatec.setNombre("Victor Coeto");
+    nuevoCatec.setMatricula("A01025922");
+    nuevoCatec.setEdad(21);
+    nuevoCatec.setImg(newImgMat);
+    nuevoCatec.setFeatures(newFeaturesMat);
+
+    //----------------------------------------------------------------
+
+    //You need to instance de class once like this:
+    DBManagerInterface dbManager(URI, DATABASE, COLLECTION);
+
+    //Methods:
+
+    //-------------------- Create ------------------------
+    //Create method receives a Cuatec object
+    dbManager.create(nuevoCatec);
+
+    //-------------------- Read ------------------------
+    //Prints all the data (JSON format)
+    dbManager.readAll();
+    //Returns a Cuatec object found in the DB
+    Cuatec nuevoCuatec = dbManager.readOne("A01021111");
+    //Returns ObjectId (string format) by matricula
+    std::string oid = dbManager.readOid("A01021111");
+
+    //-------------------- Update ------------------------
+    //Updates name old(string) -> to new one(string)
+    dbManager.updateName("Victor Coeto","Juan Carlos Hurtado");
+    //Updates matricula old(string) -> to new one(string)
+    dbManager.updateMatricula("A01021111", "A01025986");
+
+    //-------------------- Delete ------------------------
+    //Delete by name
+    dbManager.deleteOne("Juan Carlos Hurtado");
+
+    return 0;
+}
+```
+
 ### Authors
+
 Víctor Adrián Coeto Gardea \
 Saul Montes de Oca\
 Juan Carlos Hurtado
+
 # Instalar el Driver de MongoCxx
+
 ## Prerequisitos
-- Tener instalado 
-[CMake](https://cmake.org/) 3.2 o versiones posteriores
+
+- Tener instalado
+  [CMake](https://cmake.org/) 3.2 o versiones posteriores
 - Compilador que soporte C++11 (gcc, clang, o Visual Studio)
 - boost header (opcional)
+
 ## MacOS
+
 #### Paso 1. Instalar el Driver de MongoC (libmongoc y libbson)
+
 - Descargas el archivo comprimido de la version más reciente de la libreria:
+
 ```sh
 curl -LO https://github.com/mongodb/mongo-c-driver/releases/download/1.16.2/mongo-c-driver-1.16.2.tar.gz
 ```
+
 - Lo descomprimes
+
 ```sh
 tar xzf mongo-c-driver-1.16.2.tar.gz
 ```
+
 - Te cambias al directorio descargado
+
 ```sh
 cd mongo-c-driver-1.16.2
 ```
+
 - Instalas el driver
+
 ```sh
 mkdir cmake-build
 cd cmake-build
 cmake -DENABLE_AUTOMATIC_INIT_AND_CLEANUP=OFF ..
 make install
 ```
+
 #### Paso 2. Descargar la version más reciente del driver MongoCxx
+
 - Puedes hacerlo vía git
+
 ```sh
 git clone https://github.com/mongodb/mongo-cxx-driver.git \ --branch releases/stable --depth 1
 ```
+
 - Te cambias a la carpeta `/build` dentro de la carpeta descargada
+
 ```sh
 $ cd mongo-cxx-driver/build
 ```
+
 #### Paso 3. Configurar el driver
+
 - Configurar para que el driver MongoCxx se instale en `/usr/local`
+
 ```sh
 cmake ..                                \
     -DCMAKE_BUILD_TYPE=Release          \
     -DCMAKE_INSTALL_PREFIX=/usr/local
 ```
+
 #### Paso 4. Hacer Build e instalar el driver
+
 ```sh
 sudo make EP_mnmlstc_core
 make && sudo make install
 ```
+
 ### Listo 🤟
 
-
 ## Windows
-Para Windows se necesita visual studio 15 2017 y boost \
-*Necesitas tener el paquete en ingles de visual studio
 
-### visual 
-https://visualstudio.microsoft.com/es/vs/older-downloads/ 
+Para Windows se necesita visual studio 15 2017 y boost \
+\*Necesitas tener el paquete en ingles de visual studio
+
+### visual
+
+https://visualstudio.microsoft.com/es/vs/older-downloads/
 tienen que elegir visual studio 2017
- 
-Luego al iniciar sesión con cualquier cuenta Microsoft (puede ser la del tec) eligues la versión community. 
+
+Luego al iniciar sesión con cualquier cuenta Microsoft (puede ser la del tec) eligues la versión community.
 
 Al instalar visual necesitamos los paquetes de c++, marcar la casilla para que se descarguen y se agreguen a nuestro visual.
 
@@ -79,7 +175,9 @@ Al instalar visual necesitamos los paquetes de c++, marcar la casilla para que s
 Ya que tenemos visual necesitamos que se habiliten las opciones de Boost.
 
 ### Boost y drivers
+
 A continuación están una serie de comandos que se van a escribir desde una consola de Windows, antes de comenzar recomiendo tener claro donde se va a guardar la carpeta con todos los archivos del boost, mongoc y mongocxx. Teniendo ya la carpeta con la dirección deseada necesitamos hacer los siguientes pasos:\
+
 > git clone https://github.com/Microsoft/vcpkg.git\
 > cd vcpkg\
 > bootstrap-vcpkg.bat\
@@ -88,21 +186,23 @@ A continuación están una serie de comandos que se van a escribir desde una con
 > vcpkg install mongo-cxx-driver\
 
 checamos si están los paquetes con el siguiente comando\
+
 > vcpkg list \
 
 Ya que tenemos los paquetes instalados se necesita hacer que el boost este conectado con el visual studio con el siguiente comando. \
+
 > vcpkg integrate install\
 
-Para más información sobre el instalador de paquetes de windows: https://docs.microsoft.com/en-us/cpp/build/vcpkg?view=vs-2019  
+Para más información sobre el instalador de paquetes de windows: https://docs.microsoft.com/en-us/cpp/build/vcpkg?view=vs-2019
 
 ### MongoDB
+
 Ya tenemos los drivers pero faltan inicializar los servidores de mongo, primero necesitamos descargar Mongo Compass que es la GUI de la base de datos (parecido a MySQL). \
 https://www.mongodb.com/download-center/compass (se puede cambiar la carpeta destino de donde quieres compass)
 
-Ahora solo falta el servidor dentro de la computadora. 
+Ahora solo falta el servidor dentro de la computadora.
 https://www.mongodb.com/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-2012plus-4.2.6-signed.msi/download  
 (ojo: deseleccionar la opción de instalar compass ya que esa versión es para usar en línea y no de forma local)
 
 Ya que tenemos los servidores necesitamos iniciar una consola y escribimos mongo para inicializar el servidor y poder editar. Como no vamos a usar la base de datos con el código podemos salir con el comando exit.  
-Ahora abrimos compass y seleccionamos localhost, luego vamos al botón verde y ponemos conectar. 
- 
+Ahora abrimos compass y seleccionamos localhost, luego vamos al botón verde y ponemos conectar.
