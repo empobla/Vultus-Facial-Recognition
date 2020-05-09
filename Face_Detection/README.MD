@@ -124,36 +124,27 @@ using namespace std; <br/>
 
 int main(){ <br/>
     VideoCapture cap; <br/>
-
     FaceDetector Detect; <br/>
-
     int scale; <br/>
     scale = Detect.getScale(); <br/>
-
     cap = VideoCapture(0); //this variable opens the camera <br/>
-
     if (!cap.isOpened()){ <br/>
         return -1; <br/>
     }//Close if  <br/>
-
     for (;;){ <br/>
         vector<Rect> faces; <br/>
         Mat frame; <br/>
         cap >> frame; //shift bits <br/>
-
         faces = Detect.detection(frame); //store in a variable the capture in the camera frame <br/>
-
         //draw a rectangle around a face detected <br/>
         for (Rect area : faces){ <br/>
             Scalar drawColor = Scalar(255, 0, 0); <br/>
-
             rectangle(frame, Point(cvRound(area.x * scale), cvRound(area.y * scale)), <br/>
                 Point(cvRound(((double)area.x + (double)area.width - 1) * scale), <br/>
                     cvRound(((double)area.y + (double)area.height - 1) * scale)), drawColor); <br/>
         }//Close for <br/>
 
-        imshow("Webcam", frame); //opens a window to show image captured <br/>
-        
+        imshow("Webcam", frame); //opens a window to show image captured <br/>        
         //key to close the program <br/>
         char c = (char)waitKey(10); <br/>
 
