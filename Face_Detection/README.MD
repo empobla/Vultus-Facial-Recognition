@@ -146,11 +146,9 @@ int main(){ <br/>
         imshow("Webcam", frame); //opens a window to show image captured <br/>        
         //key to close the program <br/>
         char c = (char)waitKey(10); <br/>
-
         if (c == 27 || c == 'q' || c == 'Q'){ <br/>
             break; <br/>
         }//Close if <br/>
     }//Close for <br/>
-
     return 0; <br/>
 }//Close main  <br/>
