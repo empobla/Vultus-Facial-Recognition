@@ -143,7 +143,6 @@ int main(){ <br/>
                 Point(cvRound(((double)area.x + (double)area.width - 1) * scale), <br/>
                     cvRound(((double)area.y + (double)area.height - 1) * scale)), drawColor); <br/>
         }//Close for <br/>
-
         imshow("Webcam", frame); //opens a window to show image captured <br/>        
         //key to close the program <br/>
         char c = (char)waitKey(10); <br/>
