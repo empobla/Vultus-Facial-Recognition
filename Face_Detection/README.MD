@@ -32,76 +32,76 @@ using namespace std;
 using namespace cv;
 
 
-/*
-In this method we define the variables to be used.
-*/
-FaceDetector::FaceDetector(){
-    faceCascade.load("./haarcascade_frontalface_alt.xml");
-    size = 30;
-    scale = 5.0;
-    window_scaling = 1.1; //This multiplies by the size to find the next bigger image, if there even is one to begin with 
-    minClassifiers = 4;
-    imgHeight = 30;
-    flags = 0;
+/* <br/>
+In this method we define the variables to be used.<br/>
+*/<br/>
+FaceDetector::FaceDetector(){ <br/>
+    faceCascade.load("./haarcascade_frontalface_alt.xml");<br/>
+    size = 30;<br/>
+    scale = 5.0;<br/>
+    window_scaling = 1.1; //This multiplies by the size to find the next bigger image, if there even is one to begin with <br/>
+    minClassifiers = 4;<br/>
+    imgHeight = 30;<br/>
+    flags = 0;<br/>
 }
 
+<br/>
+/*<br/>
+ Ths method is a constructor.<br/>
+*/<br/>
+FaceDetector::FaceDetector(string faceCascadeFile, int scale, int size, double scale_factor, int minConsensus, int flag){ <br/>
+    faceCascade.load(faceCascadeFile); <br/>
+    this->scale = scale; <br/>
+    this->size = size;<br/>
+    window_scaling = scale_factor; <br/>
+    minClassifiers = minConsensus; <br/>
+    imgHeight = size; <br/>
+    flags = flag; <br/>
+}<br/>
 
-/*
- Ths method is a constructor.
-*/
-FaceDetector::FaceDetector(string faceCascadeFile, int scale, int size, double scale_factor, int minConsensus, int flag){
-    faceCascade.load(faceCascadeFile);
-    this->scale = scale;
-    this->size = size;
-    window_scaling = scale_factor;
-    minClassifiers = minConsensus;
-    imgHeight = size;
-    flags = flag;
-}
+/* <br/>
+Creation of the vector, resize and change to grayscale. <br/>
+*/ <br/>
+vector<Rect> FaceDetector::detection(Mat frame){ <br/>
+    vector<Rect> faces; <br/>
+    Mat grayscale; <br/>
 
-/*
-Creation of the vector, resize and change to grayscale.
-*/
-vector<Rect> FaceDetector::detection(Mat frame){
-    vector<Rect> faces;
-    Mat grayscale;
+    cvtColor(frame, grayscale, COLOR_BGR2GRAY); <br/>
+    resize(grayscale, grayscale, cv::Size(grayscale.size().width / scale, grayscale.size().height / scale)); <br/>
+    FaceDetector::faceCascade.detectMultiScale(grayscale, faces, window_scaling, minClassifiers, flags, cv::Size(size, size)); <br/>
 
-    cvtColor(frame, grayscale, COLOR_BGR2GRAY);
-    resize(grayscale, grayscale, cv::Size(grayscale.size().width / scale, grayscale.size().height / scale));
-    FaceDetector::faceCascade.detectMultiScale(grayscale, faces, window_scaling, minClassifiers, flags, cv::Size(size, size));
-
-    return faces;
-}
+    return faces; <br/>
+} <br/>
 
 
-/*
-Scale used in the capture
-*/
-int FaceDetector::getScale(){
-    return scale;
-}
+/* <br/>
+Scale used in the capture <br/>
+*/ <br/>
+int FaceDetector::getScale(){ <br/>
+    return scale; <br/>
+} <br/>
 
- ## FaceDetector.hpp
+ ## FaceDetector.hpp <br/>
  /*
- This code function is to import the libraries that are needed to the module.
- Also we define the privacy of the variables and methods used in FaceDetector.cpp
- */
- #pragma once
+ This code function is to import the libraries that are needed to the module. <br/>
+ Also we define the privacy of the variables and methods used in FaceDetector.cpp <br/>
+ */ <br/>
+ #pragma once <br/>
 
-#include <opencv2/opencv.hpp>
-#include <string>
-#include <stdio.h>
-#include <vector>
+#include <opencv2/opencv.hpp> <br/>
+#include <string> <br/>
+#include <stdio.h> <br/>
+#include <vector> <br/>
 
-class FaceDetector {
-private:
-	cv::CascadeClassifier faceCascade;
-	int scale;
-	int size;
-	double window_scaling;
-	int minClassifiers;
-	int imgHeight;
-	int flags;
+class FaceDetector { <br/>
+private: <br/>
+	cv::CascadeClassifier faceCascade; <br/>
+	int scale; <br/>
+	int size; <br/>
+	double window_scaling; <br/>c
+	int minClassifiers; <br/>
+	int imgHeight; <br/>
+	int flags; <br/>
 
 public:
 	FaceDetector();
