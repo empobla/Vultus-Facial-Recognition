@@ -65,11 +65,9 @@ Creation of the vector, resize and change to grayscale. <br/>
 vector<Rect> FaceDetector::detection(Mat frame){ <br/>
     vector<Rect> faces; <br/>
     Mat grayscale; <br/>
-
     cvtColor(frame, grayscale, COLOR_BGR2GRAY); <br/>
     resize(grayscale, grayscale, cv::Size(grayscale.size().width / scale, grayscale.size().height / scale)); <br/>
     FaceDetector::faceCascade.detectMultiScale(grayscale, faces, window_scaling, minClassifiers, flags, cv::Size(size, size)); <br/>
-
     return faces; <br/>
 } <br/>
 
@@ -103,66 +101,66 @@ private: <br/>
 	int imgHeight; <br/>
 	int flags; <br/>
 
-public:
-	FaceDetector();
-	FaceDetector(std::string faceCascadeFile, int scale, int size, double scale_factor, int minConsensus, int flag);
-	std::vector<cv::Rect> detection(cv::Mat frame);
-	int getScale();
+public: <br/>
+	FaceDetector(); <br/>
+	FaceDetector(std::string faceCascadeFile, int scale, int size, double scale_factor, int minConsensus, int flag); <br/>
+	std::vector<cv::Rect> detection(cv::Mat frame); <br/>
+	int getScale(); <br/>
 };
+<br/>
 
-
- ## main.cpp
+ ## main.cpp <br/>
  
- /*
+ /* <br/>
  This code function is to act as the GUI when is running, but the code in here uses the two previous mentiones codes to define some functionalities, such as the open of the camera, the draw of a rectangle if a fface is deteected and a function to close the program when Q key is type.
-*/
+*/ <br/>
 
 
-#include "FaceDetection.hpp"
-#include "FaceDetection.cpp"
+#include "FaceDetection.hpp" <br/>
+#include "FaceDetection.cpp" <br/>
 
-using namespace cv;
-using namespace std;
+using namespace cv; <br/>
+using namespace std; <br/>
 
-int main(){
-    VideoCapture cap;
+int main(){ <br/>
+    VideoCapture cap; <br/>
 
-    FaceDetector Detect;
+    FaceDetector Detect; <br/>
 
-    int scale;
-    scale = Detect.getScale();
+    int scale; <br/>
+    scale = Detect.getScale(); <br/>
 
-    cap = VideoCapture(0); //this variable opens the camera
+    cap = VideoCapture(0); //this variable opens the camera <br/>
 
-    if (!cap.isOpened()){
-        return -1;
-    }//Close if 
+    if (!cap.isOpened()){ <br/>
+        return -1; <br/>
+    }//Close if  <br/>
 
-    for (;;){
-        vector<Rect> faces;
-        Mat frame;
-        cap >> frame; //shift bits
+    for (;;){ <br/>
+        vector<Rect> faces; <br/>
+        Mat frame; <br/>
+        cap >> frame; //shift bits <br/>
 
-        faces = Detect.detection(frame); //store in a variable the capture in the camera frame
+        faces = Detect.detection(frame); //store in a variable the capture in the camera frame <br/>
 
-        //draw a rectangle around a face detected
-        for (Rect area : faces){
-            Scalar drawColor = Scalar(255, 0, 0);
+        //draw a rectangle around a face detected <br/>
+        for (Rect area : faces){ <br/>
+            Scalar drawColor = Scalar(255, 0, 0); <br/>
 
-            rectangle(frame, Point(cvRound(area.x * scale), cvRound(area.y * scale)),
-                Point(cvRound(((double)area.x + (double)area.width - 1) * scale),
-                    cvRound(((double)area.y + (double)area.height - 1) * scale)), drawColor);
-        }//Close for
+            rectangle(frame, Point(cvRound(area.x * scale), cvRound(area.y * scale)), <br/>
+                Point(cvRound(((double)area.x + (double)area.width - 1) * scale), <br/>
+                    cvRound(((double)area.y + (double)area.height - 1) * scale)), drawColor); <br/>
+        }//Close for <br/>
 
-        imshow("Webcam", frame); //opens a window to show image captured
+        imshow("Webcam", frame); //opens a window to show image captured <br/>
         
-        //key to close the program
-        char c = (char)waitKey(10);
+        //key to close the program <br/>
+        char c = (char)waitKey(10); <br/>
 
-        if (c == 27 || c == 'q' || c == 'Q'){
-            break;
-        }//Close if
-    }//Close for
+        if (c == 27 || c == 'q' || c == 'Q'){ <br/>
+            break; <br/>
+        }//Close if <br/>
+    }//Close for <br/>
 
-    return 0;
-}//Close main 
+    return 0; <br/>
+}//Close main  <br/>
