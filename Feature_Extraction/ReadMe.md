@@ -16,31 +16,6 @@ Computer Vision related scripts, developed for Software Engineering course at "T
 
 # Instructions and Tests 
 
-## Required
-1. Download dlib
-```bash
-cd /opt/
-git clone https://github.com/davisking/dlib
-cd ~/workspace/
-cp -r /opt/dlib/dlib/ 
-```
-2. Include the following "#include "feature_extraction.h"
-3. Have the "dlib_face_recognition_resnet_model_v1.dat" model path 
-4. Run in docker container
-  - Pull
-    ```bash
-    docker pull https://hub.docker.com/repository/docker/robtry/opencv-420
-    ```
-  - enable 
-  ```bash
-    xhost +
-   ```
-  NOTE: if in mac, remember to download xquartz and open xquartz before running command: https://www.xquartz.org/
-  - Run container (MAC)
-  ```bash
- sudo docker run -it -v $(pwd):/root/workspace -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=docker.for.mac.host.internal:0 -p 5000:5000 -p 8888:8888 robtry/opencv-420
- ```
-
 ## Running
 - Clone repository
 - Inside the Computer_Vision folder run the followinfg commands:
@@ -74,9 +49,14 @@ FeatureDetection *d = new FeatureDetection("net/dlib_face_recognition_resnet_mod
   * Calculate face descriptor returned in MAT format 
      - using elbp -> getFeatures(Mat input) 
      - using dlib -> getFeatures(Mat input) 
- * Calculate double determining distance between two vector (the smaller teh value the more similar the two pictures are)-> compareFeatures(Mat input_A, Mat input_B, int method)
-    - 6: Euclidian distance
-    - 3: Battacharya
+   * Calculate double determining distance between two vector (the smaller teh value the more similar the two pictures are)-> compareFeatures(Mat input_A, Mat input_B, int method)
+      - 6: Euclidian distance
+      - 3: Battacharya
+* There are a total of four methods implemented to determine this distance, although we strongly suggest to use the Battacharya method. This previously-mentioned methods are the following:
+    - Battacharya
+    - Chi-Squared
+    - Euclidian distance
+    - Intersection
  
 ```bash
 //This method uses the dlib library 
@@ -86,6 +66,31 @@ Mat result = d->getFeatures2(input);
 double final_result = d->compareFeatures(result, result2, 5);
 ```
 -You can review an example of this in the main file. 
+## Required
+1. Download dlib
+```bash
+cd /opt/
+git clone https://github.com/davisking/dlib
+cd ~/workspace/
+cp -r /opt/dlib/dlib/ 
+```
+2. Include the following "#include "feature_extraction.h"
+3. Have the "dlib_face_recognition_resnet_model_v1.dat" model path 
+4. Run in docker container
+  - Pull
+    ```bash
+    docker pull https://hub.docker.com/repository/docker/robtry/opencv-420
+    ```
+  - enable 
+  ```bash
+    xhost +
+   ```
+  NOTE: if in mac, remember to download xquartz and open xquartz before running command: https://www.xquartz.org/
+  - Run container (MAC)
+  ```bash
+ sudo docker run -it -v $(pwd):/root/workspace -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=docker.for.mac.host.internal:0 -p 5000:5000 -p 8888:8888 robtry/opencv-420
+ ```
+
 ## File Structure
 - main.cpp - test 
 - feature_extraction.cpp- implementation of methods
