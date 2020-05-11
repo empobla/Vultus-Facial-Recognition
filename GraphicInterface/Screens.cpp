@@ -21,7 +21,6 @@ void Screens::FaceVerificationWindow() {
         cv::VideoCapture cap;
         cap = cv::VideoCapture(0);
         cap.open(0);
-        frame = cv::Scalar(100, 100, 100);
         cvui::text(frame, 10, 10, "FaceVerification");
 
         if (!cap.isOpened()){
@@ -30,26 +29,25 @@ void Screens::FaceVerificationWindow() {
 
         while (1){
             cap.read(frame);
-            imshow(WINDOW2_NAME, frame);
-            cv::waitKey(30);
 
+            // Show a button at position (110, 80)
+            if (cvui::button(frame, 500, 80, "Face verification")) {
+                // The button was clicked, so let's increment our counter.
+            }
+            if (cvui::button(frame, 500, 160, "Face identification")) {
+                // The button was clicked, so let's increment our counter.
+
+            }
+            if (cvui::button(frame, 500, 240, "Enroll a student")) {
+                // The button was clicked, so let's increment our counter.
+
+            }
+            cv::imshow(WINDOW2_NAME, frame);
             if (cv::waitKey(20) == 27) {
                 break;
             }
         }
 
-        // Show a button at position (110, 80)
-        if (cvui::button(frame, 500, 80, "Face verification")) {
-            // The button was clicked, so let's increment our counter.
-        }
-        if (cvui::button(frame, 500, 160, "Face identification")) {
-            // The button was clicked, so let's increment our counter.
-
-        }
-        if (cvui::button(frame, 500, 240, "Enroll a student")) {
-            // The button was clicked, so let's increment our counter.
-
-        }
         if (cv::waitKey(20) == 27) {
             break;
         }
