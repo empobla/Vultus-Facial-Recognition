@@ -1,5 +1,4 @@
 #include "FaceDetection.hpp"
-#include "FaceDetection.cpp"
 
 using namespace cv;
 using namespace std;
