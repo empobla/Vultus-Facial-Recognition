@@ -50,8 +50,11 @@ FeatureDetection *d = new FeatureDetection("net/dlib_face_recognition_resnet_mod
      - using elbp -> getFeatures(Mat input) 
      - using dlib -> getFeatures(Mat input) 
    * Calculate double determining distance between two vector (the smaller teh value the more similar the two pictures are)-> compareFeatures(Mat input_A, Mat input_B, int method)
-      - 6: Euclidian distance
+      - 0: Correlation
+      - 1: Chi-Square
+      - 2: Intersection 
       - 3: Battacharya
+      - 6: Euclidian distance
 * There are a total of four methods implemented to determine this distance, although we strongly suggest to use the Battacharya method. This previously-mentioned methods are the following:
     - Battacharya
     - Chi-Squared
