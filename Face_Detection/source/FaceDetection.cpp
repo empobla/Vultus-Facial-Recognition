@@ -1,10 +1,12 @@
 #include "FaceDetection.hpp"
+#include <chrono>
 
+using namespace std::chrono;
 using namespace std;
 using namespace cv;
 
 FaceDetector::FaceDetector(){
-    faceCascade.load("../opt/opencv/data/haarcascades/haarcascade_frontalface_alt.xml");
+    faceCascade.load("../haarcascade_frontalface_alt.xml");
     size = 30;
     scale = 5.0;
     window_scaling = 1.1; //This multiplies by the size to find the next bigger image, if there even is one to begin with 
@@ -28,8 +30,14 @@ vector<Rect> FaceDetector::detection(Mat frame){
     Mat grayscale;
 
     cvtColor(frame, grayscale, COLOR_BGR2GRAY);
+
+    auto start = high_resolution_clock::now(); 
     resize(grayscale, grayscale, cv::Size(grayscale.size().width / scale, grayscale.size().height / scale));
     FaceDetector::faceCascade.detectMultiScale(grayscale, faces, window_scaling, minClassifiers, flags, cv::Size(size, size));
+    auto stop = high_resolution_clock::now();
+
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "Execution time for detecting a face: " << duration.count() << " microseconds." << endl;
 
     return faces;
 }
