@@ -1,7 +1,4 @@
-#include <opencv2/opencv.hpp>
-#include <stdio.h>
 #include "Screens.h"
-#include "cvui.h"
 
 #define WINDOW1_NAME "Window 1"
 

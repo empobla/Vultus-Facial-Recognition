@@ -1,13 +1,7 @@
-#include <opencv2/opencv.hpp>
-
 #define CVUI_IMPLEMENTATION
-#include "cvui.h"
 
 # define WINDOW2_NAME "Window 2"
-
 #include "Screens.h"
-#include <opencv2/videoio.hpp>
-
 
 Screens::Screens() {
 
