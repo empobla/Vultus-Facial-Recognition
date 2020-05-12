@@ -1,5 +1,5 @@
-#ifndef DB_H
-#define DB_H
+#ifndef DB_HPP
+#define DB_HPP
 
 #include <iostream>
 #include <string>
@@ -15,14 +15,16 @@
 #include <mongocxx/client.hpp>
 #include <mongocxx/instance.hpp>
 
-#include "EnvironmentVariables.h"
-#include "../Cuatec.cpp"
+#include "EnvironmentVariables.hpp"
+#include "Cuatec.hpp"
 class DBManagerInterface
 {
-public:
+private:
     mongocxx::database db;
     mongocxx::client conn;
     mongocxx::collection coll;
+
+public:
     DBManagerInterface(std::string uri, std::string db, std::string coll);
     ~DBManagerInterface();
     void create(Cuatec cuatec);

@@ -1,4 +1,4 @@
-#include "src/DBManagerInterface.cpp"
+#include "src/include/DBManagerInterface.hpp"
 
 using namespace cv;
 using namespace std;
@@ -28,7 +28,7 @@ int main()
     //nuevoCatec.setFeatures(Mat nuevoFeatures);
 
     //You need to instance de class once like this:
-    //DBManagerInterface dbManager(URI, DATABASE, COLLECTION);
+    // DBManagerInterface dbManager(URI, DATABASE, COLLECTION);
 
     //Methods:
 
@@ -53,6 +53,17 @@ int main()
     //-------------------- Delete ------------------------
     //Delete by name
     //dbManager.deleteOne("Victor Coeto");
+
+    //Verification
+    // DBManagerInterface dbManager(URI, DATABASE, COLLECTION);
+
+    //create flann search instance
+    // cv::flann::Index index = cv::flann::Index();
+    // // build the index with your data
+    // index.build(dataset, flann::KDTreeIndexParams());
+    // // do fast search over your index, when needed
+    // Mat indices, dists;
+    // index.knnSearch(query, indices, dists, numKnn);
 
     return 0;
 }

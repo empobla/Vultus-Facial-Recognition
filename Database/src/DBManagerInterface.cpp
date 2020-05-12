@@ -1,4 +1,4 @@
-#include "include/DBManagerInterface.h"
+#include "include/DBManagerInterface.hpp"
 
 DBManagerInterface::DBManagerInterface(std::string uri, std::string database, std::string collection)
 {
