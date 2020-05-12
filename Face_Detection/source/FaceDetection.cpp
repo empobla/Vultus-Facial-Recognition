@@ -1,3 +1,13 @@
+/*******************************************
+ * Emilio Popovits : A01027265
+ * Sergio Hernandez : A01025210
+ * Luis Antonio Garcia : A01021865
+ * Eduardo Harari : A01025876
+
+ In this file, all of the methods declared in the header file "FaceDetector.h" are initialized.
+ This file contains the method for opening the camera, recognizing a human face, and drawing a square around it.
+ *******************************************/
+
 #include "FaceDetection.hpp"
 #include <chrono>
 

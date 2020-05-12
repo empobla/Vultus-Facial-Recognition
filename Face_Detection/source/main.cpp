@@ -1,3 +1,12 @@
+/*******************************************
+ * Emilio Popovits : A01027265
+ * Sergio Hernandez : A01025210
+ * Luis Antonio Garcia : A01021865
+ * Eduardo Harari : A01025876
+
+ This is the main method for the initial face detector program.
+ *******************************************/
+
 #include "FaceDetection.hpp"
 
 using namespace cv;
