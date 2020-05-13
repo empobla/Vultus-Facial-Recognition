@@ -15,26 +15,34 @@
 #include <mongocxx/client.hpp>
 #include <mongocxx/instance.hpp>
 
+#include <mongocxx/exception/bulk_write_exception.hpp>
+#include <mongocxx/exception/error_code.hpp>
+#include <mongocxx/exception/logic_error.hpp>
+#include <mongocxx/exception/operation_exception.hpp>
+#include <mongocxx/exception/server_error_code.hpp>
+
 #include "EnvironmentVariables.hpp"
 #include "Cuatec.hpp"
 class DBManagerInterface
 {
-private:
+public:
     mongocxx::database db;
     mongocxx::client conn;
     mongocxx::collection coll;
-
-public:
     DBManagerInterface(std::string uri, std::string db, std::string coll);
     ~DBManagerInterface();
-    void create(Cuatec cuatec);
+    int create(Cuatec cuatec);
+    int create(std::string name, int age, std::string matricula1, cv::Mat imgMat, cv::Mat featuresMat);
     void readAll();
-    Cuatec readOne(std::string matricula);
-    void updateName(std::string nombre, std::string nuevoNombre);
-    void updateMatricula(std::string matricula, std::string nuevaMatricula);
-    void deleteOne(std::string matricula);
-    cv::Mat readFeatures(std::string matricula);
     std::string readOid(std::string matricula);
+    Cuatec readOne(std::string matricula);
+    std::string readOneName(std::string matricula);
+    int readOneEdad(std::string matricula);
+    cv::Mat readOneFeatures(std::string matricula);
+    cv::Mat readOneImg(std::string matricula);
+    int updateName(std::string matricula, std::string nuevoNombre);
+    int updateMatricula(std::string matricula, std::string nuevaMatricula);
+    int deleteOne(std::string matricula);
 };
 
 #endif
