@@ -22,8 +22,9 @@ int main(int argc, char **argv)
 	if (image.empty()) { cout << "Could not open or find the image \n"; return -1; }
 
 	// Detect Faces
+	Module1 detector;
 	vector<Rect> faces;
-	Module1::detectFaces(faces, image);
+	detector.detectFaces(faces, image);
 
 	//Aling face
 	FaceAlignment aling;
@@ -34,7 +35,7 @@ int main(int argc, char **argv)
 	for ( size_t i = 0; i < faces.size(); i++ )
 	{
 		//aling.alignFace(image, faces[i], 200, result);
-		aling.alignFaceDebugMode(image, faces[i], 150, result, false);
+		aling.alignFaceDebugMode(image, faces[i], 150, result, true);
 		// namedWindow("Face Aligned", WINDOW_AUTOSIZE);
 		// imshow("Face Aligned", result);
 		// waitKey(0); // Wait for a keystroke in the window

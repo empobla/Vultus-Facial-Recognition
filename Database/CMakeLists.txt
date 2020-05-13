@@ -21,11 +21,10 @@ include_directories("/usr/local/lib")
 add_executable(
     Database
     test.cpp
-    ${SOURCE_FILES}
+    ${PROJECT_SOURCE_DIR}/src/DBManagerInterface.cpp
+    ${PROJECT_SOURCE_DIR}/src/Cuatec.cpp
 )
 
 target_link_libraries(Database ${LIBMONGOCXX_LIBRARIES})
 target_link_libraries(Database ${LIBBSONCXX_LIBRARIES})
 target_link_libraries(Database ${OpenCV_LIBS})
-
-

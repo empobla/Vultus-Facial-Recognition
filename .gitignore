@@ -117,9 +117,15 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# Development
+### Development
 
 # library
 opencv4
 dlib
 */build/*
+.vscode
+*/test/*
+
+# compiled
+output
+out

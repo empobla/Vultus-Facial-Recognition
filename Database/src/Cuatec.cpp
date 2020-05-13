@@ -1,4 +1,4 @@
-#include "include/Cuatec.h"
+#include "include/Cuatec.hpp"
 
 Cuatec::Cuatec(std::string name, int age, std::string matricula1, cv::Mat imgMat, cv::Mat featuresMat)
 {
