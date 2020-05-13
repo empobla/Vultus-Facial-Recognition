@@ -41,17 +41,17 @@ int main(int argc, char **argv)
     /*
      * This should be used in production
     */
-    //aling.alignFace(image, faces[i], 200, result);
+    //align.alignFace(image, faces[i], 200, result);
 
     /*
      * This should be user to get log information
     */
-    //aling.alignFaceDebugMode(image, faces[i], 150, result, false);
+    //align.alignFaceDebugMode(image, faces[i], 150, result, false);
 
     /*
      * This should be use if you want to see the final result
     */
-    aling.alignFaceDebugMode(image, faces[i], 150, result, true);
+    align.alignFaceDebugMode(image, faces[i], 150, result, true);
   }
 
   return 0;
