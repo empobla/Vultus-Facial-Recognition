@@ -1,14 +1,18 @@
-#ifndef CUATEC_H
-#define CUATEC_H
+#ifndef CUATEC_HPP
+#define CUATEC_HPP
+#include <opencv2/core.hpp>
+#include <iostream>
 
 class Cuatec
 {
-public:
+private:
     std::string nombre;
     int edad;
     std::string matricula;
     cv::Mat img;
     cv::Mat features;
+
+public:
     Cuatec(std::string name, int age, std::string matricula1, cv::Mat imgMat, cv::Mat featuresMat);
     ~Cuatec();
     std::string getNombre();

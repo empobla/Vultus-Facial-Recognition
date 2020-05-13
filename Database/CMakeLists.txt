@@ -8,21 +8,23 @@ find_package( OpenCV REQUIRED )
 set(OpenCV_DIR "/usr/local/include/opencv")
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-## Mongo
-find_package(mongocxx REQUIRED)
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  find_package(Boost 1.56.0 REQUIRED)
-  if (CMAKE_VERSION VERSION_LESS 3.15.0)
-    target_include_directories(Database PRIVATE ${Boost_INCLUDE_DIRS})
-  else()
-    target_link_libraries(Database PRIVATE Boost::boost)
-  endif()
-endif()
+find_package(libmongocxx REQUIRED)
+find_package(libbsoncxx REQUIRED)
+include_directories(${LIBMONGOCXX_INCLUDE_DIR})
+include_directories(${LIBBSONCXX_INCLUDE_DIR})
+include_directories("/usr/local/include/mongocxx/v_noabi")
+include_directories("/usr/local/include/bsoncxx/v_noabi")
+include_directories("/usr/local/include/libmongoc-1.0")
+include_directories("/usr/local/include/libbson-1.0")
+include_directories("/usr/local/lib")
 
 add_executable(
     Database
-    ${PROJECT_SOURCE_DIR}/test.cpp
-    ${SOURCE_FILES}
+    test.cpp
+    ${PROJECT_SOURCE_DIR}/src/DBManagerInterface.cpp
+    ${PROJECT_SOURCE_DIR}/src/Cuatec.cpp
 )
-target_link_libraries(Database PRIVATE mongo::mongocxx_shared ${OpenCV_LIBS})
+
+target_link_libraries(Database ${LIBMONGOCXX_LIBRARIES})
+target_link_libraries(Database ${LIBBSONCXX_LIBRARIES})
+target_link_libraries(Database ${OpenCV_LIBS})
