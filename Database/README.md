@@ -14,37 +14,31 @@ make
 
 ```c++
 //Make sure to include this file
-#include "src/DBManagerInterface.cpp"
+#include "src/include/DBManagerInterface.hpp"
 
 using namespace cv;
 using namespace std;
 
 int main()
 {
-    //Example of mat
-    Mat ImgMat;
-    Mat FeaturesMat;
-
-    //------------------------ Class Cuatec ---------------------------
+    //------------------ Class Cuatec ---------------------
     //Cuatec receives name(string), age(int), matricula(string),
     // image from TecId(cv::Mat) and features(cv::Mat)
-    Cuatec nuevoCatec("Saul Montes De Oca", 22, "A01025975", ImgMat, FeaturesMat);
+    Cuatec nuevoCuatec("Sal Montesdeoca", 22, "A01025975", ImgMat, FeaturesMat);
 
     //Getters
-    string nombre = nuevoCatec.getNombre();
-    string matricula = nuevoCatec.getMatricula();
-    int edad = nuevoCatec.getEdad();
-    Mat img = nuevoCatec.getImg();
-    Mat features = nuevoCatec.getFeatures();
+    string nombre = nuevoCuatec.getNombre();
+    string matricula = nuevoCuatec.getMatricula();
+    int edad = nuevoCuatec.getEdad();
+    Mat img = nuevoCuatec.getImg();
+    Mat features = nuevoCuatec.getFeatures();
 
     //Setters
-    nuevoCatec.setNombre("Victor Coeto");
-    nuevoCatec.setMatricula("A01025922");
-    nuevoCatec.setEdad(21);
-    nuevoCatec.setImg(newImgMat);
-    nuevoCatec.setFeatures(newFeaturesMat);
-
-    //----------------------------------------------------------------
+    nuevoCuatec.setNombre(string nuevoNombre);
+    nuevoCuatec.setMatricula(string nuevoMatricula);
+    nuevoCuatec.setEdad(int nuevaEdad);
+    nuevoCuatec.setImg(Mat nuevaImagen);
+    nuevoCuatec.setFeatures(Mat nuevoFeatures);
 
     //You need to instance de class once like this:
     DBManagerInterface dbManager(URI, DATABASE, COLLECTION);
@@ -52,26 +46,58 @@ int main()
     //Methods:
 
     //-------------------- Create ------------------------
-    //Create method receives a Cuatec object
-    dbManager.create(nuevoCatec);
+    /*
+        Create method can either receive a Cuatec object
+        or receive (std::string name, int age, std::string matricula,
+        cv::Mat image, cv::Mat features)
+        Returns int:
+            0 for failed insertion
+            1 for succeed insertion
+    */
+    int created = dbManager.create("wicho Garcia", 22, "A01025555", M, M);
+    int created = dbManager.create(nuevoCuatec);
 
     //-------------------- Read ------------------------
-    //Prints all the data (JSON format)
-    dbManager.readAll();
+    //Prints all the data in console (JSON format)
+    dbManager.readAll(); //Not recomended for bigdata
+
     //Returns a Cuatec object found in the DB
     Cuatec nuevoCuatec = dbManager.readOne("A01021111");
-    //Returns ObjectId (string format) by matricula
-    std::string oid = dbManager.readOid("A01021111");
+
+    //Returns ObjectId (string format)
+    string oid = dbManager.readOid("A01025975");
+
+    //Returns name as string
+    string nombre = dbManager.readOneName("A01025975");
+
+    //Returns age as int
+    int edad = dbManager.readOneEdad("A01025975");
+
+    //Returns features as cv::Mat
+    Mat features = dbManager.readOneFeatures("A01025555");
+
+    //Returns img as cv::Mat
+    Mat img = dbManager.readOneImg("A01025555");
 
     //-------------------- Update ------------------------
-    //Updates name old(string) -> to new one(string)
-    dbManager.updateName("Victor Coeto","Juan Carlos Hurtado");
-    //Updates matricula old(string) -> to new one(string)
-    dbManager.updateMatricula("A01021111", "A01025986");
+    //Receives matricula of object to update and new name
+    //Returns:
+    //0 for failing at updating
+    //1 for suceeding at updating
+    int updated = dbManager.updateName("A01025975","Victor Coeto");
+
+    //Receives matricula of object to update and new matricula
+    //Returns:
+    //0 for failing at updating
+    //1 for suceeding at updating
+    int updated = dbManager.updateMatricula("A01021111", "A01025986");
 
     //-------------------- Delete ------------------------
-    //Delete by name
-    dbManager.deleteOne("Juan Carlos Hurtado");
+    //Receives matricula of object to delete
+    //Returns:
+    //0 for failing at deleting
+    //1 for suceeding at deleting
+    int result = dbManager.deleteOne("A01025975"); //falta borrar xmls guardados
 
     return 0;
 }
@@ -189,7 +215,7 @@ checamos si están los paquetes con el siguiente comando
 
 > vcpkg list \
 
-Ya que tenemos los paquetes instalados se necesita hacer que el boost este conectado con el visual studio con el siguiente comando. 
+Ya que tenemos los paquetes instalados se necesita hacer que el boost este conectado con el visual studio con el siguiente comando.
 
 > vcpkg integrate install\
 
