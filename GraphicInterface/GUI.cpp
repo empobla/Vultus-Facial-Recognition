@@ -1,7 +1,4 @@
-#include <opencv2/opencv.hpp>
-#include <stdio.h>
 #include "Screens.h"
-#include "cvui.h"
 
 #define WINDOW1_NAME "Window 1"
 
@@ -16,29 +13,23 @@ int main() {
     while (true) {
         frame = cv::Scalar(100, 100, 100);
         cvui::text(frame, 10, 10, "VULTUS software");
-        // Show a button at position (110, 80)
+
         if (cvui::button(frame, 500, 80, "Face verification")) { // To manually verify an unauthorized access
             //wFaceVerification.OpenWindow();
             count++;
             cout << count << endl;
             wOpener -> FaceVerificationWindow();
-            // The button was clicked, so let's increment our counter.
-
         }
         if (cvui::button(frame, 500, 160, "Face identification")) { // Detects the 10 closest matches to the faces database
             // The button was clicked, so let's increment our counter.
-
         }
         if (cvui::button(frame, 500, 240, "Enroll a student")) { // To feed the database with new values
             // The button was clicked, so let's increment our counter.
-
         }
         cvui::imshow(WINDOW1_NAME, frame);
         if (cv::waitKey(20) == 27) {
             break;
         }
     }
-
     return 0;
-
 }
