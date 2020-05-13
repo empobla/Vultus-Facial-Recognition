@@ -16,7 +16,7 @@ using namespace std;
 using namespace cv;
 
 FaceDetector::FaceDetector(){
-    faceCascade.load("../haarcascade_frontalface_alt.xml");
+    faceCascade.load("../models/haarcascade_frontalface_alt.xml");
     size = 30;
     scale = 5.0;
     window_scaling = 1.1; //This multiplies by the size to find the next bigger image, if there even is one to begin with 
