@@ -6,8 +6,10 @@
 using namespace std;
 using namespace cv;
 
-// Paths to the model
-const string Module1::FACEMODEL = "/opt/opencv/data/haarcascades/haarcascade_frontalface_alt.xml";
+Module1::Module1()
+{
+	FACEMODEL = "/opt/opencv/data/haarcascades/haarcascade_frontalface_alt.xml";
+}
 
 void Module1::detectFaces(vector<Rect> &faces, const Mat image)
 {

@@ -15,7 +15,7 @@ using namespace std;
 int main(){
     VideoCapture cap;
 
-    FaceDetector Detect;
+    FaceDetector Detect("../models/haarcascade_frontalface_alt.xml");
 
     int scale;
     scale = Detect.getScale();

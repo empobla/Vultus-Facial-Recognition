@@ -10,6 +10,7 @@ find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
 ## DLIB
+# find_package( dlib REQUIRED )
 include(FetchContent)
 FetchContent_Declare(dlib
   GIT_REPOSITORY https://github.com/davisking/dlib.git
