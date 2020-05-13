@@ -213,10 +213,12 @@ int DBManagerInterface::deleteOne(std::string matricula)
 }
 std::vector<cv::Mat> DBManagerInterface::fastSearch(cv::Mat featuresMat, int nearestNeighbors)
 {
-
+    Mat distances;
+    Mat indices;
     cv::flann::Index flann_index(,
-                                 cvflann::SavedIndexParams("c:\\index.fln"),
+                                 cvflann::SavedIndexParams("index.xml.gz"),
                                  cvflann::FLANN_DIST_EUCLIDEAN);
+    flann_index.knnSearch(featuresMat, indices, distances, nearestNeighbors);
     std::vector<cv::Mat> knnMatches;
     return knnMatches;
 }
