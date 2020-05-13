@@ -86,5 +86,21 @@ int main()
     //1 for suceeding at deleting
     // int result = dbManager.deleteOne("A01025975"); //falta borrar xmls guardados
 
+    // Mat dataset(1, 2, CV_32SC1);
+
+    // Mat query,
+    //     indices,
+    //     dists;
+    // int numKnn = 10;
+
+    // cv::flann::GenericIndex<cvflann::L2<int>> index(dataset, cvflann::KDTreeIndexParams());
+    // index.knnSearch(query, indices, dists, numKnn, cvflann::SearchParams(32));
+    // index.save("indexing.hdf5");
+    // do fast search over your index, when needed
+
+    // index.knnSearch(query, indices, dists, numKnn, cvflann::SearchParams(32));
+    // cout << indices << endl;
+    // cout << dists << endl;
+
     return 0;
 }

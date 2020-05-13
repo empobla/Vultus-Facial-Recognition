@@ -211,3 +211,12 @@ int DBManagerInterface::deleteOne(std::string matricula)
         return 1;
     }
 }
+std::vector<cv::Mat> DBManagerInterface::fastSearch(cv::Mat featuresMat, int nearestNeighbors)
+{
+
+    cv::flann::Index flann_index(,
+                                 cvflann::SavedIndexParams("c:\\index.fln"),
+                                 cvflann::FLANN_DIST_EUCLIDEAN);
+    std::vector<cv::Mat> knnMatches;
+    return knnMatches;
+}
