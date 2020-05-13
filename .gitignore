@@ -123,6 +123,3 @@ $RECYCLE.BIN/
 opencv4
 dlib
 */build/*
-
-#DB
-*.xml.gz
