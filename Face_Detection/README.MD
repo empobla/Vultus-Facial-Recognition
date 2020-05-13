@@ -1,10 +1,10 @@
 # Face Detection
 
 ## Authors
-[Emilio Popovits](https://github.com) 
-[Sergio Hernandez Castillo](https://github.com/sergio-hernandez-castillo) 
-[Luis Antonio Garcia](https://github.com/WichoGarcia) 
-[Eduardo Harari](https://github.com/eduardoharari)
+[Emilio Popovits](https://github.com) </br>
+[Sergio Hernandez Castillo](https://github.com/sergio-hernandez-castillo) </br>
+[Luis Antonio Garcia](https://github.com/WichoGarcia) </br>
+[Eduardo Harari](https://github.com/eduardoharari) </br>
 
 ## Compile
 - Open up a terminal
