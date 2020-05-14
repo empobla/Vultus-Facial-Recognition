@@ -52,9 +52,18 @@ void FaceRecognition::identify(const cv::Mat frame, std::vector<int> response, s
 	// T1 implemenet your code here!
 }
 
-void FaceRecognition::enrollStudent(const cv::Mat frame, const std::string id, const std::string name, int response)
+void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const std::string name, int age, int &response)
 {
-	// T3 implement your code here!
+
+    cv::Mat features = featureDetector->getFeatures2(frame);
+	int created = db->create(name, age, id, frame, features); 
+	if(created==1){
+		std::cout<<" student enrolled successfully "<<std::endl;
+	}else{
+		std:cout<<"student cannot be enrolled!"<<std::endl;
+	}
+	response = created;
+
 }
 
 // Private methods

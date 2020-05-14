@@ -76,7 +76,7 @@ public:
 	 * * 1: Created succesfully
 	 * * 2: Already exists
 	*/
-	void enrollStudent(const cv::Mat frame, const std::string id, const std::string name, int response);
+	void enrollStudent(cv::Mat frame, const std::string id, const std::string name, int age, int &response);
 };
 
 #endif
