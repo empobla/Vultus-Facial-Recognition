@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 	if (image.empty()) { cout << "Could not open or find the image \n"; return -1; }
 
 	// Detect Faces
-	Module1 detector;
+	Module1 detector("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
 	vector<Rect> faces;
 	detector.detectFaces(faces, image);
 
@@ -34,11 +34,13 @@ int main(int argc, char **argv)
 
 	for ( size_t i = 0; i < faces.size(); i++ )
 	{
+		cout << faces[i];
 		//aling.alignFace(image, faces[i], 200, result);
-		aling.alignFaceDebugMode(image, faces[i], 150, result, true);
-		// namedWindow("Face Aligned", WINDOW_AUTOSIZE);
-		// imshow("Face Aligned", result);
-		// waitKey(0); // Wait for a keystroke in the window
+		aling.alignFace(image, faces[i], 150, result);
+
+		namedWindow("Face Aligned", WINDOW_AUTOSIZE);
+		imshow("Face Aligned", result);
+		waitKey(0); // Wait for a keystroke in the window
 	}
 
 	return 0;

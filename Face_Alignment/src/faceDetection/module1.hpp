@@ -9,7 +9,7 @@ using namespace cv;
 class Module1 {
 	string FACEMODEL;
 	public:
-	Module1();
+	Module1(const string path);
 	/**
 	 * return vector of Rect with ROI of possible faces
 	*/
