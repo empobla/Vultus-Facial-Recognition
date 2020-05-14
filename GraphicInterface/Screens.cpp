@@ -20,6 +20,103 @@ void Screens::CaptureFrame(cv::Mat frame){
 }
 
 
+//Metodos para probar GUI
+
+void Screens::FaceVerificationMethod(cv::Mat img){
+    cv::Mat input1 = cv::imread("Test_images/img1.png", 1);
+    // Metodo de aprobacion
+    ApprovedStudentVerification(1, input1);
+}
+
+void Screens::ApprovedStudentVerification(int approved, cv::Mat dbImg){
+    cv::Mat acceptedFrame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
+    cv::Mat deniedFrame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
+        while(true){
+            cv::Mat screenshot = cv::imread("test_0.png", 1);
+            cv::Mat screenshot2 = cv::imread("Test_images/img1.png", 1);
+            if (approved==0){
+                screenshot.copyTo(deniedFrame(cv::Rect(0, 0, 640, 480)));
+                cvui::text(deniedFrame, 640, 700, "Not a match, please aprove manually");
+
+                if (cvui::button(deniedFrame, 700, 160, "Accept")) { 
+                    approved=1;
+                    std::cout<<"entre aqui"<<std::endl;
+                    //cvui::text(acceptedFrame, 900, 700, "Go ahead!");
+                }                
+                cvui::update("Images");
+            }
+            if(approved==1){
+                
+                screenshot.copyTo(acceptedFrame(cv::Rect(0, 0, 640, 480)));
+                dbImg.copyTo(acceptedFrame(cv::Rect(650, 0, 150, 150)));
+                cvui::text(acceptedFrame, 640, 700, "Match, go ahead!");
+            }
+            if(approved==0){
+                cv::imshow("Images", deniedFrame);
+            }
+            else{
+                cv::imshow("Images", acceptedFrame);
+            }
+            
+            
+            if (cv::waitKey(20) == 27) {
+                break;
+            }
+        }
+}
+
+void Screens::FaceIdentificationMethod(cv::Mat img){
+    cv::Mat input1 = cv::imread("Test_images/img1.png", 1);
+    cv::Mat input2 = cv::imread("Test_images/img2.png", 1);
+    cv::Mat input3 = cv::imread("Test_images/img3.png", 1);
+    cv::Mat input4 = cv::imread("Test_images/img4.jpg", 1);
+    cv::Mat input5 = cv::imread("Test_images/img5.jpg", 1);
+    approvedStudentIdentification(0, input1, input2, input3, input4, input5);
+}
+
+
+void Screens::approvedStudentIdentification(int approved, cv::Mat dbImg1, cv::Mat dbImg2, cv::Mat dbImg3, cv::Mat dbImg4, cv::Mat dbImg5){
+    cv::Mat acceptedFrame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
+    cv::Mat deniedFrame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
+        while(true){
+            cv::Mat screenshot = cv::imread("test_0.png", 1);
+            cv::Mat screenshot2 = cv::imread("Test_images/img1.png", 1);
+            if (approved==0){
+                screenshot.copyTo(deniedFrame(cv::Rect(0, 0, 640, 480)));
+                cvui::text(deniedFrame, 640, 700, "Not a match, please aprove manually");
+
+                if (cvui::button(deniedFrame, 700, 160, "Accept")) { 
+                    approved=1;
+                    std::cout<<"entre aqui"<<std::endl;
+                    //cvui::text(acceptedFrame, 900, 700, "Go ahead!");
+                }                
+                cvui::update("Images");
+            }
+            if(approved==1){
+                
+                screenshot.copyTo(acceptedFrame(cv::Rect(0, 0, 640, 480)));
+                dbImg1.copyTo(acceptedFrame(cv::Rect(650, 0, 150, 150)));
+                dbImg2.copyTo(acceptedFrame(cv::Rect(650, 150, 150, 150)));
+                dbImg3.copyTo(acceptedFrame(cv::Rect(650, 300, 150, 150)));
+                dbImg4.copyTo(acceptedFrame(cv::Rect(650, 450, 226, 226)));
+                dbImg5.copyTo(acceptedFrame(cv::Rect(800, 0, 200, 200)));
+                cvui::text(acceptedFrame, 640, 700, "Match, go ahead!");
+            }
+            if(approved==0){
+                cv::imshow("Images", deniedFrame);
+            }
+            else{
+                cv::imshow("Images", acceptedFrame);
+            }
+            
+            
+            if (cv::waitKey(20) == 27) {
+                break;
+            }
+        }
+}
+
+
 void confirmationFrame(std::string name, std::string age, std::string id, std::string image, int confirmation) {
      // Create a frame where components will be rendered to.
 	cv::Mat frame_confirm = cv::Mat(550, 500, CV_8UC3);
@@ -34,10 +131,10 @@ void confirmationFrame(std::string name, std::string age, std::string id, std::s
         if(confirmation == 1){
             	// Render UI components to the frame
 		    cvui::text(frame_confirm, 80, 80, "STUDENT SAVED");
-		    cvui::text(frame_confirm, 80, 120, "Nombre");
-            cvui::text(frame_confirm, 80, 180, "Edad");
-            cvui::text(frame_confirm, 80, 240, "Matricula");
-            cvui::text(frame_confirm, 80, 300, "Foto path");
+		    cvui::text(frame_confirm, 80, 120, "Name");
+            cvui::text(frame_confirm, 80, 180, "Age");
+            cvui::text(frame_confirm, 80, 240, "ID");
+            cvui::text(frame_confirm, 80, 300, "Photo Path");
 
 		    cvui::text(frame_confirm, 80, 140, name);
             cvui::text(frame_confirm, 80, 200, age);
@@ -131,23 +228,21 @@ void Screens::FaceVerificationWindow() {
             printf("--(!)Error opening video capture\n");
         }
 
+        cv::String id = "";
+        int offset = 80;
+        cvui::text(frame  , 40, offset+10, "INPUT THE ID", 1, 0xffffff);
+        cvui::text(frame  , 40, offset+120, "ID", 0.5, 0xffffff);
+        cvui::input(frame , 140, offset+80, 100, "input1", id);
+
         while (1){
             cap.read(frame);
-
-            // Show a button at position (110, 80)
-            if (cvui::button(frame, 500, 80, "Face verification")) {
-                // The button was clicked, so let's increment our counter.
+            if (cvui::button(frame, 500, 80, "Calculate")) {
                 CaptureFrame(frame);
-            }
-            if (cvui::button(frame, 500, 160, "Face identification")) {
-                // The button was clicked, so let's increment our counter.
-                CaptureFrame(frame);
-            }
-            if (cvui::button(frame, 500, 240, "Enroll a student")) {
-                // The button was clicked, so let's increment our counter.
+                cv::Mat screenshot = cv::imread("test_0.png", 1);
+                FaceVerificationMethod(screenshot);
             }
             
-            cv::imshow(WINDOW2_NAME, frame);
+            cv::imshow(WINDOW3_NAME, frame);
             if (cv::waitKey(20) == 27) {
                 break;
             }
@@ -198,56 +293,4 @@ void Screens::FaceIdentificationWindow() {
             break;
         }
     }
-}
-
-//Metodos para probar GUI
-void Screens::FaceIdentificationMethod(cv::Mat img){
-    cv::Mat input1 = cv::imread("Test_images/img1.png", 1);
-    cv::Mat input2 = cv::imread("Test_images/img2.png", 1);
-    cv::Mat input3 = cv::imread("Test_images/img3.png", 1);
-    cv::Mat input4 = cv::imread("Test_images/img4.jpg", 1);
-    cv::Mat input5 = cv::imread("Test_images/img5.jpg", 1);
-    AprovedStudentIdentification(0, input1, input2, input3, input4, input5);
-}
-
-
-void Screens::AprovedStudentIdentification(int aproved, cv::Mat dbImg1, cv::Mat dbImg2, cv::Mat dbImg3, cv::Mat dbImg4, cv::Mat dbImg5){
-    cv::Mat acceptedFrame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
-    cv::Mat deniedFrame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
-        while(true){
-            cv::Mat screenshot = cv::imread("test_0.png", 1);
-            cv::Mat screenshot2 = cv::imread("Test_images/img1.png", 1);
-            if (aproved==0){
-                screenshot.copyTo(deniedFrame(cv::Rect(0, 0, 640, 480)));
-                cvui::text(deniedFrame, 640, 700, "Not a match, please aprove manually");
-
-                if (cvui::button(deniedFrame, 700, 160, "Accept")) { 
-                    aproved=1;
-                    std::cout<<"entre aqui"<<std::endl;
-                    //cvui::text(acceptedFrame, 900, 700, "Go ahead!");
-                }                
-                cvui::update("Images");
-            }
-            if(aproved==1){
-                
-                screenshot.copyTo(acceptedFrame(cv::Rect(0, 0, 640, 480)));
-                dbImg1.copyTo(acceptedFrame(cv::Rect(650, 0, 150, 150)));
-                dbImg2.copyTo(acceptedFrame(cv::Rect(650, 150, 150, 150)));
-                dbImg3.copyTo(acceptedFrame(cv::Rect(650, 300, 150, 150)));
-                dbImg4.copyTo(acceptedFrame(cv::Rect(650, 450, 226, 226)));
-                dbImg5.copyTo(acceptedFrame(cv::Rect(800, 0, 200, 200)));
-                cvui::text(acceptedFrame, 640, 700, "Match, go ahead!");
-            }
-            if(aproved==0){
-                cv::imshow("Images", deniedFrame);
-            }
-            else{
-                cv::imshow("Images", acceptedFrame);
-            }
-            
-            
-            if (cv::waitKey(20) == 27) {
-                break;
-            }
-        }
 }

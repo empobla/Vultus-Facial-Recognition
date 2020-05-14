@@ -1,4 +1,4 @@
-#include "Screens.cpp"
+#include "Screens.h"
 
 #define WINDOW1_NAME "Window 1"
 
@@ -15,14 +15,9 @@ int main(int argc, const char *argv[]){
         cvui::text(frame, 10, 10, "VULTUS software");
 
         if (cvui::button(frame, 500, 80, "Face verification")) { // To manually verify an unauthorized access
-            //char filename[1024];
-            //FILE *f = popen("zenity --file-selection", "r");
-            //fgets(filename, 1024, f);
-            // printf("%s", filename);
             wOpener -> FaceVerificationWindow();
         }
         if (cvui::button(frame, 500, 160, "Face identification")) { // Detects the 10 closest matches to the faces database
-            // The button was clicked, so let's increment our counter.
             wOpener -> FaceIdentificationWindow();
         }
         if (cvui::button(frame, 500, 240, "Enroll a student")) { // To feed the database with new values

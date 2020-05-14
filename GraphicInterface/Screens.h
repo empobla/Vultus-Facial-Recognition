@@ -20,7 +20,9 @@ class Screens{
     void FaceIdentificationWindow();
     void EnrollStudentWindow();
     void FaceIdentificationMethod(cv::Mat img);
-    void AprovedStudentIdentification(int aproved, cv::Mat dbImg1, cv::Mat dbImg2, cv::Mat dbImg3, cv::Mat dbImg4, cv::Mat dbImg5);
+    void FaceVerificationMethod(cv::Mat img);
+    void ApprovedStudentVerification(int approved, cv::Mat dbImg);
+    void approvedStudentIdentification(int approved, cv::Mat dbImg1, cv::Mat dbImg2, cv::Mat dbImg3, cv::Mat dbImg4, cv::Mat dbImg5);
 };
 
 #endif
