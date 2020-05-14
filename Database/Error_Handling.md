@@ -14,7 +14,7 @@ Problemas con los pulls y actualización del github.
 Gui: que funcione el verify y identify desde su interfaz. 
 Se vea el feed de la cámara. 
 Devolver 10 imágenes. Devolver un entero si machea o no. 
-Manda a equipo 1 la imagen 
+Manda a equipo 1 la imagen.
 
 ## Equipo 4 Face Verification (error handling)
 Cargar una vez y hacer desde una función. 
