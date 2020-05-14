@@ -1,12 +1,8 @@
-/*******************************************
- * Emilio Popovits : A01027265
- * Sergio Hernandez : A01025210
- * Luis Antonio Garcia : A01021865
- * Eduardo Harari : A01025876
-
- In this file, all of the methods declared in the header file "FaceDetector.h" are initialized.
- This file contains the method for opening the camera, recognizing a human face, and drawing a square around it.
- *******************************************/
+/**
+ * In this file, all of the methods declared in the header file 
+ * "FaceDetector.h" are initialized. This file contains the method for opening 
+ * the camera, recognizing a human face, and drawing a square around it.
+*/
 
 #include "FaceDetection.hpp"
 #include <chrono>
@@ -36,14 +32,15 @@ FaceDetector::FaceDetector(const string path){
 }
     
 
-FaceDetector::FaceDetector(string faceCascadeFile, int scale, int size, double scale_factor, int minConsensus, int flag){
-    faceCascade.load(faceCascadeFile);
-    this->scale = scale;
-    this->size = size;
-    window_scaling = scale_factor;
-    minClassifiers = minConsensus;
-    imgHeight = size;
-    flags = flag;
+FaceDetector::FaceDetector(string faceCascadeFile, int scale, int size, 
+    double scale_factor, int minConsensus, int flag){
+        faceCascade.load(faceCascadeFile);
+        this->scale = scale;
+        this->size = size;
+        window_scaling = scale_factor;
+        minClassifiers = minConsensus;
+        imgHeight = size;
+        flags = flag;
 }
 
 vector<Rect> FaceDetector::detection(Mat frame){
@@ -53,7 +50,7 @@ vector<Rect> FaceDetector::detection(Mat frame){
     cvtColor(frame, grayscale, COLOR_BGR2GRAY);
 
     auto start = high_resolution_clock::now(); 
-    resize(grayscale, grayscale, cv::Size(grayscale.size().width / scale, grayscale.size().height / scale));
+    resize(grayscale, grayscale, Size(grayscale.size().width / scale, grayscale.size().height / scale));
     FaceDetector::faceCascade.detectMultiScale(grayscale, faces, window_scaling, minClassifiers, flags, cv::Size(size, size));
     auto stop = high_resolution_clock::now();
 
@@ -62,6 +59,12 @@ vector<Rect> FaceDetector::detection(Mat frame){
 
     return faces;
 }
+
+vector<Rect> FaceDetector::originalSize(vector<Rect> faces){
+    resize(faces, faces, Size(faces.size().width * scale, faces.size().height * scale));
+
+    return faces
+}//Close originalSize
 
 int FaceDetector::getScale(){
     return scale;

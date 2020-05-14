@@ -1,11 +1,4 @@
-/*******************************************
- * Emilio Popovits : A01027265
- * Sergio Hernandez : A01025210
- * Luis Antonio Garcia : A01021865
- * Eduardo Harari : A01025876
-
- This is the header file for the initial face detector program.
- *******************************************/
+// This is the header file for the initial face detector program.
 
 #pragma once
 
@@ -15,7 +8,7 @@
 #include <vector>
 
 class FaceDetector {
-private:
+	private:
 	cv::CascadeClassifier faceCascade;
 	int scale;
 	int size;
@@ -24,10 +17,11 @@ private:
 	int imgHeight;
 	int flags;
 
-public:
+	public:
 	FaceDetector();
 	FaceDetector(const std::string path);
 	FaceDetector(std::string faceCascadeFile, int scale, int size, double scale_factor, int minConsensus, int flag);
 	std::vector<cv::Rect> detection(cv::Mat frame);
+	std::vector<cv::Rect> originalSize(std::vector<cv::Rect> faces);
 	int getScale();
-};
+};//Close FaceDetector class

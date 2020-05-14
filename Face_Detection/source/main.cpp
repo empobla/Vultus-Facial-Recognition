@@ -49,5 +49,7 @@ int main(){
         }//Close if
     }//Close for
 
+    faces = Detect.originalSize(faces);
+
     return 0;
 }//Close main 
