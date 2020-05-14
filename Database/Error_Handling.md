@@ -1,4 +1,4 @@
-### Error handling
+# Error handling
 Manejo del proyecto y áreas a trabajar. Políticas de todos los módulos las respuestas y manejo fuera del flujo básico de eventos, que se hace. Como hacer saber en cualquier error.
 
 ## Equipo 1 face recognition 

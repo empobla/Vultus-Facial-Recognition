@@ -201,17 +201,36 @@ void Screens::FaceIdentificationWindow() {
 }
 
 //Metodos para probar GUI
+void Screens::FaceVerificationMethod(cv::Mat img, cv::String id){
+    cv::Mat input1 = cv::imread("Test_images/img1.png", 1);
+    AprovedStudentVerification(0, input1, id);
+}
+
 void Screens::FaceIdentificationMethod(cv::Mat img){
+    cv::Size size(150, 150);
     cv::Mat input1 = cv::imread("Test_images/img1.png", 1);
     cv::Mat input2 = cv::imread("Test_images/img2.png", 1);
     cv::Mat input3 = cv::imread("Test_images/img3.png", 1);
     cv::Mat input4 = cv::imread("Test_images/img4.jpg", 1);
+    cv::resize(input4, input4, size);
     cv::Mat input5 = cv::imread("Test_images/img5.jpg", 1);
-    AprovedStudentIdentification(0, input1, input2, input3, input4, input5);
+    cv::resize(input5, input5, size);
+    cv::Mat input6 = cv::imread("Test_images/img6.jpg", 1);
+    cv::resize(input6, input6, size);
+    cv::Mat input7 = cv::imread("Test_images/img8.png", 1);
+    cv::resize(input7, input7, size);
+    cv::Mat input8 = cv::imread("Test_images/obama.png", 1);
+    cv::resize(input8, input8, size);
+    cv::Mat input9 = cv::imread("Test_images/obama_2.png", 1);
+    cv::resize(input9, input9, size);
+    cv::Mat input10 = cv::imread("Test_images/img9.jpg", 1);
+    cv::resize(input10, input10, size);
+
+    AprovedStudentIdentification(1, input1, input2, input3, input4, input5, input6, input7, input8, input9, input10);
 }
 
 
-void Screens::AprovedStudentIdentification(int aproved, cv::Mat dbImg1, cv::Mat dbImg2, cv::Mat dbImg3, cv::Mat dbImg4, cv::Mat dbImg5){
+void Screens::AprovedStudentIdentification(int aproved, cv::Mat dbImg1, cv::Mat dbImg2, cv::Mat dbImg3, cv::Mat dbImg4, cv::Mat dbImg5, cv::Mat dbImg6, cv::Mat dbImg7, cv::Mat dbImg8, cv::Mat dbImg9, cv::Mat dbImg10){
     cv::Mat acceptedFrame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
     cv::Mat deniedFrame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
         while(true){
@@ -233,8 +252,13 @@ void Screens::AprovedStudentIdentification(int aproved, cv::Mat dbImg1, cv::Mat 
                 dbImg1.copyTo(acceptedFrame(cv::Rect(650, 0, 150, 150)));
                 dbImg2.copyTo(acceptedFrame(cv::Rect(650, 150, 150, 150)));
                 dbImg3.copyTo(acceptedFrame(cv::Rect(650, 300, 150, 150)));
-                dbImg4.copyTo(acceptedFrame(cv::Rect(650, 450, 226, 226)));
-                dbImg5.copyTo(acceptedFrame(cv::Rect(800, 0, 200, 200)));
+                dbImg4.copyTo(acceptedFrame(cv::Rect(650, 450, 150, 150)));
+                dbImg5.copyTo(acceptedFrame(cv::Rect(800, 0, 150, 150)));
+                dbImg6.copyTo(acceptedFrame(cv::Rect(800, 150, 150, 150)));
+                dbImg7.copyTo(acceptedFrame(cv::Rect(800, 300, 150, 150)));
+                dbImg8.copyTo(acceptedFrame(cv::Rect(800, 450, 150, 150)));
+                dbImg9.copyTo(acceptedFrame(cv::Rect(950, 0, 150, 150)));
+                dbImg10.copyTo(acceptedFrame(cv::Rect(950, 150, 150, 150)));
                 cvui::text(acceptedFrame, 640, 700, "Match, go ahead!");
             }
             if(aproved==0){

@@ -24,7 +24,7 @@ class Screens{
     int enrollStudent(string path, string name, string age, string id);
     void CaptureFrame(cv::Mat frame);
     void FaceIdentificationMethod(cv::Mat img);
-    void AprovedStudentIdentification(int aproved, cv::Mat dbImg1, cv::Mat dbImg2, cv::Mat dbImg3, cv::Mat dbImg4, cv::Mat dbImg5);
+    void AprovedStudentIdentification(int aproved, cv::Mat dbImg1, cv::Mat dbImg2, cv::Mat dbImg3, cv::Mat dbImg4, cv::Mat dbImg5, cv::Mat dbImg6, cv::Mat dbImg7, cv::Mat dbImg8, cv::Mat dbImg9, cv::Mat dbImg10);
     void FaceVerificationMethod(cv::Mat img, cv::String id);
     void AprovedStudentVerification(int aproved, cv::Mat dbImg, cv::String id);
 };
