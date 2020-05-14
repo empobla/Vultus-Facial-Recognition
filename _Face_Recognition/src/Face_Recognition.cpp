@@ -32,12 +32,12 @@ FaceRecognition::~FaceRecognition()
 	delete db;
 }
 
-void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &response, cv::Mat &result)
+void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &response, Cuatec result)
 {
 	// T4 implement your code here!
 
-	std::vector<cv::Mat> features;
-	if (getFeatureDescriptors(frame, features))
+	cv::Mat features;
+	if (getFeatureDescriptorsFromFrame(frame, features))
 	{
 		cout << "Continue\n";
 	}
@@ -47,28 +47,39 @@ void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &r
 	}
 }
 
-void FaceRecognition::identify(const cv::Mat frame, std::vector<int> response, std::vector<std::vector<cv::Mat>> results)
+void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<Cuatec> &result)
 {
 	// T1 implemenet your code here!
 }
 
-void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const std::string name, int age, int &response)
+void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const std::string name, const int age, int &response)
 {
 
-    cv::Mat features = featureDetector->getFeatures2(frame);
-	int created = db->create(name, age, id, frame, features); 
-	if(created==1){
-		std::cout<<" student enrolled successfully "<<std::endl;
-	}else{
-		std:cout<<"student cannot be enrolled!"<<std::endl;
+	cv::Mat features;
+	if (getFeatureDescriptorsFromFrame(frame, features))
+	{
+		int created = db->create(name, age, id, frame, features);
+		if (created == 1)
+		{
+			std::cout << " student enrolled successfully " << std::endl;
+		}
+		else
+		{
+		std:
+			cout << "student cannot be enrolled!" << std::endl;
+		}
+		response = created;
 	}
-	response = created;
-
+	else
+	{
+		cout << "something went wrong\n";
+		response = 0;
+	}
 }
 
 // Private methods
 
-bool FaceRecognition::getFeatureDescriptors(const cv::Mat &frame, std::vector<cv::Mat> featureDescriptors)
+bool FaceRecognition::getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::Mat featureDescriptors)
 {
 	//showMat(frame);
 
@@ -83,23 +94,15 @@ bool FaceRecognition::getFeatureDescriptors(const cv::Mat &frame, std::vector<cv
 	{
 		return false;
 	}
-	else
-	{
-		cout << "faces were found\n";
-		//showMat(frame);
-	}
+
 	Mat tempRes;
-	//dlib::matrix<dlib::rgb_pixel> face_chips;
-	for ( size_t i = 0; i < faces.size(); i++ )
-	{
-		//showMat(frame(faces[i]));
-		//cout << faces[i] << "\n";
-		faceAligner->alignFace(frame, faces[i], 150, tempRes);
-		//showMat(tempRes);
-		Mat descriptor = featureDetector->getFeatures2(tempRes);
-		//cout << descriptor << "\n";
-		featureDescriptors.push_back(descriptor);
-	}
+
+	//showMat(frame(faces[i]));
+	//cout << faces[i] << "\n";
+	faceAligner->alignFace(frame, faces[0], 150, tempRes);
+	//showMat(tempRes);
+	featureDescriptors = featureDetector->getFeatures2(tempRes);
+	//cout << featureDescriptors << "\n";
 
 	return true;
 }

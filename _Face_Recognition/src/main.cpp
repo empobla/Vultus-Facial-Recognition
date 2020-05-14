@@ -30,13 +30,14 @@ int main(int argc, char const *argv[])
 	FaceRecognition *fr = new FaceRecognition();
 	Mat result;
 	int response;
-	fr->verify(image, "-", response, result);
+	//fr->verify(image, "-", response, result);
 
 	//Test for enroll student T3
-    int verify = 0;
+	int verify = 0;
 	fr->enrollStudent(image, "A0102333", "Carla PG", 20, verify);
-	if(verify == 1){
-		std::cout<<"student enrolled succesfully "<<std::endl;
+	if (verify == 1)
+	{
+		std::cout << "student enrolled succesfully " << std::endl;
 	}
 
 	// uncomment to show the image
