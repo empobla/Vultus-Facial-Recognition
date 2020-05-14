@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
-message("FACE RECOGNITION")
-project(FaceRecognition)
+message("GRAPHIC INTERFACE")
+project(GraphicInterface)
 
 ## OPEN CV
 find_package( OpenCV REQUIRED )
@@ -34,15 +34,19 @@ set(SOURCEEXTRACTION ../Feature_Extraction/source/feature_detection.cpp)
 # DB
 include_directories(../Database/src/include)
 set(SOURCEDB ../Database/src/Cuatec.cpp ../Database/src/DBManagerInterface.cpp)
+#Feature Recognition
+include_directories(../_Face_Recognition/src/)
+set(SOURCEFR ../_Face_Recognition/src/Face_Recognition.cpp)
 
-add_executable(FaceRecognition
-${PROJECT_SOURCE_DIR}/src/Face_Recognition.cpp
+add_executable(GraphicInterface
+${PROJECT_SOURCE_DIR}/GUI.cpp
 ${SOURCEDETECTION}
 ${SOURCEDETECTION2}
 ${SOURCEALIGNMENT}
 ${SOURCEEXTRACTION}
 ${SOURCEDB}
-${PROJECT_SOURCE_DIR}/src/main.cpp
+${SOURCEFR}
+${PROJECT_SOURCE_DIR}/Screens.cpp
 )
 
-target_link_libraries(FaceRecognition ${OpenCV_LIBS} dlib::dlib ${LIBMONGOCXX_LIBRARIES} ${LIBBSONCXX_LIBRARIES})
+target_link_libraries(GraphicInterface ${OpenCV_LIBS} dlib::dlib ${LIBMONGOCXX_LIBRARIES} ${LIBBSONCXX_LIBRARIES})

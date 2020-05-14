@@ -56,8 +56,6 @@
 
 namespace cvui
 {
-extern double DEFAULT_FONT_SCALE;
-extern unsigned int DEFAULT_BUTTON_COLOR;
 /**
  Initializes cvui. You must provide the name of the window where
  components will be added. It is also possible to tell cvui to handle
@@ -248,11 +246,9 @@ bool mouse(const cv::String& theWindowName, int theButton, int theQuery);
  \param theX position X where the component should be placed.
  \param theY position Y where the component should be placed.
  \param theLabel text displayed inside the button.
- \param theFontScale size of the text.
- \param theInsideColor the color used to fill the button (other button colors, like its border, are derived from it)
  \return `true` everytime the user clicks the button.
 */
-bool button(cv::Mat& theWhere, int theX, int theY, const cv::String& theLabel, double theFontScale = DEFAULT_FONT_SCALE, unsigned int theInsideColor = DEFAULT_BUTTON_COLOR);
+bool button(cv::Mat& theWhere, int theX, int theY, const cv::String& theLabel);
 
 /**
  Display a button. The button size will be defined by the width and height parameters,
@@ -263,11 +259,9 @@ bool button(cv::Mat& theWhere, int theX, int theY, const cv::String& theLabel, d
  \param theWidth width of the button.
  \param theHeight height of the button.
  \param theLabel text displayed inside the button.
- \param theFontScale size of the text.
- \param theInsideColor the color used to fill the button (other button colors, like its border, are derived from it)
  \return `true` everytime the user clicks the button.
 */
-bool button(cv::Mat& theWhere, int theX, int theY, int theWidth, int theHeight, const cv::String& theLabel, double theFontScale = DEFAULT_FONT_SCALE, unsigned int theInsideColor = DEFAULT_BUTTON_COLOR);
+bool button(cv::Mat& theWhere, int theX, int theY, int theWidth, int theHeight, const cv::String& theLabel);
 
 /**
  Display a button whose graphics are images (cv::Mat). The button accepts three images to describe its states,
@@ -308,7 +302,7 @@ void image(cv::Mat& theWhere, int theX, int theY, cv::Mat& theImage);
  \param theColor color of the label in the format `0xRRGGBB`, e.g. `0xff0000` for red.
  \return a boolean value that indicates the current state of the checkbox, `true` if it is checked.
 */
-bool checkbox(cv::Mat& theWhere, int theX, int theY, const cv::String& theLabel, bool *theState, unsigned int theColor = 0xCECECE, double theFontScale = DEFAULT_FONT_SCALE);
+bool checkbox(cv::Mat& theWhere, int theX, int theY, const cv::String& theLabel, bool *theState, unsigned int theColor = 0xCECECE);
 
 /**
  Display a piece of text.
@@ -320,7 +314,7 @@ bool checkbox(cv::Mat& theWhere, int theX, int theY, const cv::String& theLabel,
  \param theColor color of the text in the format `0xRRGGBB`, e.g. `0xff0000` for red.
  \sa printf()
 */
-void text(cv::Mat& theWhere, int theX, int theY, const cv::String& theText, double theFontScale = DEFAULT_FONT_SCALE, unsigned int theColor = 0xCECECE);
+void text(cv::Mat& theWhere, int theX, int theY, const cv::String& theText, double theFontScale = 0.4, unsigned int theColor = 0xCECECE);
 
 /**
  Display a piece of text that can be formated using `stdio's printf()` style. For instance
@@ -363,11 +357,9 @@ void printf(cv::Mat& theWhere, int theX, int theY, const char *theFmt, ...);
  \param theValue the current value of the counter.
  \param theStep the amount that should be increased/decreased when the user interacts with the counter buttons
  \param theFormat how the value of the counter should be presented, as it was printed by `stdio's printf()`. E.g. `"%d"` means the value will be displayed as an integer, `"%0d"` integer with one leading zero, etc.
- \param theFontScale size of the text.
- \param theInsideColor the inside color of the two buttons used for the counter
- \return integer that corresponds to the current value of the counter, in the format `0xRRGGBB`, e.g. `0xff0000` for red.
+ \return integer that corresponds to the current value of the counter.
 */
-int counter(cv::Mat& theWhere, int theX, int theY, int *theValue, int theStep = 1, const char *theFormat = "%d", double theFontScale = DEFAULT_FONT_SCALE, unsigned int theInsideColor = DEFAULT_BUTTON_COLOR);
+int counter(cv::Mat& theWhere, int theX, int theY, int *theValue, int theStep = 1, const char *theFormat = "%d");
 
 /**
  Display a counter for float values that the user can increase/descrease
@@ -378,11 +370,9 @@ int counter(cv::Mat& theWhere, int theX, int theY, int *theValue, int theStep = 
  \param theValue the current value of the counter.
  \param theStep the amount that should be increased/decreased when the user interacts with the counter buttons
  \param theFormat how the value of the counter should be presented, as it was printed by `stdio's printf()`. E.g. `"%f"` means the value will be displayed as a regular float, `"%.2f"` float with two digits after the point, etc.
- \param theFontScale size of the text.
- \param theInsideColor the inside color of the two buttons used for the counter
- \return a float that corresponds to the current value of the counter, in the format `0xRRGGBB`, e.g. `0xff0000` for red.
+ \return a float that corresponds to the current value of the counter.
 */
-double counter(cv::Mat& theWhere, int theX, int theY, double *theValue, double theStep = 0.5, const char *theFormat = "%.2f", double theFontScale = DEFAULT_FONT_SCALE, unsigned int = DEFAULT_BUTTON_COLOR);
+double counter(cv::Mat& theWhere, int theX, int theY, double *theValue, double theStep = 0.5, const char *theFormat = "%.2f");
 
 /**
  Display a trackbar for numeric values that the user can increase/decrease
@@ -410,12 +400,11 @@ double counter(cv::Mat& theWhere, int theX, int theY, double *theValue, double t
  \param theLabelFormat formating string that will be used to render the labels, e.g. `%.2Lf` (Lf *not lf). No matter the type of the `theValue` param, internally trackbar stores it as a `long double`, so the formating string will *always* receive a `long double` value to format. If you are using a trackbar with integers values, for instance, you can supress decimals using a formating string such as `%.0Lf` to format your labels.
  \param theOptions options to customize the behavior/appearance of the trackbar, expressed as a bitset. Available options are defined as `TRACKBAR_` constants and they can be combined using the bitwise `|` operand. Available options are: `TRACKBAR_HIDE_SEGMENT_LABELS` (do not render segment labels, but do render min/max labels), `TRACKBAR_HIDE_STEP_SCALE` (do not render the small lines indicating values in the scale), `TRACKBAR_DISCRETE` (changes of the trackbar value are multiples of theDiscreteStep param), `TRACKBAR_HIDE_MIN_MAX_LABELS` (do not render min/max labels), `TRACKBAR_HIDE_VALUE_LABEL` (do not render the current value of the trackbar below the moving marker), `TRACKBAR_HIDE_LABELS` (do not render labels at all).
  \param theDiscreteStep amount that the trackbar marker will increase/decrease when the marker is dragged right/left (if option TRACKBAR_DISCRETE is ON)
- \param theFontScale size of the text.
  \return `true` when the value of the trackbar changed.
  \sa counter()
 */
 template <typename T>
-bool trackbar(cv::Mat& theWhere, int theX, int theY, int theWidth, T *theValue, T theMin, T theMax, int theSegments = 1, const char *theLabelFormat = "%.1Lf", unsigned int theOptions = 0, T theDiscreteStep = 1, double theFontScale = DEFAULT_FONT_SCALE);
+bool trackbar(cv::Mat& theWhere, int theX, int theY, int theWidth, T *theValue, T theMin, T theMax, int theSegments = 1, const char *theLabelFormat = "%.1Lf", unsigned int theOptions = 0, T theDiscreteStep = 1);
 
 /**
  Display a window (a block with a title and a body).
@@ -425,10 +414,9 @@ bool trackbar(cv::Mat& theWhere, int theX, int theY, int theWidth, T *theValue, 
  \param theWidth width of the window.
  \param theHeight height of the window.
  \param theTitle text displayed as the title of the window.
- \param theFontScale size of the title.
  \sa rect()
 */
-void window(cv::Mat& theWhere, int theX, int theY, int theWidth, int theHeight, const cv::String& theTitle, double theFontScale = DEFAULT_FONT_SCALE);
+void window(cv::Mat& theWhere, int theX, int theY, int theWidth, int theHeight, const cv::String& theTitle);
 
 /**
  Display a filled rectangle.
@@ -653,7 +641,7 @@ void space(int theValue = 5);
  \sa endRow()
  \sa endColumn()
 */
-void text(const cv::String& theText, double theFontScale = DEFAULT_FONT_SCALE, unsigned int theColor = 0xCECECE);
+void text(const cv::String& theText, double theFontScale = 0.4, unsigned int theColor = 0xCECECE);
 
 /**
  Display a button within a `begin*()` and `end*()` block.
@@ -663,30 +651,26 @@ void text(const cv::String& theText, double theFontScale = DEFAULT_FONT_SCALE, u
  \param theWidth width of the button.
  \param theHeight height of the button.
  \param theLabel text displayed inside the button. You can set shortcuts by pre-pending them with "&"
- \param theFontScale size of the text.
- \param theInsideColor the color used to fill the button (other button colors, like its border, are derived from it) 
  \return `true` everytime the user clicks the button.
  \sa beginColumn()
  \sa beginRow()
  \sa endRow()
  \sa endColumn()
 */
-bool button(int theWidth, int theHeight, const cv::String& theLabel, double theFontScale = DEFAULT_FONT_SCALE, unsigned int theInsideColor = DEFAULT_BUTTON_COLOR);
+bool button(int theWidth, int theHeight, const cv::String& theLabel);
 
 /**
  Display a button within a `begin*()` and `end*()` block. The size of the button will be
  automatically adjusted to properly house the label content.
  IMPORTANT: this function can only be used within a `begin*()/end*()` block, otherwise it does nothing.
  \param theLabel text displayed inside the button. You can set shortcuts by pre-pending them with "&"
- \param theFontScale size of the text.
- \param theInsideColor the color used to fill the button (other button colors, like its border, are derived from it)
  \return `true` everytime the user clicks the button.
  \sa beginColumn()
  \sa beginRow()
  \sa endRow()
  \sa endColumn()
 */
-bool button(const cv::String& theLabel, double theFontScale = DEFAULT_FONT_SCALE, unsigned int theInsideColor = DEFAULT_BUTTON_COLOR);
+bool button(const cv::String& theLabel);
 
 /**
  Display a button whose graphics are images (cv::Mat).
@@ -728,14 +712,13 @@ void image(cv::Mat& theImage);
  \param theLabel text displayed besides the clickable checkbox square.
  \param theState describes the current state of the checkbox: `true` means the checkbox is checked.
  \param theColor color of the label in the format `0xRRGGBB`, e.g. `0xff0000` for red.
- \param theFontScale size of the text.
  \return a boolean value that indicates the current state of the checkbox, `true` if it is checked.
  \sa beginColumn()
  \sa beginRow()
  \sa endRow()
  \sa endColumn()
 */
-bool checkbox(const cv::String& theLabel, bool *theState, unsigned int theColor = 0xCECECE, double theFontScale = DEFAULT_FONT_SCALE);
+bool checkbox(const cv::String& theLabel, bool *theState, unsigned int theColor = 0xCECECE);
 
 /**
  Display a piece of text within a `begin*()` and `end*()` block.
@@ -782,8 +765,6 @@ void printf(const char *theFmt, ...);
  \param theValue the current value of the counter.
  \param theStep the amount that should be increased/decreased when the user interacts with the counter buttons.
  \param theFormat how the value of the counter should be presented, as it was printed by `stdio's printf()`. E.g. `"%d"` means the value will be displayed as an integer, `"%0d"` integer with one leading zero, etc.
- \param theFontScale size of the text
- \param theInsideColor the inside color of the two buttons used for the counter
  \return integer that corresponds to the current value of the counter.
 \sa printf()
 \sa beginColumn()
@@ -791,7 +772,7 @@ void printf(const char *theFmt, ...);
 \sa endRow()
 \sa endColumn()
 */
-int counter(int *theValue, int theStep = 1, const char *theFormat = "%d", double theFontScale = DEFAULT_FONT_SCALE, unsigned int theInsideColor = DEFAULT_BUTTON_COLOR);
+int counter(int *theValue, int theStep = 1, const char *theFormat = "%d");
 
 /**
  Display a counter for float values that the user can increase/descrease
@@ -800,8 +781,6 @@ int counter(int *theValue, int theStep = 1, const char *theFormat = "%d", double
  \param theValue the current value of the counter.
  \param theStep the amount that should be increased/decreased when the user interacts with the counter buttons.
  \param theFormat how the value of the counter should be presented, as it was printed by `stdio's printf()`. E.g. `"%d"` means the value will be displayed as an integer, `"%0d"` integer with one leading zero, etc.
- \param theFontScale size of the text.
- \param theInsideColor the inside color of the two buttons used for the counter
  \return an float that corresponds to the current value of the counter.
  \sa printf()
  \sa beginColumn()
@@ -809,7 +788,7 @@ int counter(int *theValue, int theStep = 1, const char *theFormat = "%d", double
  \sa endRow()
  \sa endColumn()
 */
-double counter(double *theValue, double theStep = 0.5, const char *theFormat = "%.2f", double theFontScale = DEFAULT_FONT_SCALE, unsigned int theInsideColor = DEFAULT_BUTTON_COLOR);
+double counter(double *theValue, double theStep = 0.5, const char *theFormat = "%.2f");
 
 /**
  Display a trackbar for numeric values that the user can increase/decrease
@@ -835,7 +814,6 @@ double counter(double *theValue, double theStep = 0.5, const char *theFormat = "
  \param theLabelFormat formating string that will be used to render the labels, e.g. `%.2Lf`. No matter the type of the `theValue` param, internally trackbar stores it as a `long double`, so the formating string will *always* receive a `long double` value to format. If you are using a trackbar with integers values, for instance, you can supress decimals using a formating string as `%.0Lf` to format your labels.
  \param theOptions options to customize the behavior/appearance of the trackbar, expressed as a bitset. Available options are defined as `TRACKBAR_` constants and they can be combined using the bitwise `|` operand. Available options are: `TRACKBAR_HIDE_SEGMENT_LABELS` (do not render segment labels, but do render min/max labels), `TRACKBAR_HIDE_STEP_SCALE` (do not render the small lines indicating values in the scale), `TRACKBAR_DISCRETE` (changes of the trackbar value are multiples of informed step param), `TRACKBAR_HIDE_MIN_MAX_LABELS` (do not render min/max labels), `TRACKBAR_HIDE_VALUE_LABEL` (do not render the current value of the trackbar below the moving marker), `TRACKBAR_HIDE_LABELS` (do not render labels at all).
  \param theDiscreteStep the amount that the trackbar marker will increase/decrease when the marker is dragged right/left (if option TRACKBAR_DISCRETE is ON)
- \param theFontScale size of the text.
  \return `true` when the value of the trackbar changed.
  \sa counter()
  \sa beginColumn()
@@ -844,7 +822,7 @@ double counter(double *theValue, double theStep = 0.5, const char *theFormat = "
  \sa endColumn()
 */
 template <typename T> // T can be any float type (float, double, long double)
-bool trackbar(int theWidth, T *theValue, T theMin, T theMax, int theSegments = 1, const char *theLabelFormat = "%.1Lf", unsigned int theOptions = 0, T theDiscreteStep = 1, double theFontScale = DEFAULT_FONT_SCALE);
+bool trackbar(int theWidth, T *theValue, T theMin, T theMax, int theSegments = 1, const char *theLabelFormat = "%.1Lf", unsigned int theOptions = 0, T theDiscreteStep = 1);
 
 /**
  Display a window (a block with a title and a body) within a `begin*()` and `end*()` block.
@@ -852,14 +830,13 @@ bool trackbar(int theWidth, T *theValue, T theMin, T theMax, int theSegments = 1
  \param theWidth width of the window.
  \param theHeight height of the window.
  \param theTitle text displayed as the title of the window.
- \param theFontScale size of the title.
  \sa rect()
  \sa beginColumn()
  \sa beginRow()
  \sa endRow()
  \sa endColumn()
 */
-void window(int theWidth, int theHeight, const cv::String& theTitle, double theFontScale = DEFAULT_FONT_SCALE);
+void window(int theWidth, int theHeight, const cv::String& theTitle);
 
 /**
  Display a rectangle within a `begin*()` and `end*()` block.
@@ -1053,7 +1030,6 @@ namespace internal
 		int segments;
 		unsigned int options;
 		std::string labelFormat;
-		double fontScale;
 
 		inline TrackbarParams()
 			: min(0.)
@@ -1062,13 +1038,15 @@ namespace internal
 			, segments(0)
 			, options(0)
 			, labelFormat("%.0Lf")
-			, fontScale(DEFAULT_FONT_SCALE)
 		{}
 	};
 
 	static cvui_block_t gStack[100]; // TODO: make it dynamic?
 	static int gStackCount = -1;
 	static const int gTrackbarMarginX = 14;
+
+	static cv::String gActivatedInput = "";
+	static int gLastInputKeyPressed = -1;
 
 	bool isMouseButton(cvui_mouse_btn_t& theButton, int theQuery);
 	void resetMouseButton(cvui_mouse_btn_t& theButton);
@@ -1085,31 +1063,28 @@ namespace internal
 	void end(int theType);
 	cvui_label_t createLabel(const std::string &theLabel);
 	int iarea(int theX, int theY, int theWidth, int theHeight);
-	bool button(cvui_block_t& theBlock, int theX, int theY, int theWidth, int theHeight, const cv::String& theLabel, bool theUpdateLayout, double theFontScale, unsigned int theInsideColor);
-	bool button(cvui_block_t& theBlock, int theX, int theY, const cv::String& theLabel, double theFontScale, unsigned int theInsideColor);
+	bool button(cvui_block_t& theBlock, int theX, int theY, int theWidth, int theHeight, const cv::String& theLabel, bool theUpdateLayout);
+	bool button(cvui_block_t& theBlock, int theX, int theY, const cv::String& theLabel);
 	bool button(cvui_block_t& theBlock, int theX, int theY, cv::Mat& theIdle, cv::Mat& theOver, cv::Mat& theDown, bool theUpdateLayout);
 	void image(cvui_block_t& theBlock, int theX, int theY, cv::Mat& theImage);
-	bool checkbox(cvui_block_t& theBlock, int theX, int theY, const cv::String& theLabel, bool *theState, unsigned int theColor, double theFontScale);
+	bool checkbox(cvui_block_t& theBlock, int theX, int theY, const cv::String& theLabel, bool *theState, unsigned int theColor);
 	void text(cvui_block_t& theBlock, int theX, int theY, const cv::String& theText, double theFontScale, unsigned int theColor, bool theUpdateLayout);
-	int counter(cvui_block_t& theBlock, int theX, int theY, int *theValue, int theStep, const char *theFormat, double theFontScale);
-	double counter(cvui_block_t& theBlock, int theX, int theY, double *theValue, double theStep, const char *theFormat, double theFontScale);
-	void window(cvui_block_t& theBlock, int theX, int theY, int theWidth, int theHeight, const cv::String& theTitle, double theFontScale);
+	int counter(cvui_block_t& theBlock, int theX, int theY, int *theValue, int theStep, const char *theFormat);
+	double counter(cvui_block_t& theBlock, int theX, int theY, double *theValue, double theStep, const char *theFormat);
+	void window(cvui_block_t& theBlock, int theX, int theY, int theWidth, int theHeight, const cv::String& theTitle);
 	void rect(cvui_block_t& theBlock, int theX, int theY, int theWidth, int theHeight, unsigned int theBorderColor, unsigned int theFillingColor);
 	void sparkline(cvui_block_t& theBlock, std::vector<double>& theValues, int theX, int theY, int theWidth, int theHeight, unsigned int theColor);
 	bool trackbar(cvui_block_t &theBlock, int theX, int theY, int theWidth, long double *theValue, const TrackbarParams& theParams);
 	inline void trackbarForceValuesAsMultiplesOfSmallStep(const TrackbarParams & theParams, long double *theValue);
 	inline long double trackbarXPixelToValue(const TrackbarParams & theParams, cv::Rect & theBounding, int thePixelX);
 	inline int trackbarValueToXPixel(const TrackbarParams & theParams, cv::Rect & theBounding, long double theValue);
-	inline long double clamp01(long double value);
+	inline double clamp01(double value);
 	void findMinMax(std::vector<double>& theValues, double *theMin, double *theMax);
 	cv::Scalar hexToScalar(unsigned int theColor);
-	unsigned int brightenColor(unsigned int theColor, unsigned int theDelta);
-	unsigned int darkenColor(unsigned int theColor, unsigned int theDelta);
-	uint8_t brightnessOfColor(unsigned int theColor);
 	void resetRenderingBuffer(cvui_block_t& theScreen);
 
 	template <typename T> // T can be any floating point type (float, double, long double)
-	TrackbarParams makeTrackbarParams(T min, T max, int theDecimals = 1, int theSegments = 1, T theStep = -1., unsigned int theOptions = 0, const char *theFormat = "%.1Lf", double theFontScale = DEFAULT_FONT_SCALE);
+	TrackbarParams makeTrackbarParams(T min, T max, int theDecimals = 1, int theSegments = 1, T theStep = -1., unsigned int theOptions = 0, const char *theFormat = "%.1Lf");
 
 	template<typename T>
 	bool trackbar(T *theValue, const TrackbarParams& theParams);
@@ -1118,7 +1093,7 @@ namespace internal
 	bool trackbar(cv::Mat& theWhere, int theX, int theY, int theWidth, T *theValue, const TrackbarParams& theParams);
 
 	template<typename num_type>
-	TrackbarParams makeTrackbarParams(num_type theMin, num_type theMax, num_type theStep, int theSegments, const char *theLabelFormat, unsigned int theOptions, double theFontScale) {
+	TrackbarParams makeTrackbarParams(num_type theMin, num_type theMax, num_type theStep, int theSegments, const char *theLabelFormat, unsigned int theOptions) {
 		TrackbarParams aParams;
 
 		aParams.min = (long double)theMin;
@@ -1127,7 +1102,6 @@ namespace internal
 		aParams.options = theOptions;
 		aParams.segments = theSegments;
 		aParams.labelFormat = theLabelFormat;
-		aParams.fontScale = theFontScale;
 	
 		return aParams;
 	}
@@ -1158,36 +1132,36 @@ namespace internal
 // Internal namespace that contains all rendering functions.
 namespace render {
 	void text(cvui_block_t& theBlock, const cv::String& theText, cv::Point& thePos, double theFontScale, unsigned int theColor);
-	void button(cvui_block_t& theBlock, int theState, cv::Rect& theShape, double theFontScale, unsigned int theInsideColor);
-	void buttonLabel(cvui_block_t& theBlock, int theState, cv::Rect theRect, const cv::String& theLabel, cv::Size& theTextSize, double theFontScale, unsigned int theInsideColor);
+	void button(cvui_block_t& theBlock, int theState, cv::Rect& theShape, const cv::String& theLabel);
+	void buttonLabel(cvui_block_t& theBlock, int theState, cv::Rect theRect, const cv::String& theLabel, cv::Size& theTextSize);
 	void image(cvui_block_t& theBlock, cv::Rect& theRect, cv::Mat& theImage);
-	void counter(cvui_block_t& theBlock, cv::Rect& theShape, const cv::String& theValue, double theFontScale);
+	void counter(cvui_block_t& theBlock, cv::Rect& theShape, const cv::String& theValue);
 	void trackbarHandle(cvui_block_t& theBlock, int theState, cv::Rect& theShape, double theValue, const internal::TrackbarParams &theParams, cv::Rect& theWorkingArea);
-	void trackbarPath(cvui_block_t& theBlock, int theState, cv::Rect& theWorkingArea);
-	void trackbarSteps(cvui_block_t& theBlock, cv::Rect& theShape, const internal::TrackbarParams &theParams, cv::Rect& theWorkingArea);
+	void trackbarPath(cvui_block_t& theBlock, int theState, cv::Rect& theShape, double theValue, const internal::TrackbarParams &theParams, cv::Rect& theWorkingArea);
+	void trackbarSteps(cvui_block_t& theBlock, int theState, cv::Rect& theShape, double theValue, const internal::TrackbarParams &theParams, cv::Rect& theWorkingArea);
 	void trackbarSegmentLabel(cvui_block_t& theBlock, cv::Rect& theShape, const internal::TrackbarParams &theParams, long double theValue, cv::Rect& theWorkingArea, bool theShowLabel);
-	void trackbarSegments(cvui_block_t& theBlock, cv::Rect& theShape, const internal::TrackbarParams &theParams, cv::Rect& theWorkingArea);
+	void trackbarSegments(cvui_block_t& theBlock, int theState, cv::Rect& theShape, double theValue, const internal::TrackbarParams &theParams, cv::Rect& theWorkingArea);
 	void trackbar(cvui_block_t& theBlock, int theState, cv::Rect& theShape, double theValue, const internal::TrackbarParams &theParams);
 	void checkbox(cvui_block_t& theBlock, int theState, cv::Rect& theShape);
-	void checkboxLabel(cvui_block_t& theBlock, cv::Rect& theRect, const cv::String& theLabel, cv::Size& theTextSize, unsigned int theColor, double theFontScale);
+	void checkboxLabel(cvui_block_t& theBlock, cv::Rect& theRect, const cv::String& theLabel, cv::Size& theTextSize, unsigned int theColor);
 	void checkboxCheck(cvui_block_t& theBlock, cv::Rect& theShape);
-	void window(cvui_block_t& theBlock, cv::Rect& theTitleBar, cv::Rect& theContent, const cv::String& theTitle, double theFontScale);
+	void window(cvui_block_t& theBlock, cv::Rect& theTitleBar, cv::Rect& theContent, const cv::String& theTitle);
 	void rect(cvui_block_t& theBlock, cv::Rect& thePos, unsigned int theBorderColor, unsigned int theFillingColor);
 	void sparkline(cvui_block_t& theBlock, std::vector<double>& theValues, cv::Rect &theRect, double theMin, double theMax, unsigned int theColor);
 
-	int putText(cvui_block_t& theBlock, int theState, cv::Scalar aColor, const std::string& theText, const cv::Point & thePosition, double theFontScale);
-	int putTextCentered(cvui_block_t& theBlock, const cv::Point& position, const std::string& text, double theFontScale);
+	int putText(cvui_block_t& theBlock, int theState, cv::Scalar aColor, const std::string& theText, const cv::Point & thePosition);
+	int putTextCentered(cvui_block_t& theBlock, const cv::Point & position, const std::string &text);
 }
 
 template <typename num_type>
-bool trackbar(cv::Mat& theWhere, int theX, int theY, int theWidth, num_type *theValue, num_type theMin, num_type theMax, int theSegments, const char *theLabelFormat, unsigned int theOptions, num_type theDiscreteStep, double theFontScale) {
-	internal::TrackbarParams aParams = internal::makeTrackbarParams(theMin, theMax, theDiscreteStep, theSegments, theLabelFormat, theOptions, theFontScale);
+bool trackbar(cv::Mat& theWhere, int theX, int theY, int theWidth, num_type *theValue, num_type theMin, num_type theMax, int theSegments, const char *theLabelFormat, unsigned int theOptions, num_type theDiscreteStep) {
+	internal::TrackbarParams aParams = internal::makeTrackbarParams(theMin, theMax, theDiscreteStep, theSegments, theLabelFormat, theOptions);
 	return trackbar<num_type>(theWhere, theX, theY, theWidth, theValue, aParams);
 }
 
 template <typename num_type>
-bool trackbar(int theWidth, num_type *theValue, num_type theMin, num_type theMax, int theSegments, const char *theLabelFormat, unsigned int theOptions, num_type theDiscreteStep, double theFontScale) {
-	internal::TrackbarParams aParams = internal::makeTrackbarParams(theMin, theMax, theDiscreteStep, theSegments, theLabelFormat, theOptions, theFontScale);
+bool trackbar(int theWidth, num_type *theValue, num_type theMin, num_type theMax, int theSegments, const char *theLabelFormat, unsigned int theOptions, num_type theDiscreteStep) {
+	internal::TrackbarParams aParams = internal::makeTrackbarParams(theMin, theMax, theDiscreteStep, theSegments, theLabelFormat, theOptions);
 	return trackbar<num_type>(theWidth, theValue, aParams);
 }
 
@@ -1212,8 +1186,6 @@ bool trackbar(int theWidth, num_type *theValue, num_type theMin, num_type theMax
 
 namespace cvui
 {
-double DEFAULT_FONT_SCALE = 0.4;
-unsigned int DEFAULT_BUTTON_COLOR = 0x424242;
 
 // This is an internal namespace with all code
 // that is shared among components/functions
@@ -1431,35 +1403,6 @@ namespace internal
 
 		return cv::Scalar(aBlue, aGreen, aRed, aAlpha);
 	}
-	
-	unsigned int brightenColor(unsigned int theColor, unsigned int theDelta)
-	{
-		cv::Scalar color = hexToScalar(theColor);
-		cv::Scalar delta = hexToScalar(theDelta);
-		int aBlue  = std::min(0xFF, (int)(color[0] + delta[0]));
-		int aGreen = std::min(0xFF, (int)(color[1] + delta[1]));
-		int aRed   = std::min(0xFF, (int)(color[2] + delta[2]));
-		int aAlpha = std::min(0xFF, (int)(color[3] + delta[3]));
-		return (aAlpha << 24) | (aRed << 16) | (aGreen << 8) | aBlue;
-	}
-	
-	unsigned int darkenColor(unsigned int theColor, unsigned int theDelta)
-	{
-		cv::Scalar color = hexToScalar(theColor);
-		cv::Scalar delta = hexToScalar(theDelta);
-		int aBlue  = std::max(0, (int)(color[0] - delta[0]));
-		int aGreen = std::max(0, (int)(color[1] - delta[1]));
-		int aRed   = std::max(0, (int)(color[2] - delta[2]));
-		int aAlpha = std::max(0, (int)(color[3] - delta[3]));
-		return (aAlpha << 24) | (aRed << 16) | (aGreen << 8) | aBlue;
-	}
-
-	uint8_t brightnessOfColor(unsigned int theColor) {
-		cv::Mat gray;
-		cv::Mat rgb(1, 1, CV_8UC3, internal::hexToScalar(theColor));
-		cv::cvtColor(rgb, gray, cv::COLOR_BGR2GRAY);
-		return gray.at<cv::Vec3b>(0, 0)[0];
-	}
 
 	void resetRenderingBuffer(cvui_block_t& theScreen) {
 		theScreen.rect.x = 0;
@@ -1478,7 +1421,7 @@ namespace internal
 	}
 
 
-	inline long double clamp01(long double value)
+	inline double clamp01(double value)
 	{
 		value = value > 1. ? 1. : value;
 		value = value < 0. ? 0. : value;
@@ -1535,17 +1478,62 @@ namespace internal
 		return aRet;
 	}
 
-	bool button(cvui_block_t& theBlock, int theX, int theY, int theWidth, int theHeight, const cv::String& theLabel, bool theUpdateLayout, double theFontScale, unsigned int theInsideColor) {
+	void input(cvui_block_t& theBlock, int theX, int theY, int theWidth, const cv::String& theName, cv::String& theValue, double theFontScale, bool theUpdateLayout) {
+
+		// Draw input text area and text
+		bool selfActivated = (gActivatedInput == theName);
+		cv::Size aTextSize = cv::getTextSize(theValue, cv::FONT_HERSHEY_SIMPLEX, theFontScale, 1, nullptr);
+		int padding = aTextSize.height / 3;
+		cv::Rect aRect(theX, theY, theWidth, aTextSize.height + 1 + padding * 2);
+		render::rect(theBlock, aRect, (selfActivated?0x777777:0xaaaaaa), 0xffffff);
+		cv::Point aPos(theX+padding, theY + aTextSize.height + padding);
+		render::text(theBlock, theValue, aPos, theFontScale, 0x000000);
+
+		// Update the activate status of the input control.
+		int inputStatus = cvui::iarea(theX, theY, aRect.width, aRect.height);
+		if (inputStatus == cvui::CLICK) { // click inside
+			gActivatedInput = theName;
+			selfActivated = true;
+		}else if(selfActivated) { // click outside while self activated
+			int backgroundStatus = cvui::iarea(0, 0, 10000000, 10000000);
+			if (backgroundStatus == cvui::CLICK) {
+				gActivatedInput = "";
+				selfActivated = false;
+			}
+		}
+		
+		// Manipulate the string
+		if (selfActivated && internal::gLastInputKeyPressed != -1) {
+			int key = internal::gLastInputKeyPressed;
+			internal::gLastInputKeyPressed = -1;
+			if (key >= 32) {
+				theValue += (char)key;
+			}else if (key == 0x08 && theValue.length()) {
+				theValue = theValue.substr(0, theValue.length() - 1);
+			}
+		}
+
+		// Update the layout flow according to button size
+		// if we were told to update.
+		if (theUpdateLayout) {
+			cv::Size aSize(theWidth, aTextSize.height + padding * 2);
+			updateLayoutFlow(theBlock, aTextSize);
+		}
+
+		
+	}
+
+	bool button(cvui_block_t& theBlock, int theX, int theY, int theWidth, int theHeight, const cv::String& theLabel, bool theUpdateLayout) {
 		// Calculate the space that the label will fill
-		cv::Size aTextSize = getTextSize(theLabel, cv::FONT_HERSHEY_SIMPLEX, theFontScale, 1, nullptr);
+		cv::Size aTextSize = getTextSize(theLabel, cv::FONT_HERSHEY_SIMPLEX, 0.4, 1, nullptr);
 
 		// Make the button bit enough to house the label
 		cv::Rect aRect(theX, theY, theWidth, theHeight);
 
 		// Render the button according to mouse interaction, e.g. OVER, DOWN, OUT.
 		int aStatus = cvui::iarea(theX, theY, aRect.width, aRect.height);
-		render::button(theBlock, aStatus, aRect, theFontScale, theInsideColor);
-		render::buttonLabel(theBlock, aStatus, aRect, theLabel, aTextSize, theFontScale, theInsideColor);
+		render::button(theBlock, aStatus, aRect, theLabel);
+		render::buttonLabel(theBlock, aStatus, aRect, theLabel, aTextSize);
 
 		// Update the layout flow according to button size
 		// if we were told to update.
@@ -1569,12 +1557,12 @@ namespace internal
 		return aStatus == cvui::CLICK || aWasShortcutPressed;
 	}
 
-	bool button(cvui_block_t& theBlock, int theX, int theY, const cv::String& theLabel, double theFontScale, unsigned int theInsideColor) {
+	bool button(cvui_block_t& theBlock, int theX, int theY, const cv::String& theLabel) {
 		// Calculate the space that the label will fill
-		cv::Size aTextSize = getTextSize(theLabel, cv::FONT_HERSHEY_SIMPLEX, theFontScale, 1, nullptr);
+		cv::Size aTextSize = getTextSize(theLabel, cv::FONT_HERSHEY_SIMPLEX, 0.4, 1, nullptr);
 
-		// Create a button based on the size of the text. The size of the additional area outside the label depends on the font size.
-		return internal::button(theBlock, theX, theY, aTextSize.width + std::lround(30*theFontScale/DEFAULT_FONT_SCALE), aTextSize.height + std::lround(18* theFontScale / DEFAULT_FONT_SCALE), theLabel, true, theFontScale, theInsideColor);
+		// Create a button based on the size of the text
+		return internal::button(theBlock, theX, theY, aTextSize.width + 30, aTextSize.height + 18, theLabel, true);
 	}
 
 	bool button(cvui_block_t& theBlock, int theX, int theY, cv::Mat& theIdle, cv::Mat& theOver, cv::Mat& theDown, bool theUpdateLayout) {
@@ -1609,10 +1597,10 @@ namespace internal
 		updateLayoutFlow(theBlock, aSize);
 	}
 
-	bool checkbox(cvui_block_t& theBlock, int theX, int theY, const cv::String& theLabel, bool *theState, unsigned int theColor, double theFontScale) {
+	bool checkbox(cvui_block_t& theBlock, int theX, int theY, const cv::String& theLabel, bool *theState, unsigned int theColor) {
 		cvui_mouse_t& aMouse = internal::getContext().mouse;
 		cv::Rect aRect(theX, theY, 15, 15);
-		cv::Size aTextSize = getTextSize(theLabel, cv::FONT_HERSHEY_SIMPLEX, theFontScale, 1, nullptr);
+		cv::Size aTextSize = getTextSize(theLabel, cv::FONT_HERSHEY_SIMPLEX, 0.4, 1, nullptr);
 		cv::Rect aHitArea(theX, theY, aRect.width + aTextSize.width + 6, aRect.height);
 		bool aMouseIsOver = aHitArea.contains(aMouse.position);
 
@@ -1626,7 +1614,7 @@ namespace internal
 			render::checkbox(theBlock, cvui::OUT, aRect);
 		}
 
-		render::checkboxLabel(theBlock, aRect, theLabel, aTextSize, theColor, theFontScale);
+		render::checkboxLabel(theBlock, aRect, theLabel, aTextSize, theColor);
 
 		if (*theState) {
 			render::checkboxCheck(theBlock, aRect);
@@ -1653,45 +1641,43 @@ namespace internal
 		}
 	}
 
-	int counter(cvui_block_t& theBlock, int theX, int theY, int *theValue, int theStep, const char *theFormat, double theFontScale, unsigned int theInsideColor) {
-		const double scale = theFontScale / DEFAULT_FONT_SCALE;
-		cv::Rect aContentArea(std::lround(theX + 22* scale), theY, std::lround(48*scale), std::lround(22*scale));
+	int counter(cvui_block_t& theBlock, int theX, int theY, int *theValue, int theStep, const char *theFormat) {
+		cv::Rect aContentArea(theX + 22, theY, 48, 22);
 
-		if (internal::button(theBlock, theX, theY, std::lround(22 * scale), std::lround(22 * scale), "-", false, theFontScale, theInsideColor)) {
+		if (internal::button(theBlock, theX, theY, 22, 22, "-", false)) {
 			*theValue -= theStep;
 		}
 
 		sprintf_s(internal::gBuffer, theFormat, *theValue);
-		render::counter(theBlock, aContentArea, internal::gBuffer, theFontScale);
+		render::counter(theBlock, aContentArea, internal::gBuffer);
 
-		if (internal::button(theBlock, aContentArea.x + aContentArea.width, theY, std::lround(22 * scale), std::lround(22 * scale), "+", false, theFontScale, theInsideColor)) {
+		if (internal::button(theBlock, aContentArea.x + aContentArea.width, theY, 22, 22, "+", false)) {
 			*theValue += theStep;
 		}
 
 		// Update the layout flow
-		cv::Size aSize(std::lround(22 * scale) * 2 + aContentArea.width, aContentArea.height);
+		cv::Size aSize(22 * 2 + aContentArea.width, aContentArea.height);
 		updateLayoutFlow(theBlock, aSize);
 
 		return *theValue;
 	}
 
-	double counter(cvui_block_t& theBlock, int theX, int theY, double *theValue, double theStep, const char *theFormat, double theFontScale, unsigned int theInsideColor) {
-		const double scale = theFontScale / DEFAULT_FONT_SCALE;
-		cv::Rect aContentArea(std::lround(theX + 22 * scale), theY, 48, std::lround(22 * scale));
+	double counter(cvui_block_t& theBlock, int theX, int theY, double *theValue, double theStep, const char *theFormat) {
+		cv::Rect aContentArea(theX + 22, theY, 48, 22);
 
-		if (internal::button(theBlock, theX, theY, std::lround(22 * scale), std::lround(22 * scale), "-", false, theFontScale, theInsideColor)) {
+		if (internal::button(theBlock, theX, theY, 22, 22, "-", false)) {
 			*theValue -= theStep;
 		}
 
 		sprintf_s(internal::gBuffer, theFormat, *theValue);
-		render::counter(theBlock, aContentArea, internal::gBuffer, theFontScale);
+		render::counter(theBlock, aContentArea, internal::gBuffer);
 
-		if (internal::button(theBlock, aContentArea.x + aContentArea.width, theY, std::lround(22 * scale), std::lround(22 * scale), "+", false, theFontScale, theInsideColor)) {
+		if (internal::button(theBlock, aContentArea.x + aContentArea.width, theY, 22, 22, "+", false)) {
 			*theValue += theStep;
 		}
 
 		// Update the layout flow
-		cv::Size aSize(std::lround(22 * scale) * 2 + aContentArea.width, aContentArea.height);
+		cv::Size aSize(22 * 2 + aContentArea.width, aContentArea.height);
 		updateLayoutFlow(theBlock, aSize);
 
 		return *theValue;
@@ -1699,11 +1685,11 @@ namespace internal
 
 	bool trackbar(cvui_block_t& theBlock, int theX, int theY, int theWidth, long double *theValue, const TrackbarParams & theParams) {
 		cvui_mouse_t& aMouse = internal::getContext().mouse;
-		cv::Rect aContentArea(theX, theY, theWidth, std::lround(45*theParams.fontScale/DEFAULT_FONT_SCALE));
+		cv::Rect aContentArea(theX, theY, theWidth, 45);
 		long double aValue = *theValue;
 		bool aMouseIsOver = aContentArea.contains(aMouse.position);
 
-		render::trackbar(theBlock, aMouseIsOver ? OVER : OUT, aContentArea, (double)*theValue, theParams);
+		render::trackbar(theBlock, aMouseIsOver ? OVER : OUT, aContentArea, *theValue, theParams);
 
 		if (aMouse.anyButton.pressed && aMouseIsOver) {
 			*theValue = internal::trackbarXPixelToValue(theParams, aContentArea, aMouse.position.x);
@@ -1721,11 +1707,11 @@ namespace internal
 	}
 
 
-	void window(cvui_block_t& theBlock, int theX, int theY, int theWidth, int theHeight, const cv::String& theTitle, double theFontScale) {
-		cv::Rect aTitleBar(theX, theY, theWidth, std::lround(20*theFontScale/DEFAULT_FONT_SCALE));
+	void window(cvui_block_t& theBlock, int theX, int theY, int theWidth, int theHeight, const cv::String& theTitle) {
+		cv::Rect aTitleBar(theX, theY, theWidth, 20);
 		cv::Rect aContent(theX, theY + aTitleBar.height, theWidth, theHeight - aTitleBar.height);
 
-		render::window(theBlock, aTitleBar, aContent, theTitle, theFontScale);
+		render::window(theBlock, aTitleBar, aContent, theTitle);
 
 		// Update the layout flow
 		cv::Size aSize(theWidth, theHeight);
@@ -1757,7 +1743,7 @@ namespace internal
 			internal::findMinMax(theValues, &aMin, &aMax);
 			render::sparkline(theBlock, theValues, aRect, aMin, aMax, theColor);
 		} else {
-			internal::text(theBlock, theX, theY, aHowManyValues == 0 ? "No data." : "Insufficient data points.", DEFAULT_FONT_SCALE, 0xCECECE, false);
+			internal::text(theBlock, theX, theY, aHowManyValues == 0 ? "No data." : "Insufficient data points.", 0.4, 0xCECECE, false);
 		}
 
 		// Update the layout flow
@@ -1774,41 +1760,21 @@ namespace render
 		cv::putText(theBlock.where, theText, thePos, cv::FONT_HERSHEY_SIMPLEX, theFontScale, internal::hexToScalar(theColor), 1, CVUI_ANTIALISED);
 	}
 
-	void button(cvui_block_t& theBlock, int theState, cv::Rect& theShape, double theFontScale, unsigned int theInsideColor) {
-		unsigned int brightColor = internal::brightenColor(theInsideColor, 0x505050);
-		unsigned int darkColor = internal::darkenColor(theInsideColor, 0x505050);
-		unsigned int topLeftColor, bottomRightColor;
-		// 3D effect depending on if the button is down or up. Light comes from top left.
-		if (theState == OVER || theState == OUT) // button is up
-		{
-			topLeftColor = brightColor;
-			bottomRightColor = darkColor;
-		}
-		else // button is down
-		{
-			bottomRightColor = brightColor;
-			topLeftColor = darkColor;
-		}
+	void button(cvui_block_t& theBlock, int theState, cv::Rect& theShape, const cv::String& theLabel) {
+		// Outline
+		cv::rectangle(theBlock.where, theShape, cv::Scalar(0x29, 0x29, 0x29));
 
-		unsigned int insideOverColor  = internal::brightenColor(theInsideColor, 0x101010); // particularly this is 0x525252 for DEFAULT_BUTTON_COLOR 0x424242
-		unsigned int insideOtherColor = internal::darkenColor(theInsideColor, 0x101010); // particularly this is 0x323232 for DEFAULT_BUTTON_COLOR 0x424242
+		// Border
+		theShape.x++; theShape.y++; theShape.width -= 2; theShape.height -= 2;
+		cv::rectangle(theBlock.where, theShape, cv::Scalar(0x4A, 0x4A, 0x4A));
 
-		// 3D Outline. Note that cv::rectangle exludes theShape.br(), so we have to also exclude this point when drawing lines with cv::line
-		unsigned int thicknessOf3DOutline = (int)(theFontScale / 0.6); // On high DPI displayed we need to make the border thicker. We scale it together with the font size the user chose.
-		do
-		{
-			cv::line(theBlock.where, theShape.br() - cv::Point(1, 1), cv::Point(theShape.tl().x, theShape.br().y - 1), internal::hexToScalar(bottomRightColor));
-			cv::line(theBlock.where, theShape.br() - cv::Point(1, 1), cv::Point(theShape.br().x - 1, theShape.tl().y), internal::hexToScalar(bottomRightColor));
-			cv::line(theBlock.where, theShape.tl(), cv::Point(theShape.tl().x, theShape.br().y - 1), internal::hexToScalar(topLeftColor));
-			cv::line(theBlock.where, theShape.tl(), cv::Point(theShape.br().x - 1, theShape.tl().y), internal::hexToScalar(topLeftColor));
-			theShape.x++; theShape.y++; theShape.width -= 2; theShape.height -= 2;
-		} while (thicknessOf3DOutline--); // we want at least 1 pixel 3D outline, even for very small fonts
-
-		cv::rectangle(theBlock.where, theShape, theState == OUT ? internal::hexToScalar(theInsideColor) : (theState == OVER ? internal::hexToScalar(insideOverColor) : internal::hexToScalar(insideOtherColor)), CVUI_FILLED);
+		// Inside
+		theShape.x++; theShape.y++; theShape.width -= 2; theShape.height -= 2;
+		cv::rectangle(theBlock.where, theShape, theState == OUT ? cv::Scalar(0x42, 0x42, 0x42) : (theState == OVER ? cv::Scalar(0x52, 0x52, 0x52) : cv::Scalar(0x32, 0x32, 0x32)), CVUI_FILLED);
 	}
 
-	int putText(cvui_block_t& theBlock, int theState, cv::Scalar aColor, const std::string& theText, const cv::Point& thePosition, double theFontScale) {
-		double aFontSize = theState == cvui::DOWN ? theFontScale-0.01 : theFontScale;
+	int putText(cvui_block_t& theBlock, int theState, cv::Scalar aColor, const std::string& theText, const cv::Point & thePosition) {
+		double aFontSize = theState == cvui::DOWN ? 0.39 : 0.4;
 		cv::Size aSize;
 
 		if (theText != "") {
@@ -1819,37 +1785,38 @@ namespace render
 		return aSize.width;
 	}
 
-	int putTextCentered(cvui_block_t& theBlock, const cv::Point & position, const std::string &text, double theFontScale) {
-		auto size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, theFontScale, 1, nullptr);
+	int putTextCentered(cvui_block_t& theBlock, const cv::Point & position, const std::string &text) {
+		double aFontScale = 0.3;
+
+		auto size = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, aFontScale, 1, nullptr);
 		cv::Point positionDecentered(position.x - size.width / 2, position.y);
-		cv::putText(theBlock.where, text, positionDecentered, cv::FONT_HERSHEY_SIMPLEX, theFontScale, cv::Scalar(0xCE, 0xCE, 0xCE), 1, CVUI_ANTIALISED);
+		cv::putText(theBlock.where, text, positionDecentered, cv::FONT_HERSHEY_SIMPLEX, aFontScale, cv::Scalar(0xCE, 0xCE, 0xCE), 1, CVUI_ANTIALISED);
 
 		return size.width;
-	}
+	};
 
-	void buttonLabel(cvui_block_t& theBlock, int theState, cv::Rect theRect, const cv::String& theLabel, cv::Size& theTextSize, double theFontScale, unsigned int theInsideColor) {
+	void buttonLabel(cvui_block_t& theBlock, int theState, cv::Rect theRect, const cv::String& theLabel, cv::Size& theTextSize) {
 		cv::Point aPos(theRect.x + theRect.width / 2 - theTextSize.width / 2, theRect.y + theRect.height / 2 + theTextSize.height / 2);
-		const bool buttonIsDark = internal::brightnessOfColor(theInsideColor) < 0x80; 
-		cv::Scalar aColor = buttonIsDark ? cv::Scalar(0xCE, 0xCE, 0xCE) : cv::Scalar(0x32, 0x32, 0x32);
+		cv::Scalar aColor = cv::Scalar(0xCE, 0xCE, 0xCE);
 
 		auto aLabel = internal::createLabel(theLabel);
 
 		if (!aLabel.hasShortcut) {
-			putText(theBlock, theState, aColor, theLabel, aPos, theFontScale);
+			putText(theBlock, theState, aColor, theLabel, aPos);
 		}
 		else {
-			int aWidth = putText(theBlock, theState, aColor, aLabel.textBeforeShortcut, aPos, theFontScale);
+			int aWidth = putText(theBlock, theState, aColor, aLabel.textBeforeShortcut, aPos);
 			int aStart = aPos.x + aWidth;
 			aPos.x += aWidth;
 
 			std::string aShortcut;
 			aShortcut.push_back(aLabel.shortcut);
 
-			aWidth = putText(theBlock, theState, aColor, aShortcut, aPos, theFontScale);
+			aWidth = putText(theBlock, theState, aColor, aShortcut, aPos);
 			int aEnd = aStart + aWidth;
 			aPos.x += aWidth;
 
-			putText(theBlock, theState, aColor, aLabel.textAfterShortcut, aPos, theFontScale);
+			putText(theBlock, theState, aColor, aLabel.textAfterShortcut, aPos);
 			cv::line(theBlock.where, cv::Point(aStart, aPos.y + 3), cv::Point(aEnd, aPos.y + 3), aColor, 1, CVUI_ANTIALISED);
 		}
 	}
@@ -1858,25 +1825,24 @@ namespace render
 		theImage.copyTo(theBlock.where(theRect));
 	}
 
-	void counter(cvui_block_t& theBlock, cv::Rect& theShape, const cv::String& theValue, double theFontScale) {
+	void counter(cvui_block_t& theBlock, cv::Rect& theShape, const cv::String& theValue) {
 		cv::rectangle(theBlock.where, theShape, cv::Scalar(0x29, 0x29, 0x29), CVUI_FILLED); // fill
 		cv::rectangle(theBlock.where, theShape, cv::Scalar(0x45, 0x45, 0x45)); // border
 
-		cv::Size aTextSize = getTextSize(theValue, cv::FONT_HERSHEY_SIMPLEX, theFontScale, 1, nullptr);
+		cv::Size aTextSize = getTextSize(theValue, cv::FONT_HERSHEY_SIMPLEX, 0.4, 1, nullptr);
 
 		cv::Point aPos(theShape.x + theShape.width / 2 - aTextSize.width / 2, theShape.y + aTextSize.height / 2 + theShape.height / 2);
-		cv::putText(theBlock.where, theValue, aPos, cv::FONT_HERSHEY_SIMPLEX, theFontScale, cv::Scalar(0xCE, 0xCE, 0xCE), 1, CVUI_ANTIALISED);
+		cv::putText(theBlock.where, theValue, aPos, cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(0xCE, 0xCE, 0xCE), 1, CVUI_ANTIALISED);
 	}
 
 	void trackbarHandle(cvui_block_t& theBlock, int theState, cv::Rect& theShape, double theValue, const internal::TrackbarParams &theParams, cv::Rect& theWorkingArea) {
-		const double scale = theParams.fontScale/DEFAULT_FONT_SCALE;
 		cv::Point aBarTopLeft(theWorkingArea.x, theWorkingArea.y + theWorkingArea.height / 2);
 		int aBarHeight = 7;
 
 		// Draw the rectangle representing the handle
 		int aPixelX = internal::trackbarValueToXPixel(theParams, theShape, theValue);
-		int aIndicatorWidth = std::lround(3*scale);
-		int aIndicatorHeight = std::lround(4*scale);
+		int aIndicatorWidth = 3;
+		int aIndicatorHeight = 4;
 		cv::Point aPoint1(aPixelX - aIndicatorWidth, aBarTopLeft.y - aIndicatorHeight);
 		cv::Point aPoint2(aPixelX + aIndicatorWidth, aBarTopLeft.y + aBarHeight + aIndicatorHeight);
 		cv::Rect aRect(aPoint1, aPoint2);
@@ -1891,13 +1857,13 @@ namespace render
 
 		// Draw the handle label
 		if (aShowLabel) {
-			cv::Point aTextPos(aPixelX, aPoint2.y + std::lround(11*scale));
+			cv::Point aTextPos(aPixelX, aPoint2.y + 11);
 			sprintf_s(internal::gBuffer, theParams.labelFormat.c_str(), static_cast<long double>(theValue));
-			putTextCentered(theBlock, aTextPos, internal::gBuffer, theParams.fontScale-0.1);
+			putTextCentered(theBlock, aTextPos, internal::gBuffer);
 		}
 	}
 
-	void trackbarPath(cvui_block_t& theBlock, int theState, cv::Rect& theWorkingArea) {
+	void trackbarPath(cvui_block_t& theBlock, int theState, cv::Rect& theShape, double theValue, const internal::TrackbarParams &theParams, cv::Rect& theWorkingArea) {
 		int aBarHeight = 7;
 		cv::Point aBarTopLeft(theWorkingArea.x, theWorkingArea.y + theWorkingArea.height / 2);
 		cv::Rect aRect(aBarTopLeft, cv::Size(theWorkingArea.width, aBarHeight));
@@ -1908,7 +1874,7 @@ namespace render
 		cv::line(theBlock.where, cv::Point(aRect.x + 1, aRect.y + aBarHeight - 2), cv::Point(aRect.x + aRect.width - 2, aRect.y + aBarHeight - 2), cv::Scalar(0x0e, 0x0e, 0x0e));
 	}
 
-	void trackbarSteps(cvui_block_t& theBlock, cv::Rect& theShape, const internal::TrackbarParams &theParams, cv::Rect& theWorkingArea) {
+	void trackbarSteps(cvui_block_t& theBlock, int theState, cv::Rect& theShape, double theValue, const internal::TrackbarParams &theParams, cv::Rect& theWorkingArea) {
 		cv::Point aBarTopLeft(theWorkingArea.x, theWorkingArea.y + theWorkingArea.height / 2);
 		cv::Scalar aColor(0x51, 0x51, 0x51);
 
@@ -1931,18 +1897,18 @@ namespace render
 		int aPixelX = internal::trackbarValueToXPixel(theParams, theShape, theValue);
 
 		cv::Point aPoint1(aPixelX, aBarTopLeft.y);
-		cv::Point aPoint2(aPixelX, aBarTopLeft.y - std::lround(8*theParams.fontScale/DEFAULT_FONT_SCALE));
+		cv::Point aPoint2(aPixelX, aBarTopLeft.y - 8);
 		cv::line(theBlock.where, aPoint1, aPoint2, aColor);
 
 		if (theShowLabel)
 		{
 			sprintf_s(internal::gBuffer, theParams.labelFormat.c_str(), theValue);
-			cv::Point aTextPos(aPixelX, aBarTopLeft.y - std::lround(11*theParams.fontScale/DEFAULT_FONT_SCALE));
-			putTextCentered(theBlock, aTextPos, internal::gBuffer, theParams.fontScale-0.1);
+			cv::Point aTextPos(aPixelX, aBarTopLeft.y - 11);
+			putTextCentered(theBlock, aTextPos, internal::gBuffer);
 		}
   }
 
-	void trackbarSegments(cvui_block_t& theBlock, cv::Rect& theShape, const internal::TrackbarParams &theParams, cv::Rect& theWorkingArea) {
+	void trackbarSegments(cvui_block_t& theBlock, int theState, cv::Rect& theShape, double theValue, const internal::TrackbarParams &theParams, cv::Rect& theWorkingArea) {
 		int aSegments = theParams.segments < 1 ? 1 : theParams.segments;
 		long double aSegmentLength = (long double)(theParams.max - theParams.min) / (long double)aSegments;
 
@@ -1965,17 +1931,17 @@ namespace render
 	void trackbar(cvui_block_t& theBlock, int theState, cv::Rect& theShape, double theValue, const internal::TrackbarParams &theParams) {
 		cv::Rect aWorkingArea(theShape.x + internal::gTrackbarMarginX, theShape.y, theShape.width - 2 * internal::gTrackbarMarginX, theShape.height);
 
-		trackbarPath(theBlock, theState, aWorkingArea);
+		trackbarPath(theBlock, theState, theShape, theValue, theParams, aWorkingArea);
 
 		bool aHideAllLabels = internal::bitsetHas(theParams.options, cvui::TRACKBAR_HIDE_LABELS);
 		bool aShowSteps = internal::bitsetHas(theParams.options, cvui::TRACKBAR_HIDE_STEP_SCALE) == false;
 
 		if (aShowSteps && !aHideAllLabels) {
-			trackbarSteps(theBlock, theShape, theParams, aWorkingArea);
+			trackbarSteps(theBlock, theState, theShape, theValue, theParams, aWorkingArea);
 		}
 
 		if (!aHideAllLabels) {
-			trackbarSegments(theBlock, theShape, theParams, aWorkingArea);
+			trackbarSegments(theBlock, theState, theShape, theValue, theParams, aWorkingArea);
 		}
 
 		trackbarHandle(theBlock, theState, theShape, theValue, theParams, aWorkingArea);
@@ -1994,9 +1960,9 @@ namespace render
 		cv::rectangle(theBlock.where, theShape, cv::Scalar(0x29, 0x29, 0x29), CVUI_FILLED);
 	}
 
-	void checkboxLabel(cvui_block_t& theBlock, cv::Rect& theRect, const cv::String& theLabel, cv::Size& theTextSize, unsigned int theColor, double theFontScale) {
+	void checkboxLabel(cvui_block_t& theBlock, cv::Rect& theRect, const cv::String& theLabel, cv::Size& theTextSize, unsigned int theColor) {
 		cv::Point aPos(theRect.x + theRect.width + 6, theRect.y + theTextSize.height + theRect.height / 2 - theTextSize.height / 2 - 1);
-		text(theBlock, theLabel, aPos, theFontScale, theColor);
+		text(theBlock, theLabel, aPos, 0.4, theColor);
 	}
 
 	void checkboxCheck(cvui_block_t& theBlock, cv::Rect& theShape) {
@@ -2004,7 +1970,7 @@ namespace render
 		cv::rectangle(theBlock.where, theShape, cv::Scalar(0xFF, 0xBF, 0x75), CVUI_FILLED);
 	}
 
-	void window(cvui_block_t& theBlock, cv::Rect& theTitleBar, cv::Rect& theContent, const cv::String& theTitle, double theFontScale) {
+	void window(cvui_block_t& theBlock, cv::Rect& theTitleBar, cv::Rect& theContent, const cv::String& theTitle) {
 		bool aTransparecy = false;
 		double aAlpha = 0.3;
 		cv::Mat aOverlay;
@@ -2017,8 +1983,8 @@ namespace render
 		cv::rectangle(theBlock.where, theTitleBar, cv::Scalar(0x21, 0x21, 0x21), CVUI_FILLED);
 
 		// Render title text.
-		cv::Point aPos(theTitleBar.x + 5, theTitleBar.y + std::lround(12 * theFontScale/DEFAULT_FONT_SCALE));
-		cv::putText(theBlock.where, theTitle, aPos, cv::FONT_HERSHEY_SIMPLEX, theFontScale, cv::Scalar(0xCE, 0xCE, 0xCE), 1, CVUI_ANTIALISED);
+		cv::Point aPos(theTitleBar.x + 5, theTitleBar.y + 12);
+		cv::putText(theBlock.where, theTitle, aPos, cv::FONT_HERSHEY_SIMPLEX, 0.4, cv::Scalar(0xCE, 0xCE, 0xCE), 1, CVUI_ANTIALISED);
 
 		// Render the body.
 		// First the border.
@@ -2026,7 +1992,7 @@ namespace render
 
 		// Then the filling.
 		theContent.x++; theContent.y++; theContent.width -= 2; theContent.height -= 2;
-		cv::rectangle(theBlock.where, theContent, cv::Scalar(0x31, 0x31, 0x31), CVUI_FILLED);
+		cv::rectangle(aOverlay, theContent, cv::Scalar(0x31, 0x31, 0x31), CVUI_FILLED);
 
 		if (aTransparecy) {
 			theBlock.where.copyTo(aOverlay);
@@ -2161,14 +2127,14 @@ bool mouse(const cv::String& theWindowName, int theButton, int theQuery) {
 	return aRet;
 }
 
-bool button(cv::Mat& theWhere, int theX, int theY, const cv::String& theLabel, double theFontScale, unsigned int theInsideColor) {
+bool button(cv::Mat& theWhere, int theX, int theY, const cv::String& theLabel) {
 	internal::gScreen.where = theWhere;
-	return internal::button(internal::gScreen, theX, theY, theLabel, theFontScale, theInsideColor);
+	return internal::button(internal::gScreen, theX, theY, theLabel);
 }
 
-bool button(cv::Mat& theWhere, int theX, int theY, int theWidth, int theHeight, const cv::String& theLabel, double theFontScale, unsigned int theInsideColor) {
+bool button(cv::Mat& theWhere, int theX, int theY, int theWidth, int theHeight, const cv::String& theLabel) {
 	internal::gScreen.where = theWhere;
-	return internal::button(internal::gScreen, theX, theY, theWidth, theHeight, theLabel, true, theFontScale, theInsideColor);
+	return internal::button(internal::gScreen, theX, theY, theWidth, theHeight, theLabel, true);
 }
 
 bool button(cv::Mat& theWhere, int theX, int theY, cv::Mat& theIdle, cv::Mat& theOver, cv::Mat& theDown) {
@@ -2176,14 +2142,19 @@ bool button(cv::Mat& theWhere, int theX, int theY, cv::Mat& theIdle, cv::Mat& th
 	return internal::button(internal::gScreen, theX, theY, theIdle, theOver, theDown, true);
 }
 
+void input(cv::Mat& theWhere, int theX, int theY, int theWidth, const cv::String& theName, cv::String& theValue, double theFontScale = 0.5) {
+	internal::gScreen.where = theWhere;
+	return internal::input(internal::gScreen, theX, theY, theWidth, theName, theValue, theFontScale, true);
+}
+
 void image(cv::Mat& theWhere, int theX, int theY, cv::Mat& theImage) {
 	internal::gScreen.where = theWhere;
 	return internal::image(internal::gScreen, theX, theY, theImage);
 }
 
-bool checkbox(cv::Mat& theWhere, int theX, int theY, const cv::String& theLabel, bool *theState, unsigned int theColor, double theFontScale) {
+bool checkbox(cv::Mat& theWhere, int theX, int theY, const cv::String& theLabel, bool *theState, unsigned int theColor) {
 	internal::gScreen.where = theWhere;
-	return internal::checkbox(internal::gScreen, theX, theY, theLabel, theState, theColor, theFontScale);
+	return internal::checkbox(internal::gScreen, theX, theY, theLabel, theState, theColor);
 }
 
 void text(cv::Mat& theWhere, int theX, int theY, const cv::String& theText, double theFontScale, unsigned int theColor) {
@@ -2210,22 +2181,22 @@ void printf(cv::Mat& theWhere, int theX, int theY, const char *theFmt, ...) {
 	va_end(aArgs);
 
 	internal::gScreen.where = theWhere;
-	internal::text(internal::gScreen, theX, theY, internal::gBuffer, DEFAULT_FONT_SCALE, 0xCECECE, true);
+	internal::text(internal::gScreen, theX, theY, internal::gBuffer, 0.4, 0xCECECE, true);
 }
 
-int counter(cv::Mat& theWhere, int theX, int theY, int *theValue, int theStep, const char *theFormat, double theFontScale, unsigned int theInsideColor) {
+int counter(cv::Mat& theWhere, int theX, int theY, int *theValue, int theStep, const char *theFormat) {
 	internal::gScreen.where = theWhere;
-	return internal::counter(internal::gScreen, theX, theY, theValue, theStep, theFormat, theFontScale, theInsideColor);
+	return internal::counter(internal::gScreen, theX, theY, theValue, theStep, theFormat);
 }
 
-double counter(cv::Mat& theWhere, int theX, int theY, double *theValue, double theStep, const char *theFormat, double theFontScale, unsigned int theInsideColor) {
+double counter(cv::Mat& theWhere, int theX, int theY, double *theValue, double theStep, const char *theFormat) {
 	internal::gScreen.where = theWhere;
-	return internal::counter(internal::gScreen, theX, theY, theValue, theStep, theFormat, theFontScale, theInsideColor);
+	return internal::counter(internal::gScreen, theX, theY, theValue, theStep, theFormat);
 }
 
-void window(cv::Mat& theWhere, int theX, int theY, int theWidth, int theHeight, const cv::String& theTitle, double theFontScale) {
+void window(cv::Mat& theWhere, int theX, int theY, int theWidth, int theHeight, const cv::String& theTitle) {
 	internal::gScreen.where = theWhere;
-	internal::window(internal::gScreen, theX, theY, theWidth, theHeight, theTitle, theFontScale);
+	internal::window(internal::gScreen, theX, theY, theWidth, theHeight, theTitle);
 }
 
 void rect(cv::Mat& theWhere, int theX, int theY, int theWidth, int theHeight, unsigned int theBorderColor, unsigned int theFillingColor) {
@@ -2275,14 +2246,14 @@ void space(int theValue) {
 	internal::updateLayoutFlow(aBlock, aSize);
 }
 
-bool button(const cv::String& theLabel, double theFontScale, unsigned int theInsideColor) {
+bool button(const cv::String& theLabel) {
 	cvui_block_t& aBlock = internal::topBlock();
-	return internal::button(aBlock, aBlock.anchor.x, aBlock.anchor.y, theLabel, theFontScale, theInsideColor);
+	return internal::button(aBlock, aBlock.anchor.x, aBlock.anchor.y, theLabel);
 }
 
-bool button(int theWidth, int theHeight, const cv::String& theLabel, double theFontScale, unsigned int theInsideColor) {
+bool button(int theWidth, int theHeight, const cv::String& theLabel) {
 	cvui_block_t& aBlock = internal::topBlock();
-	return internal::button(aBlock, aBlock.anchor.x, aBlock.anchor.y, theWidth, theHeight, theLabel, true, theFontScale, theInsideColor);
+	return internal::button(aBlock, aBlock.anchor.x, aBlock.anchor.y, theWidth, theHeight, theLabel, true);
 }
 
 bool button(cv::Mat& theIdle, cv::Mat& theOver, cv::Mat& theDown) {
@@ -2295,9 +2266,9 @@ void image(cv::Mat& theImage) {
 	return internal::image(aBlock, aBlock.anchor.x, aBlock.anchor.y, theImage);
 }
 
-bool checkbox(const cv::String& theLabel, bool *theState, unsigned int theColor, double theFontScale) {
+bool checkbox(const cv::String& theLabel, bool *theState, unsigned int theColor) {
 	cvui_block_t& aBlock = internal::topBlock();
-	return internal::checkbox(aBlock, aBlock.anchor.x, aBlock.anchor.y, theLabel, theState, theColor, theFontScale);
+	return internal::checkbox(aBlock, aBlock.anchor.x, aBlock.anchor.y, theLabel, theState, theColor);
 }
 
 void text(const cv::String& theText, double theFontScale, unsigned int theColor) {
@@ -2324,22 +2295,22 @@ void printf(const char *theFmt, ...) {
 	vsprintf_s(internal::gBuffer, theFmt, aArgs);
 	va_end(aArgs);
 
-	internal::text(aBlock, aBlock.anchor.x, aBlock.anchor.y, internal::gBuffer, DEFAULT_FONT_SCALE, 0xCECECE, true);
+	internal::text(aBlock, aBlock.anchor.x, aBlock.anchor.y, internal::gBuffer, 0.4, 0xCECECE, true);
 }
 
-int counter(int *theValue, int theStep, const char *theFormat, double theFontScale, unsigned int theInsideColor) {
+int counter(int *theValue, int theStep, const char *theFormat) {
 	cvui_block_t& aBlock = internal::topBlock();
-	return internal::counter(aBlock, aBlock.anchor.x, aBlock.anchor.y, theValue, theStep, theFormat, theFontScale, theInsideColor);
+	return internal::counter(aBlock, aBlock.anchor.x, aBlock.anchor.y, theValue, theStep, theFormat);
 }
 
-double counter(double *theValue, double theStep, const char *theFormat, double theFontScale, unsigned int theInsideColor) {
+double counter(double *theValue, double theStep, const char *theFormat) {
 	cvui_block_t& aBlock = internal::topBlock();
-	return internal::counter(aBlock, aBlock.anchor.x, aBlock.anchor.y, theValue, theStep, theFormat, theFontScale, theInsideColor);
+	return internal::counter(aBlock, aBlock.anchor.x, aBlock.anchor.y, theValue, theStep, theFormat);
 }
 
-void window(int theWidth, int theHeight, const cv::String& theTitle, double theFontScale) {
+void window(int theWidth, int theHeight, const cv::String& theTitle) {
 	cvui_block_t& aBlock = internal::topBlock();
-	internal::window(aBlock, aBlock.anchor.x, aBlock.anchor.y, theWidth, theHeight, theTitle, theFontScale);
+	internal::window(aBlock, aBlock.anchor.x, aBlock.anchor.y, theWidth, theHeight, theTitle);
 }
 
 void rect(int theWidth, int theHeight, unsigned int theBorderColor, unsigned int theFillingColor) {
@@ -2368,7 +2339,11 @@ void update(const cv::String& theWindowName) {
 	// If we were told to keep track of the keyboard shortcuts, we
 	// proceed to handle opencv event queue.
 	if (internal::gDelayWaitKey > 0) {
-		internal::gLastKeyPressed = cv::waitKey(internal::gDelayWaitKey);
+		if (internal::gActivatedInput != ""){
+			internal::gLastInputKeyPressed = cv::waitKey(internal::gDelayWaitKey);
+		}else{
+			internal::gLastKeyPressed = cv::waitKey(internal::gDelayWaitKey);
+		}
 	}
 
 	if (!internal::blockStackEmpty()) {
@@ -2376,7 +2351,7 @@ void update(const cv::String& theWindowName) {
 	}
 }
 
-void handleMouse(int theEvent, int theX, int theY, int /*theFlags*/, void* theData) {
+void handleMouse(int theEvent, int theX, int theY, int theFlags, void* theData) {
 	int aButtons[3] = { cvui::LEFT_BUTTON, cvui::MIDDLE_BUTTON, cvui::RIGHT_BUTTON };
 	int aEventsDown[3] = { cv::EVENT_LBUTTONDOWN, cv::EVENT_MBUTTONDOWN, cv::EVENT_RBUTTONDOWN };
 	int aEventsUp[3] = { cv::EVENT_LBUTTONUP, cv::EVENT_MBUTTONUP, cv::EVENT_RBUTTONUP };

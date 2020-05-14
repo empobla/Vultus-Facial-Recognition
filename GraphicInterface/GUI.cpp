@@ -26,6 +26,7 @@ int main() {
             wOpener -> FaceIdentificationWindow();
         }
         if (cvui::button(frame, 500, 240, "Enroll a student")) { // To feed the database with new values
+            wOpener -> EnrollStudentWindow();
             // The button was clicked, so let's increment our counter.
         }
         cvui::imshow(WINDOW1_NAME, frame);
