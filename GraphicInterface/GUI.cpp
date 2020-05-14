@@ -1,10 +1,10 @@
-#include "Screens.h"
+#include "Screens.cpp"
 
 #define WINDOW1_NAME "Window 1"
 
 using namespace std;
 
-int main() {
+int main(int argc, const char *argv[]){
     Screens * wOpener = new Screens();
 
     cvui::init(WINDOW1_NAME);
@@ -26,7 +26,7 @@ int main() {
             wOpener -> FaceIdentificationWindow();
         }
         if (cvui::button(frame, 500, 240, "Enroll a student")) { // To feed the database with new values
-            // The button was clicked, so let's increment our counter.
+            wOpener -> EnrollStudentWindow();
         }
         cvui::imshow(WINDOW1_NAME, frame);
         if (cv::waitKey(20) == 27) {
