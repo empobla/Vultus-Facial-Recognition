@@ -211,14 +211,24 @@ int DBManagerInterface::deleteOne(std::string matricula)
         return 1;
     }
 }
+// 🔧 fast search in construction
 std::vector<cv::Mat> DBManagerInterface::fastSearch(cv::Mat featuresMat, int nearestNeighbors)
 {
-    Mat distances;
-    Mat indices;
-    cv::flann::Index flann_index(,
-                                 cvflann::SavedIndexParams("index.xml.gz"),
-                                 cvflann::FLANN_DIST_EUCLIDEAN);
+    //Reading dataset stored
+    cv::Mat dataset;
+    std::string datasetString = "../storage/dataset/dataset.xml.gz";
+    cv::FileStorage fs(datasetString, cv::FileStorage::READ);
+    fs["data"] >> dataset;
+    fs.release();
+    //Declaring Mats where results are going to be
+    cv::Mat distances;
+    cv::Mat indices;
+    //Note: check if euclidian distance in float or int
+    cv::flann::GenericIndex<cvflann::L2<int>> flann_index(dataset,
+                                                          cvflann::SavedIndexParams("../storage/dataset/index.xml.gz"),
+                                                          cvflann::FLANN_DIST_EUCLIDEAN);
     flann_index.knnSearch(featuresMat, indices, distances, nearestNeighbors);
+    //Store dataset[indices found] in knnMatches
     std::vector<cv::Mat> knnMatches;
     return knnMatches;
 }
