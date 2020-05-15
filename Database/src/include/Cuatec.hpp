@@ -13,6 +13,7 @@ private:
     cv::Mat features;
 
 public:
+    Cuatec();
     Cuatec(std::string name, int age, std::string matricula1, cv::Mat imgMat, cv::Mat featuresMat);
     ~Cuatec();
     std::string getNombre();

@@ -38,33 +38,37 @@ void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &r
 	// Reading features of Cuatec id from DB
 	cv::Mat cuatecFeatures = db->readOneFeatures(id);
 
-	//Face detect, align and features extraction
-	cv::Mat subjectFeatures;
-	if (getFeatureDescriptorsFromFrame(frame, subjectFeatures))
+	//Checking if cuatecFeatures were fetched
+	if (!cuatecFeatures.empty())
 	{
-		//Features extracted and stored in cv::Mat subjectFeatures
-		double match_rate = 0;
-		double acceptance_rate = 0.5;
-
-		match_rate = featureDetector->compareFeatures(subjectFeatures, cuatecFeatures, 5);
-
-		//Compare features from DB vs features from frame
-		if (cv::abs(match_rate) <= acceptance_rate)
+		//Face detect, align and features extraction
+		cv::Mat subjectFeatures;
+		if (getFeatureDescriptorsFromFrame(frame, subjectFeatures))
 		{
-			//Same person
-			response = 1;
-			result = db.readOneImg(id);
+			//Features extracted and stored in cv::Mat subjectFeatures
+			double match_rate = 0;
+			double acceptance_rate = 0.5;
+
+			match_rate = featureDetector->compareFeatures(subjectFeatures, cuatecFeatures, 5);
+
+			//Compare features from DB vs features from frame
+			if (cv::abs(match_rate) <= acceptance_rate)
+			{
+				//Same person
+				response = 1;
+				result = db->readOne(id);
+			}
+			else
+			{
+				//Different person
+				response = 0;
+			}
 		}
 		else
 		{
-			//Different person
-			response = 0;
+			cout << "Error: Something went wrong in Verification process.\n";
+			response = -1;
 		}
-	}
-	else
-	{
-		cout << "Error: Something went wrong in Verification process.\n";
-		response = -1;
 	}
 }
 

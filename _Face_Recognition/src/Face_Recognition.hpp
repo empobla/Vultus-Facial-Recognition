@@ -39,7 +39,7 @@ public:
 	 * @param resnetModel => path to dlib_face_recognition_resnet_model_v1.dat
 	 * @link https://github.com/davisking/dlib-models/blob/master/dlib_face_recognition_resnet_model_v1.dat.bz2
 	*/
-	FaceRecognition(const std::string cascadeClassifier,const std::string faceLandmark, const std::string resnetModel);
+	FaceRecognition(const std::string cascadeClassifier, const std::string faceLandmark, const std::string resnetModel);
 	~FaceRecognition();
 
 	/**
