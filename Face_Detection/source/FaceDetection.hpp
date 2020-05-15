@@ -22,6 +22,5 @@ class FaceDetector {
 	FaceDetector(const std::string path);
 	FaceDetector(std::string faceCascadeFile, int scale, int size, double scale_factor, int minConsensus, int flag);
 	std::vector<cv::Rect> detection(cv::Mat frame);
-	std::vector<cv::Rect> originalSize(std::vector<cv::Rect> faces);
 	int getScale();
 };//Close FaceDetector class
