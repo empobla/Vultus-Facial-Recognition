@@ -11,11 +11,12 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <vector>
-//#include "../_Face_Recognition/src/Face_Recognition.hpp"
+
 
 class Screens{
     public:
     Screens();
+    void MainWindow();
     void FaceVerificationWindow();
     void FaceIdentificationWindow();
     void EnrollStudentWindow();
