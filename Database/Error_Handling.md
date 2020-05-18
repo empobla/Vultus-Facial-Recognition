@@ -8,7 +8,8 @@ Se compone de tareas en donde se manejen varios.
 Argumentos: 2 constructores, un tercero donde lleguen los argumentos
 Identification: una lista de cuatec. 
 Checar la imagen con toda la base de datos.
-Escalas. 
+Escalas.
+usar las funciones facerecognition, aligment y regresar n más parecidos.
 ## Equipo 2 Diseño de integración 
 Problemas con el docker y la funcionalidad del código. 
 Problemas con los pulls y actualización del github.
@@ -16,6 +17,7 @@ cada rostro tiene una respuesta, se hacen en un arreglo de mats con los posibles
 Regresar varios MAT para tener otros parecidos al comparar.
 creación de la verificación antes de mandarla a la GUI, referencia de la creación y destrucción facerecognition.
 regresar escala original de las imagenes.
+uso de lo permisivo o restrictivo dado por un usuario. 
 ## Equipo 3 GUI
 Gui: que funcione el verify con la credencial, identify que compara con la base de datos y el tercero para agregar a una persona.
 Se vea el feed de la cámara.
@@ -33,6 +35,6 @@ Entrada de verificación: cuales son, (frame del video, ID del estudiante (senso
 Devolver un mat y un booleano a equipo 3 al gui, ver como es el devolver un mat vacío.
 regresa un 1 o 0 para la identificacion al equipo 3 y saber si hubo o no un match. 
 problemas en la conexión del servidor. 
- 
+ definir lo restrictivo o permisivo del sistema con el acceptance_rate. 
 ## Paso a paso
 A través de la GUI hay 3 botones para probar el código. se pan
