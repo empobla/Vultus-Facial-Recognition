@@ -7,9 +7,11 @@
  This is the header file for the initial face detector program.
  *******************************************/
 
-#pragma once
+#pragma once	// Tells compiler to "copy" this only once, even if FaceDetection.hpp used more than once.
 
 #include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
 #include <string>
 #include <stdio.h>
 #include <vector>
@@ -25,9 +27,10 @@ private:
 	int flags;
 
 public:
-	FaceDetector();
-	FaceDetector(const std::string path);
-	FaceDetector(std::string faceCascadeFile, int scale, int size, double scale_factor, int minConsensus, int flag);
-	std::vector<cv::Rect> detection(cv::Mat frame);
-	int getScale();
+	FaceDetector();	// Default constructor, initializes variables with "default" values (set by us)
+	FaceDetector(const std::string path);	// Constructor that initializes faceCascade path to a chosen one
+	FaceDetector(std::string faceCascadeFile, int scale, int size, double scale_factor, int minConsensus, int flag);	// Overload constructor that initializes every other variable to user choice
+	std::vector<cv::Rect> detection(cv::Mat frame);	// Converts image into grayscale and resizes
+	std::vector<cv::Rect> identify(cv::Mat image);	// Detects faces and draws rectangles around them
+	int getScale();	// Getter method for scale variable
 };

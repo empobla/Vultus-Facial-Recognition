@@ -18,8 +18,8 @@ DBManagerInterface::~DBManagerInterface()
 int DBManagerInterface::create(Cuatec cuatec)
 {
     // //WRITE yml to store
-    std::string matRoute = "../storage/MatFiles/" + cuatec.getMatricula() + ".xml.gz";
-    std::string imgRoute = "../storage/ImgFiles/" + cuatec.getMatricula() + ".xml.gz";
+    std::string matRoute = "../../Database/storage/MatFiles/" + cuatec.getMatricula() + ".xml.gz";
+    std::string imgRoute = "../../Database/storage/ImgFiles/" + cuatec.getMatricula() + ".xml.gz";
 
     auto builder = bsoncxx::builder::stream::document{};
     bsoncxx::document::value doc_value = builder
@@ -38,8 +38,8 @@ int DBManagerInterface::create(Cuatec cuatec)
     }
     else
     {
-        cv::FileStorage featureStorage(matRoute, cv::FileStorage::WRITE | cv::FileStorage::FORMAT_YAML);
-        cv::FileStorage imgStorage(imgRoute, cv::FileStorage::WRITE | cv::FileStorage::FORMAT_YAML);
+        cv::FileStorage featureStorage(matRoute, cv::FileStorage::WRITE | cv::FileStorage::FORMAT_XML);
+        cv::FileStorage imgStorage(imgRoute, cv::FileStorage::WRITE | cv::FileStorage::FORMAT_XML);
         featureStorage << "data" << cuatec.getFeatures();
         imgStorage << "data" << cuatec.getImg();
         featureStorage.release();
@@ -50,8 +50,8 @@ int DBManagerInterface::create(Cuatec cuatec)
 int DBManagerInterface::create(std::string name, int age, std::string matricula1, cv::Mat imgMat, cv::Mat featuresMat)
 {
     // //WRITE yml to store
-    std::string matRoute = "../storage/MatFiles/" + matricula1 + ".xml.gz";
-    std::string imgRoute = "../storage/ImgFiles/" + matricula1 + ".xml.gz";
+    std::string matRoute = "../../Database/storage/MatFiles/" + matricula1 + ".xml";
+    std::string imgRoute = "../../Database/storage/ImgFiles/" + matricula1 + ".xml.gz";
 
     auto builder = bsoncxx::builder::stream::document{};
     bsoncxx::document::value doc_value = builder
@@ -70,8 +70,8 @@ int DBManagerInterface::create(std::string name, int age, std::string matricula1
     }
     else
     {
-        cv::FileStorage featureStorage(matRoute, cv::FileStorage::WRITE | cv::FileStorage::FORMAT_YAML);
-        cv::FileStorage imgStorage(imgRoute, cv::FileStorage::WRITE | cv::FileStorage::FORMAT_YAML);
+        cv::FileStorage featureStorage(matRoute, cv::FileStorage::WRITE | cv::FileStorage::FORMAT_XML);
+        cv::FileStorage imgStorage(imgRoute, cv::FileStorage::WRITE | cv::FileStorage::FORMAT_XML);
         featureStorage << "data" << featuresMat;
         imgStorage << "data" << imgMat;
         featureStorage.release();
@@ -143,7 +143,7 @@ int DBManagerInterface::readOneEdad(std::string matricula)
 cv::Mat DBManagerInterface::readOneFeatures(std::string matricula)
 {
     cv::Mat m;
-    std::string matString = "../storage/MatFiles/" + matricula + ".xml.gz";
+    std::string matString = "../../Database/storage/MatFiles/" + matricula + ".xml.gz";
     cv::FileStorage fs(matString, cv::FileStorage::READ);
     fs["data"] >> m;
     fs.release();
@@ -156,7 +156,7 @@ cv::Mat DBManagerInterface::readOneFeatures(std::string matricula)
 cv::Mat DBManagerInterface::readOneImg(std::string matricula)
 {
     cv::Mat m;
-    std::string matString = "../storage/ImgFiles/" + matricula + ".xml.gz";
+    std::string matString = "../../Database/storage/ImgFiles/" + matricula + ".xml.gz";
     cv::FileStorage fs(matString, cv::FileStorage::READ);
     fs["data"] >> m;
     fs.release();
@@ -210,4 +210,25 @@ int DBManagerInterface::deleteOne(std::string matricula)
     {
         return 1;
     }
+}
+// 🔧 fast search in construction
+std::vector<cv::Mat> DBManagerInterface::fastSearch(cv::Mat featuresMat, int nearestNeighbors)
+{
+    //Reading dataset stored
+    // cv::Mat dataset;
+    // std::string datasetString = "../storage/dataset/dataset.xml.gz";
+    // cv::FileStorage fs(datasetString, cv::FileStorage::READ);
+    // fs["data"] >> dataset;
+    // fs.release();
+    // //Declaring Mats where results are going to be
+    // cv::Mat distances;
+    // cv::Mat indices;
+    // //Note: check if euclidian distance in float or int
+    // cv::flann::GenericIndex<cvflann::L2<int>> flann_index(dataset,
+    //                                                       cvflann::SavedIndexParams("../storage/dataset/index.xml.gz"),
+    //                                                       cvflann::FLANN_DIST_EUCLIDEAN);
+    // flann_index.knnSearch(featuresMat, indices, distances, nearestNeighbors);
+    //Store dataset[indices found] in knnMatches
+    std::vector<cv::Mat> knnMatches;
+    return knnMatches;
 }

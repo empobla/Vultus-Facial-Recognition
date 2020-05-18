@@ -12,18 +12,19 @@
 #include "../../Feature_Extraction/source/feature_detection.h"
 // Database
 #include "../../Database/src/include/DBManagerInterface.hpp"
+#include "../../Database/src/include/Cuatec.hpp"
 
 class FaceRecognition
 {
 private:
-	//FaceDetector *faceDetector;
-	Module1 *faceDetector;
+	FaceDetector *faceDetector;
+	//Module1 *faceDetector;
 	FaceAlignment *faceAligner;
 	FeatureDetection *featureDetector;
 	DBManagerInterface *db;
 
 	/** Integrate module 1,2 and 3 */
-	bool getFeatureDescriptors(const cv::Mat &frame, std::vector<cv::Mat> featureDescriptors);
+	bool getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::Mat &featureDescriptors);
 	void showMat(const cv::Mat &image);
 
 public:
@@ -38,7 +39,7 @@ public:
 	 * @param resnetModel => path to dlib_face_recognition_resnet_model_v1.dat
 	 * @link https://github.com/davisking/dlib-models/blob/master/dlib_face_recognition_resnet_model_v1.dat.bz2
 	*/
-	FaceRecognition(const std::string cascadeClassifier,const std::string faceLandmark, const std::string resnetModel);
+	FaceRecognition(const std::string cascadeClassifier, const std::string faceLandmark, const std::string resnetModel);
 	~FaceRecognition();
 
 	/**
@@ -50,9 +51,10 @@ public:
 	 * * 0 : frame and id doesn't match
 	 * * 1 : frame and id match
 	 * * -1 : there is more than 1 face
-	 * @return result: if response is 1, image of the matched student
+	 * @return result: if response is 1, matched Cuatec
 	*/
-	void verify(const cv::Mat &frame, const std::string &id, int &response, cv::Mat &result);
+	void verify(const cv::Mat &frame, const std::string &id, int &response, Cuatec result);
+
 	/** 
 	 * Identify without using ID
 	 * @param frame => current captured image
@@ -60,11 +62,10 @@ public:
 	 * @return response:
 	 * * 0 : can't match the face
 	 * * 1 : matched
-	 * @return results:
-	 * For each int response, 5 possible matches
+	 * @return result: matched Cuatect or possible
 	*/
+	void identify(const cv::Mat &frame, int &response, std::vector<Cuatec> &result);
 
-	void identify(const cv::Mat frame, std::vector<int> response, std::vector<std::vector<cv::Mat>> results);
 	/** 
 	 * Add new student to database
 	 * @param frame => current captured image
@@ -76,7 +77,7 @@ public:
 	 * * 1: Created succesfully
 	 * * 2: Already exists
 	*/
-	void enrollStudent(const cv::Mat frame, const std::string id, const std::string name, int response);
+	void enrollStudent(cv::Mat frame, const std::string id, const std::string name, const int age, int &response);
 };
 
 #endif

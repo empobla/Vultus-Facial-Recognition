@@ -17,8 +17,9 @@ int main(){
 
     FaceDetector Detect("../models/haarcascade_frontalface_alt.xml");
 
-    int scale;
-    scale = Detect.getScale();
+    // Necessary if rectangles drawn around the face are needed.
+    /*int scale;
+    scale = Detect.getScale();*/
 
     cap = VideoCapture(0);
 
@@ -33,13 +34,13 @@ int main(){
 
         faces = Detect.detection(frame);
 
-        for (Rect area : faces){
+        /*for (Rect area : faces){
             Scalar drawColor = Scalar(255, 0, 0);
 
             rectangle(frame, Point(cvRound(area.x * scale), cvRound(area.y * scale)),
                 Point(cvRound(((double)area.x + (double)area.width - 1) * scale),
                     cvRound(((double)area.y + (double)area.height - 1) * scale)), drawColor);
-        }//Close for
+        }//Close for*/
 
         imshow("Webcam", frame);
         char c = (char)waitKey(10);
@@ -48,6 +49,8 @@ int main(){
             break;
         }//Close if
     }//Close for
+
+    //faces = Detect.originalSize(faces);
 
     return 0;
 }//Close main 

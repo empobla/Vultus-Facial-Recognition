@@ -5,6 +5,7 @@
 #include <string>
 
 #include <opencv2/core.hpp>
+#include <opencv2/flann.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
 #include <bsoncxx/builder/stream/document.hpp>
@@ -43,6 +44,7 @@ public:
     int updateName(std::string matricula, std::string nuevoNombre);
     int updateMatricula(std::string matricula, std::string nuevaMatricula);
     int deleteOne(std::string matricula);
+    std::vector<cv::Mat> fastSearch(cv::Mat featuresMat, int nearestNeighbors);
 };
 
 #endif
