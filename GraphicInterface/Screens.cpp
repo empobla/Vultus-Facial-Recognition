@@ -5,6 +5,7 @@
 
 #define WINDOW_ENROLL "Enroll Student!"
 #define WINDOW_CONFIRM "Confirmation!"
+#define WINDOW1_NAME "Main Menu"
 
 
 #include "Screens.h"
@@ -15,6 +16,43 @@ Screens::Screens() {
    std::cout<<f<<std::endl;
 }
 
+void Screens::Menu(){
+    cv::destroyAllWindows();
+    cvui::init(WINDOW1_NAME);
+    cv::Mat frame = cv::Mat(cv::Size(500, 400), CV_8UC3);
+    int count = 0;
+    while (true) {
+        frame = cv::Scalar(245, 176, 66);
+        cvui::text(frame, 10, 10, "VULTUS software", 1, 0xffffff);
+
+        if (cvui::button(frame, 80, 80, "Face verification")) { // To manually verify an unauthorized access
+            FaceVerificationWindow();
+            break;
+        }
+        if (cvui::button(frame, 80, 160, "Face identification")) { // Detects the 10 closest matches to the faces database
+            // The button was clicked, so let's increment our counter.
+            FaceIdentificationWindow();
+            break;
+        }
+        if (cvui::button(frame, 80, 240, "Enroll a student")) { // To feed the database with new values
+            EnrollStudentWindow();
+            break;
+            // The button was clicked, so let's increment our counter.
+        }
+
+          if (cvui::button(frame, 80, 320, "&Quit")) { // To feed the database with new values
+            destroyWindow(WINDOW1_NAME);
+            break;
+            // The button was clicked, so let's increment our counter.
+        }
+        cvui::imshow(WINDOW1_NAME, frame);
+        if (cv::waitKey(20) == 27) {
+            break;
+        }
+    }
+}
+
+
 void Screens::CaptureFrame(cv::Mat frame){
     char filename[80];
     sprintf(filename,"/root/workspace/GraphicInterface/test_0.png");
@@ -22,7 +60,7 @@ void Screens::CaptureFrame(cv::Mat frame){
 }
 
 
-void Screens::confirmationFrame(std::string name, std::string age, std::string id, std::string image, int confirmation) {
+void Screens::confirmationFrame(std::string name, std::string age, std::string id, std::string path, cv::Mat image, int confirmation) {
      // Create a frame where components will be rendered to.
 	cv::Mat frame_confirm = cv::Mat(550, 500, CV_8UC3);
 
@@ -35,7 +73,7 @@ void Screens::confirmationFrame(std::string name, std::string age, std::string i
 
         if(confirmation == 1){
             	// Render UI components to the frame
-		    cvui::text(frame_confirm, 80, 80, "STUDENT SAVED");
+		    cvui::text(frame_confirm, 80, 80, "STUDENT SAVED", 1, 0xffffff);
 		    cvui::text(frame_confirm, 80, 120, "Nombre");
             cvui::text(frame_confirm, 80, 180, "Edad");
             cvui::text(frame_confirm, 80, 240, "Matricula");
@@ -44,15 +82,18 @@ void Screens::confirmationFrame(std::string name, std::string age, std::string i
 		    cvui::text(frame_confirm, 80, 140, name);
             cvui::text(frame_confirm, 80, 200, age);
             cvui::text(frame_confirm, 80, 260, id);
-            cvui::text(frame_confirm, 80, 320, image);
+            cvui::text(frame_confirm, 80, 320, path);
+
+            image.copyTo(frame_confirm(cv::Rect(200, 200, 150, 150)));
+
         }else{
-            cvui::text(frame_confirm, 80, 80, "UNABLE TO SAVE STUDENT:(");
+            cvui::text(frame_confirm, 80, 80, "UNABLE TO SAVE STUDENT:(", 1, 0xffffff);
 
         }
 
 
         if (cvui::button(frame_confirm, 80, 400, "DONE")) {
-                
+                Menu();
             }
             
 
@@ -75,6 +116,7 @@ int Screens::enrollStudent(string path, string name, string age, string id){
 }
 
 void Screens::EnrollStudentWindow() {
+    cv::destroyWindow(WINDOW1_NAME);
    cv::Mat frame_enroll = cv::Mat(cv::Size(500, 400), CV_8UC3);
 	cvui::init(WINDOW_ENROLL, 20);
     cv::String name = "";
@@ -96,12 +138,12 @@ void Screens::EnrollStudentWindow() {
         cvui::input(frame_enroll , 140, offset+120, 50, "input3", age);
         cvui::input(frame_enroll , 140, offset+160, 200, "input4", img_path);
 
-		if (cvui::button(frame_enroll , 400, offset+200, "&Quit")) {
-			break;
+		if (cvui::button(frame_enroll , 400, offset+200, "Back")) {
+			Menu();
 		}
 
         if (cvui::button(frame_enroll , 300, offset+200, "Save")) {
-            confirmationFrame(name, age, id, img_path, enrollStudent(img_path, name, age, id));
+            confirmationFrame(name, age, id, img_path, imread(img_path), enrollStudent(img_path, name, age, id));
 		}
 
          
