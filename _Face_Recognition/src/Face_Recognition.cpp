@@ -83,7 +83,7 @@ void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const s
 	cv::Mat features;
 	if (getFeatureDescriptorsFromFrame(frame, features))
 	{
-		//cout << "Features outside: " << features << "\n";
+		cout << "Features outside: " << features << "\n";
 		int created = db->create(name, age, id, frame, features);
 		if (created == 1)
 		{

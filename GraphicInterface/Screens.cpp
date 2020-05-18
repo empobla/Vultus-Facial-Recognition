@@ -10,6 +10,7 @@
 
 #include "Screens.h"
 
+  
 
 Screens::Screens() {
    f = new FaceRecognition();
@@ -41,7 +42,6 @@ void Screens::Menu(){
         }
 
           if (cvui::button(frame, 80, 320, "&Quit")) { // To feed the database with new values
-            destroyWindow(WINDOW1_NAME);
             break;
             // The button was clicked, so let's increment our counter.
         }
@@ -50,6 +50,7 @@ void Screens::Menu(){
             break;
         }
     }
+    cv::destroyWindow(WINDOW1_NAME);
 }
 
 
@@ -83,8 +84,9 @@ void Screens::confirmationFrame(std::string name, std::string age, std::string i
             cvui::text(frame_confirm, 80, 200, age);
             cvui::text(frame_confirm, 80, 260, id);
             cvui::text(frame_confirm, 80, 320, path);
-
-            image.copyTo(frame_confirm(cv::Rect(200, 200, 150, 150)));
+            cv::Size size(200, 200);
+            cv::resize(image, image, size);
+            image.copyTo(frame_confirm(cv::Rect(200, 200, 200, 200)));
 
         }else{
             cvui::text(frame_confirm, 80, 80, "UNABLE TO SAVE STUDENT:(", 1, 0xffffff);
