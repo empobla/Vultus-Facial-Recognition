@@ -197,12 +197,12 @@ void Screens::ApprovedStudentIdentification(int approved, std::vector<cv::Mat> d
                 screenshot.copyTo(acceptedFrame(cv::Rect(0, 0, 640, 480)));
                 cvui::text(acceptedFrame, 640, 700, "Not a match, please aprove manually");
 
-                if (cvui::button(acceptedFrame, 700, 160, "Accept")) { 
+                if (cvui::button(acceptedFrame, 800, 160, "Accept")) { 
                     approved=1;
                     std::cout<<"entre aqui"<<std::endl;
                     //cvui::text(acceptedFrame, 900, 700, "Go ahead!");
                 }
-                if (cvui::button(acceptedFrame, 770, 160, "Restrict Access")) { 
+                if (cvui::button(acceptedFrame, 800, 200, "Restrict Access")) { 
                     approved=0;
                     //cvui::text(acceptedFrame, 900, 700, "Denied, please do not allow the access to the installations.");
                 }                   
@@ -241,7 +241,7 @@ void Screens::ApprovedStudentIdentification(int approved, std::vector<cv::Mat> d
                 cvui::text(acceptedFrame, 950, 0, outputID);
                 dbImg[9].copyTo(acceptedFrame(cv::Rect(950, 150, 150, 150)));
                 outputID = std::to_string(inputID[9]);
-                cvui::text(acceptedFrame, 950, 50, outputID);
+                cvui::text(acceptedFrame, 950, 150, outputID);
                 cvui::text(acceptedFrame, 640, 700, "Match, go ahead!");
             }
             if(approved==0){
@@ -277,7 +277,12 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat dbImg, cv::Strin
                     approved=1;
                     std::cout<<"entre aqui"<<std::endl;
                     //cvui::text(acceptedFrame, 900, 700, "Go ahead!");
-                }                
+                }     
+                if (cvui::button(acceptedFrame, 700, 200, "Restrict Access")) { 
+                    approved=1;
+                    std::cout<<"entre aqui"<<std::endl;
+                    //cvui::text(acceptedFrame, 900, 700, "Go ahead!");
+                }            
                 cvui::update("Images");
             }
             if(approved==1){
