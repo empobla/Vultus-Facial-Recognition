@@ -17,10 +17,11 @@ class Screens{
     public:
     FaceRecognition *f;
     Screens();
+    void Menu();
     void FaceVerificationWindow();
     void FaceIdentificationWindow();
     void EnrollStudentWindow();
-    void confirmationFrame(std::string name, std::string age, std::string id, std::string image, int confirmation);
+    void confirmationFrame(std::string name, std::string age, std::string id, std::string path, cv::Mat image, int confirmation);
     int enrollStudent(string path, string name, string age, string id);
     void CaptureFrame(cv::Mat frame);
     void FaceIdentificationMethod(cv::Mat img);
