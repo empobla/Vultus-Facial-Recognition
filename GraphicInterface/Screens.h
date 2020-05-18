@@ -4,6 +4,7 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/opencv.hpp>
 #include <stdio.h>
+#include <string>
 #include "cvui.h"
 #include <list>
 #include <opencv2/face.hpp>
@@ -22,10 +23,10 @@ class Screens{
     void EnrollStudentWindow();
     //Missing Cuatec
     void FaceIdentificationMethod(const cv::Mat img, int &approved, std::vector<cv::Mat> &dbImg);
-    void AprovedStudentIdentification(int aproved, std::vector<cv::Mat> dbImg);
+    void ApprovedStudentIdentification(int approved, std::vector<cv::Mat> dbImg,  std::vector<int> inputID);
     //Missing Cuatec0
     void FaceVerificationMethod(const cv::Mat &img, const cv::String &id, int &approved);
-    void AprovedStudentVerification(int aproved, cv::Mat dbImg, cv::String id);
+    void ApprovedStudentVerification(int approved, cv::Mat dbImg, cv::String id);
     void confirmationFrame(std::string name, std::string age, std::string id, std::string image, int confirmation);
 };
 
