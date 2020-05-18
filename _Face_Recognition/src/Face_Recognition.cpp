@@ -8,8 +8,8 @@ using namespace cv;
 
 FaceRecognition::FaceRecognition()
 {
-	//faceDetector = new FaceDetector("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
-	faceDetector = new Module1("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
+	faceDetector = new FaceDetector("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
+	//faceDetector = new Module1("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
 	faceAligner = new FaceAlignment("../../Face_Alignment/models/shape_predictor_5_face_landmarks.dat");
 	featureDetector = new FeatureDetection("../../Feature_Extraction/source/net/dlib_face_recognition_resnet_model_v1.dat");
 	db = new DBManagerInterface(URI, DATABASE, COLLECTION);
@@ -17,8 +17,8 @@ FaceRecognition::FaceRecognition()
 
 FaceRecognition::FaceRecognition(const std::string cascadeClassifier, const std::string faceLandmark, const std::string resnetModel)
 {
-	//faceDetector = new FaceDetector(cascadeClassifier);
-	faceDetector = new Module1(cascadeClassifier);
+	faceDetector = new FaceDetector(cascadeClassifier);
+	//faceDetector = new Module1(cascadeClassifier);
 	faceAligner = new FaceAlignment(faceLandmark);
 	featureDetector = new FeatureDetection(resnetModel);
 	db = new DBManagerInterface(URI, DATABASE, COLLECTION);
@@ -83,6 +83,7 @@ void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const s
 	cv::Mat features;
 	if (getFeatureDescriptorsFromFrame(frame, features))
 	{
+		//cout << "Features outside: " << features << "\n";
 		int created = db->create(name, age, id, frame, features);
 		if (created == 1)
 		{
@@ -104,16 +105,18 @@ void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const s
 
 // Private methods
 
-bool FaceRecognition::getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::Mat featureDescriptors)
+bool FaceRecognition::getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::Mat &featureDescriptors)
 {
 	//showMat(frame);
 
 	// using module 1
-	//std::vector<cv::Rect> faces = faceDetector->detection(frame);
+	std::vector<cv::Rect> faces = faceDetector->detection(frame);
 
 	//using faceAlignment test module
-	std::vector<Rect> faces;
-	faceDetector->detectFaces(faces, frame);
+	// std::vector<Rect> faces;
+	// faceDetector->detectFaces(faces, frame);
+
+	//showMat(frame(faces[0]));
 
 	if (faces.size() < 0)
 	{
@@ -127,7 +130,7 @@ bool FaceRecognition::getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::M
 	faceAligner->alignFace(frame, faces[0], 150, tempRes);
 	//showMat(tempRes);
 	featureDescriptors = featureDetector->getFeatures2(tempRes);
-	//cout << featureDescriptors << "\n";
+	//cout << "Features inside: " << featureDescriptors << "\n";
 
 	return true;
 }

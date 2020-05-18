@@ -17,14 +17,14 @@
 class FaceRecognition
 {
 private:
-	//FaceDetector *faceDetector;
-	Module1 *faceDetector;
+	FaceDetector *faceDetector;
+	//Module1 *faceDetector;
 	FaceAlignment *faceAligner;
 	FeatureDetection *featureDetector;
 	DBManagerInterface *db;
 
 	/** Integrate module 1,2 and 3 */
-	bool getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::Mat featureDescriptors);
+	bool getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::Mat &featureDescriptors);
 	void showMat(const cv::Mat &image);
 
 public:
