@@ -13,7 +13,7 @@ Screens::Screens() {
 
 void CaptureFrame(cv::Mat frame){
     char filename[80];
-    sprintf(filename,"/root/workspace/GraphicInterface/test_0.png");
+    sprintf(filename,"test_0.png");
     imwrite(filename, frame);
 }
 
@@ -61,6 +61,7 @@ void Screens::FaceVerificationWindow() {
 
         if (!cap.isOpened()){
             printf("--(!)Error opening video capture\n");
+            return;
         }
 
         while (1){

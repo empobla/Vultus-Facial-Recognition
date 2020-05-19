@@ -13,7 +13,7 @@
   
 
 Screens::Screens() {
-    f = new FaceRecognition(0.5, "");
+    f = new FaceRecognition(0.5);
 }
 
 void Screens::Menu(){
