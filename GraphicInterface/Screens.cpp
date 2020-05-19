@@ -188,8 +188,8 @@ void Screens::FaceIdentificationMethod(const cv::Mat img, int &approved, std::ve
 
 
 void Screens::ApprovedStudentIdentification(int approved, std::vector<cv::Mat> dbImg,  std::vector<int> inputID){
-    cv::Mat acceptedFrame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
-    cv::Mat deniedFrame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
+    cv::Mat acceptedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
+    cv::Mat deniedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
         while(true){
             cv::Mat screenshot = cv::imread("test_0.png", 1);
             cv::Mat screenshot2 = cv::imread("Test_images/img1.png", 1);
@@ -255,7 +255,7 @@ void Screens::ApprovedStudentIdentification(int approved, std::vector<cv::Mat> d
                 cv::imshow("Images", acceptedFrame);
             }
             
-            
+            //cv::waitKey(20);
             if (cv::waitKey(20) == 27) {
                 break;
             }
