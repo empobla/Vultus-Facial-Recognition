@@ -1,11 +1,12 @@
 #include "Screens.h"
+//g++ *.cpp -o output `pkg-config --cflags --libs opencv4`
 
 
 using namespace std;
 
 int main() {
-    Screens * wOpener = new Screens();
-    wOpener->Menu();
-   
+    FaceRecognition *fr = new FaceRecognition(0.5);
+    Screens * wOpener = new Screens(fr);
+    wOpener->MainWindow();
     return 0;
 }
