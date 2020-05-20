@@ -6,19 +6,23 @@
 using namespace std;
 using namespace cv;
 
-FaceRecognition::FaceRecognition()
+FaceRecognition::FaceRecognition(double acceptance_rate)
 {
-	//faceDetector = new FaceDetector("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
-	faceDetector = new Module1("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
+	if(acceptance_rate >= 1 || acceptance_rate <= 0){ cout << "acceptance_rate must be between (0..1)\n"; }
+	acceptance_rate = acceptance_rate;
+	faceDetector = new FaceDetector("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
+	//faceDetector = new Module1("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
 	faceAligner = new FaceAlignment("../../Face_Alignment/models/shape_predictor_5_face_landmarks.dat");
 	featureDetector = new FeatureDetection("../../Feature_Extraction/source/net/dlib_face_recognition_resnet_model_v1.dat");
 	db = new DBManagerInterface(URI, DATABASE, COLLECTION);
 }
 
-FaceRecognition::FaceRecognition(const std::string cascadeClassifier, const std::string faceLandmark, const std::string resnetModel)
+FaceRecognition::FaceRecognition(const std::string cascadeClassifier, const std::string faceLandmark, const std::string resnetModel, double acceptance_rate)
 {
-	//faceDetector = new FaceDetector(cascadeClassifier);
-	faceDetector = new Module1(cascadeClassifier);
+	if(acceptance_rate >= 1 || acceptance_rate <= 0){ cout << "acceptance_rate must be between (0..1)\n"; }
+	acceptance_rate = acceptance_rate;
+	faceDetector = new FaceDetector(cascadeClassifier);
+	//faceDetector = new Module1(cascadeClassifier);
 	faceAligner = new FaceAlignment(faceLandmark);
 	featureDetector = new FeatureDetection(resnetModel);
 	db = new DBManagerInterface(URI, DATABASE, COLLECTION);
@@ -47,7 +51,7 @@ void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &r
 		{
 			//Features extracted and stored in cv::Mat subjectFeatures
 			double match_rate = 0;
-			double acceptance_rate = 0.5;
+			//double acceptance_rate = 0.5; // this is now a property of the class !
 
 			match_rate = featureDetector->compareFeatures(subjectFeatures, cuatecFeatures, 5);
 
@@ -83,6 +87,7 @@ void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const s
 	cv::Mat features;
 	if (getFeatureDescriptorsFromFrame(frame, features))
 	{
+		cout << "Features outside: " << features << "\n";
 		int created = db->create(name, age, id, frame, features);
 		if (created == 1)
 		{
@@ -109,11 +114,13 @@ bool FaceRecognition::getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::M
 	//showMat(frame);
 
 	// using module 1
-	//std::vector<cv::Rect> faces = faceDetector->detection(frame);
+	std::vector<cv::Rect> faces = faceDetector->detection(frame);
 
-	//using faceAlignment test module
-	std::vector<Rect> faces;
-	faceDetector->detectFaces(faces, frame);
+	// using faceAlignment test module
+	// std::vector<Rect> faces;
+	// faceDetector->detectFaces(faces, frame);
+
+	//showMat(frame(faces[0]));
 
 	if (faces.size() < 0)
 	{
@@ -127,7 +134,7 @@ bool FaceRecognition::getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::M
 	faceAligner->alignFace(frame, faces[0], 150, tempRes);
 	//showMat(tempRes);
 	featureDescriptors = featureDetector->getFeatures2(tempRes);
-	//cout << featureDescriptors << "\n";
+	//cout << "Features inside: " << featureDescriptors << "\n";
 
 	return true;
 }
