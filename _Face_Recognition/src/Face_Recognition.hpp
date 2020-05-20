@@ -24,7 +24,7 @@ private:
 	DBManagerInterface *db;
 
 	/** Integrate module 1,2 and 3 */
-	bool getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::Mat featureDescriptors);
+	bool getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::Mat &featureDescriptors);
 	void showMat(const cv::Mat &image);
 
 public:
@@ -53,7 +53,7 @@ public:
 	 * * -1 : there is more than 1 face
 	 * @return result: if response is 1, matched Cuatec
 	*/
-	void verify(const cv::Mat &frame, const std::string &id, int &response, Cuatec result);
+	void verify(const cv::Mat &frame, const std::string &id, int &response, Cuatec &result);
 
 	/** 
 	 * Identify without using ID
