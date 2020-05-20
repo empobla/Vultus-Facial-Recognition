@@ -37,7 +37,7 @@ FaceRecognition::~FaceRecognition()
 	cout << "No errors\n";
 }
 
-void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &response, Cuatec result)
+void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &response, Cuatec &result)
 {
 	// Reading features of Cuatec id from DB
 	cv::Mat cuatecFeatures = db->readOneFeatures(id);
@@ -56,7 +56,7 @@ void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &r
 			match_rate = featureDetector->compareFeatures(subjectFeatures, cuatecFeatures, 5);
 
 			//Compare features from DB vs features from frame
-			if (cv::abs(match_rate) <= acceptance_rate)
+			if (match_rate <= acceptance_rate)
 			{
 				//Same person
 				response = 1;

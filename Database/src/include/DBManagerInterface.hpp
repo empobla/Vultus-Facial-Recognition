@@ -44,7 +44,8 @@ public:
     int updateName(std::string matricula, std::string nuevoNombre);
     int updateMatricula(std::string matricula, std::string nuevaMatricula);
     int deleteOne(std::string matricula);
-    std::vector<cv::Mat> fastSearch(cv::Mat featuresMat, int nearestNeighbors);
+    void createIndex(cv::Mat query);
+    std::vector<Cuatec> fastSearch(cv::Mat featuresMat, int nearestNeighbors);
 };
 
 #endif
