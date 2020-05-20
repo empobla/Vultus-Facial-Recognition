@@ -175,29 +175,29 @@ void Screens::FaceVerificationWindow() {
             printf("--(!)Error opening video capture\n");
         }
 
-        // while (1){
-        //     cap.read(frame);
-        //     // Show a button at position (110, 80)
-        //     if (cvui::button(frame, 500, 80, "Calculate")) {
-        //         // The button was clicked, so let's increment our counter.
-        //         CaptureFrame(frame);
-        //         cv::Mat screenshot = cv::imread("test_0.png", 1);
-        //         FaceVerificationMethod(screenshot, id, approved);
-        //         //This will be returned with the Cuatec
-        //         cv::Mat input1 = cv::imread("../Test_images/img1.png", 1);
-        //         //*****
+        while (1){
+            cap.read(frame);
+            // Show a button at position (110, 80)
+            if (cvui::button(frame, 500, 80, "Calculate")) {
+                // The button was clicked, so let's increment our counter.
+                CaptureFrame(frame);
+                cv::Mat screenshot = cv::imread("test_0.png", 1);
+                FaceVerificationMethod(screenshot, id, approved);
+                //This will be returned with the Cuatec
+                cv::Mat input1 = cv::imread("../Test_images/img1.png", 1);
+                //*****
 
-        //         ApprovedStudentVerification(approved, input1, id);
+                ApprovedStudentVerification(approved, input1, id);
                 
-        //     }
-        //     cvui::text(frame, 80, 300, "Matricula");
-        //     cvui::input(frame, 80, 320, 100, "input", id);
+            }
+            cvui::text(frame, 80, 300, "Matricula");
+            cvui::input(frame, 80, 320, 100, "input", id);
             
-        //     cv::imshow(WINDOW2_NAME, frame);
-        //     if (cv::waitKey(20) == 27) {
-        //         break;
-        //     }
-        // }
+            cv::imshow(WINDOW2_NAME, frame);
+            if (cv::waitKey(20) == 27) {
+                break;
+            }
+        }
 
         if (cv::waitKey(20) == 27) {
             break;
@@ -273,7 +273,7 @@ void Screens::FaceIdentificationMethod(const cv::Mat img, int &approved, std::ve
     dbImg.push_back(input);
     input = cv::imread("../Test_images/img3.png", 1);
     dbImg.push_back(input);
-    input = cv::imread("Test_images/img4.jpg", 1);
+    input = cv::imread("../Test_images/img4.jpg", 1);
     cv::resize(input, input, size);
     dbImg.push_back(input);
     input = cv::imread("../Test_images/img5.jpg", 1);
