@@ -14,5 +14,6 @@
 - [ ] Mejorar el diseño de la interfaz (colores, botones con imágenes y posicionamiento) **Carlos**
 - [ ] Quit tiene error después de ir a otra ventana **Carla**
 - [ ] Manejo de excepciones en Enroll Student **Carla**
+- [ ] Enroll Student con captura de pantalla **Carla**
 
 
