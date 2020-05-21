@@ -21,23 +21,29 @@ Screens::Screens(FaceRecognition *fr) {
 void Screens::MainWindow(){
     cv::destroyAllWindows();
     cvui::init(WINDOW1_NAME);
-    cv::Mat frame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
+    cv::Mat frame = cv::Mat(cv::Size(500, 500), CV_8UC3);
     int count = 0;
     while (true) {
-        frame = cv::Scalar(100, 100, 100);
-        cvui::text(frame, 10, 10, "VULTUS software");
+        frame = cv::Scalar(245, 176, 66);
+        cvui::text(frame, 100, 10, "VULTUS software", 1, 0xffffff);
 
-        if (cvui::button(frame, 500, 80, "Face verification")) { // To manually verify an unauthorized access
+        if (cvui::button(frame, 100, 80, "Face verification")) { // To manually verify an unauthorized access
             FaceVerificationWindow();
             break;
         }
-        if (cvui::button(frame, 500, 160, "Face identification")) { // Detects the 10 closest matches to the faces database
+        if (cvui::button(frame, 100, 160, "Face identification")) { // Detects the 10 closest matches to the faces database
             // The button was clicked, so let's increment our counter.
            FaceIdentificationWindow();
-           
+            break;
+
         }
-        if (cvui::button(frame, 500, 240, "Enroll a student")) { // To feed the database with new values
+        if (cvui::button(frame, 100, 240, "Enroll a student")) { // To feed the database with new values
            EnrollStudentWindow();
+           break;
+        }
+         if (cvui::button(frame, 100, 300, "&Quit")) { 
+            cv::destroyAllWindows();
+           break;
         }
         cvui::imshow(WINDOW1_NAME, frame);
         if (cv::waitKey(20) == 27) {
@@ -51,12 +57,12 @@ void Screens::MainWindow(){
 //! --- FACE VERIFICATION FUNCTIONS ---
 
 void Screens::FaceVerificationWindow() {
+    int approved= -2;
     cv::destroyAllWindows();
     cvui::init(WINDOW2_NAME);
     cv::Mat frame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
-    int approved= -2;
     Cuatec response;
-    cv::String id = "A01024682";
+    std::string id = "";
 
     while (true) {
         cv::VideoCapture cap;
@@ -78,11 +84,16 @@ void Screens::FaceVerificationWindow() {
                 // f->verify(screenshot, id, approved, response);
                 FaceVerificationMethod(screenshot, id, approved, response); // This will be returned with the Cuatec
                 // cout << response;
-
                 std::string inputID = "A01025948";
+                cap.release();
                 ApprovedStudentVerification(approved, screenshot, screenshot, id, inputID);
+                break;
             }
-
+            if (cvui::button(frame, 500, 120, "Back to Menu ")) {
+                MainWindow();
+                break;
+                
+            }
             cvui::text(frame, 80, 300, "Student ID:");
             cvui::input(frame, 80, 320, 100, "input", id);
             
@@ -106,8 +117,7 @@ void Screens::FaceVerificationMethod(const cv::Mat &img, const cv::String &id, i
 }
 
 void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::Mat dbImg, cv::String id, std::string inputID) {
-    //cv::destroyWindow(WINDOW2_NAME);
-    //cv::destroyWindow(WINDOW1_NAME);
+    cv::destroyAllWindows();
     cvui::init(WINDOW_AP);
 
     cv::Mat acceptedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
@@ -122,13 +132,13 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::
             cvui::text(deniedFrame, 550, 700, id);
             cvui::text(deniedFrame, 640, 700, "Not a match, please aprove manually");
 
-            if (cvui::button(deniedFrame, 700, 160, "Accept")) {
+            if (cvui::button(deniedFrame, 700, 500, "Accept")) {
                 std::cout << "entre aqui" << std::endl;
                 approved = 1;
                 //cvui::text(acceptedFrame, 900, 700, "Go ahead!");
             }
 
-            if (cvui::button(deniedFrame, 700, 200, "Restrict Access")) {
+            if (cvui::button(deniedFrame, 700, 550, "Restrict Access")) {
                 approved = 2;
                 //cvui::text(acceptedFrame, 900, 700, "Go ahead!");
             }
@@ -137,13 +147,17 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::
 
         }
         if (approved == 1) {
-            // cv::Size size(640, 480);m
+            // cv::Size size(640, 480);
             // cv::resize(dbImg, dbImg, size);
             screenshot.copyTo(acceptedFrame(cv::Rect(0, 0, 640, 480)));
             dbImg.copyTo(acceptedFrame(cv::Rect(640, 0, 640, 480)));
             cvui::text(acceptedFrame, 640, 0, inputID);
             cvui::text(acceptedFrame, 500, 700, id);
             cvui::text(acceptedFrame, 640, 700, "Match, go ahead!", 0.5);
+            if (cvui::button(acceptedFrame, 400, 600, "Back to Menu ")) {
+                MainWindow();
+                break;
+            }
             cv::imshow(WINDOW_AP, acceptedFrame);
 
         }
@@ -153,14 +167,15 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::
 
             if (cvui::button(restrictedAccess, 200, 700, "Back to Menu ")) {
                 MainWindow();
-            }
+                break;
 
+            }
             cv::imshow(WINDOW_AP, restrictedAccess);
 
         }
 
         cvui::update();
-
+       
         if (cv::waitKey(20) == 27) {
             break;
         }
@@ -172,6 +187,7 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::
 //! --- FACE IDENTIFICATION FUNCTIONS ---
 
 void Screens::FaceIdentificationWindow() {
+     cv::destroyAllWindows();
     cvui::init(WINDOW3_NAME);
     cv::Mat frame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
 
@@ -195,6 +211,7 @@ void Screens::FaceIdentificationWindow() {
             cap.read(frame);
             if (cvui::button(frame, 500, 80, "Calculate")) {
                 cap >> screenshot;
+                cap.release();
                 // f->identify(screen, approved, result);
                 FaceIdentificationMethod(screenshot, approved, dbImg);
 
@@ -203,8 +220,12 @@ void Screens::FaceIdentificationWindow() {
                 for (int i = 0; i < 10; i++){ // Will be replaced by Cuatecs' attributes
                     idVector.push_back("A1025948");
                 }
-
+            if (cvui::button(frame, 500, 120, "Back to Menu ")) {
+                MainWindow();
+                break;
+            }
                 ApprovedStudentIdentification(approved, screenshot, dbImg, idVector); 
+                break;
             }
             
             cv::imshow(WINDOW3_NAME, frame);
@@ -220,7 +241,7 @@ void Screens::FaceIdentificationWindow() {
 }
 
 
-void Screens::FaceIdentificationMethod(const cv::Mat img, int &approved, std::vector<cv::Mat> &dbImg){
+void Screens::FaceIdentificationMethod(const cv::Mat &img, int &approved, std::vector<cv::Mat> &dbImg){
     std::string name;
 
     cv::Size size(150, 150);
@@ -257,7 +278,7 @@ void Screens::FaceIdentificationMethod(const cv::Mat img, int &approved, std::ve
 }
 
 void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, std::vector < cv::Mat > dbImg, std::vector < string > inputID) {
-    cv::destroyWindow(WINDOW3_NAME);
+    cv::destroyAllWindows();
     cvui::init(WINDOW_ID);
     cv::Mat acceptedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     cv::Mat deniedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
@@ -300,12 +321,12 @@ void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, st
             cvui::text(deniedFrame, 950, 150, outputID);
             cvui::text(deniedFrame, 640, 700, "Not a match, please aprove manually");
 
-            if (cvui::button(deniedFrame, 800, 160, "Accept")) { // Manually accepts the incoming person
+            if (cvui::button(deniedFrame, 800, 600, "Accept")) { // Manually accepts the incoming person
                 approved = 1;
                 // std::cout<<"entre aqui"<<std::endl;
                 // cvui::text(acceptedFrame, 900, 700, "Go ahead!");
             }
-            if (cvui::button(deniedFrame, 800, 200, "Restrict Access")) { // Manually rejects the incoming person
+            if (cvui::button(deniedFrame, 800, 650, "Restrict Access")) { // Manually rejects the incoming person
                 approved = 2;
                 //cvui::text(acceptedFrame, 900, 700, "Denied, please do not allow the access to the installations.");
             }
@@ -350,8 +371,9 @@ void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, st
             cvui::text(acceptedFrame, 950, 150, outputID);
             cvui::text(acceptedFrame, 640, 700, "Match, go ahead!");
 
-            if (cvui::button(acceptedFrame, 200, 700, "Back to Menu ")) {
+            if (cvui::button(acceptedFrame, 200, 600, "Back to Menu ")) {
                 MainWindow();
+                break;
             }
             cv::imshow(WINDOW_ID, acceptedFrame);
 
@@ -359,8 +381,9 @@ void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, st
         if (approved == 2) {
             screenshot.copyTo(restrictedAccess(cv::Rect(0, 0, 640, 480)));
             cvui::text(restrictedAccess, 640, 700, "Access denied! :(");
-            if (cvui::button(restrictedAccess, 200, 700, "Back to Menu ")) {
+            if (cvui::button(restrictedAccess, 200, 600, "Back to Menu ")) {
                 MainWindow();
+                 break;
             }
             cv::imshow(WINDOW_ID, restrictedAccess);
         }
@@ -377,7 +400,7 @@ void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, st
 //! --- STUDENT ENROLL FUNCTIONS ---
 
 void Screens::EnrollStudentWindow() {
-    cv::destroyWindow(WINDOW1_NAME);
+    cv::destroyAllWindows();
     cv::Mat frame_enroll = cv::Mat(cv::Size(500, 400), CV_8UC3);
 	cvui::init(WINDOW_ENROLL, 20);
     cv::String name = "";
@@ -400,8 +423,9 @@ void Screens::EnrollStudentWindow() {
         cvui::input(frame_enroll , 140, offset+120, 50, "input3", age);
         cvui::input(frame_enroll , 140, offset+160, 200, "input4", img_path);
 
-		if (cvui::button(frame_enroll , 400, offset+200, "Back")) {
+		if (cvui::button(frame_enroll , 300, offset+250, "Back to Menu")) {
 			MainWindow();
+             break;
 		}
 
         if (cvui::button(frame_enroll , 300, offset+200, "Save")) {
@@ -424,6 +448,7 @@ int Screens::enrollStudent(std::string path, std::string name, std::string age, 
 
 void Screens::confirmationFrame(std::string name, std::string age, std::string id, std::string path, cv::Mat image, int confirmation) {
 	cv::Mat frame_confirm = cv::Mat(550, 500, CV_8UC3);
+    cv::destroyAllWindows();
 	cvui::init(WINDOW_CONFIRM);
 
 	while (true){
@@ -447,9 +472,14 @@ void Screens::confirmationFrame(std::string name, std::string age, std::string i
         } else {
             cvui::text(frame_confirm, 80, 80, "UNABLE TO SAVE STUDENT:(", 1, 0xffffff);
         }
-        if (cvui::button(frame_confirm, 80, 400, "DONE")) {
+        if (cvui::button(frame_confirm, 80, 400, "Back to Menu")) {
                 MainWindow();
-            }
+                 break;
+        }
+        if (cvui::button(frame_confirm, 80, 450, "Enroll New Student")) {
+                EnrollStudentWindow();
+                break;
+        }
 
 		cvui::imshow(WINDOW_CONFIRM, frame_confirm);
 

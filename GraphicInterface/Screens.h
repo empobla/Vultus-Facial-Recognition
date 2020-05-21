@@ -45,7 +45,7 @@ class Screens{
 
         // FaceIdentification functions
         void FaceIdentificationWindow();
-        void FaceIdentificationMethod(const cv::Mat img, int &approved, std::vector<cv::Mat> &dbImg); //Missing Cuatec
+        void FaceIdentificationMethod(const cv::Mat &img, int &approved, std::vector<cv::Mat> &dbImg); //Missing Cuatec
         void ApprovedStudentIdentification(int approved, cv::Mat screenshot, std::vector<cv::Mat> dbImg,  std::vector<string> inputID);
         
         // EnrollStudent functions
