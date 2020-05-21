@@ -6,10 +6,10 @@
 using namespace std;
 using namespace cv;
 
-FaceRecognition::FaceRecognition(double acceptance_rate)
+FaceRecognition::FaceRecognition(double acceptanceRate)
 {
-	if(acceptance_rate >= 1 || acceptance_rate <= 0){ cout << "acceptance_rate must be between (0..1)\n"; }
-	acceptance_rate = acceptance_rate;
+	if(acceptanceRate >= 1 || acceptanceRate <= 0){ cout << "acceptanceRate must be between (0..1)\n"; }
+	acceptance_rate = acceptanceRate;
 	faceDetector = new FaceDetector("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
 	//faceDetector = new Module1("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
 	faceAligner = new FaceAlignment("../../Face_Alignment/models/shape_predictor_5_face_landmarks.dat");
@@ -17,10 +17,10 @@ FaceRecognition::FaceRecognition(double acceptance_rate)
 	db = new DBManagerInterface(URI, DATABASE, COLLECTION);
 }
 
-FaceRecognition::FaceRecognition(const std::string cascadeClassifier, const std::string faceLandmark, const std::string resnetModel, double acceptance_rate)
+FaceRecognition::FaceRecognition(const std::string cascadeClassifier, const std::string faceLandmark, const std::string resnetModel, double acceptanceRate)
 {
-	if(acceptance_rate >= 1 || acceptance_rate <= 0){ cout << "acceptance_rate must be between (0..1)\n"; }
-	acceptance_rate = acceptance_rate;
+	if(acceptanceRate >= 1 || acceptanceRate <= 0){ cout << "acceptanceRate must be between (0..1)\n"; }
+	acceptance_rate = acceptanceRate;
 	faceDetector = new FaceDetector(cascadeClassifier);
 	//faceDetector = new Module1(cascadeClassifier);
 	faceAligner = new FaceAlignment(faceLandmark);
@@ -56,6 +56,7 @@ void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &r
 			match_rate = featureDetector->compareFeatures(subjectFeatures, cuatecFeatures, 5);
 
 			//Compare features from DB vs features from frame
+			cout << "ar" << acceptance_rate << "\n";
 			if (match_rate <= acceptance_rate)
 			{
 				//Same person
