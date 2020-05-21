@@ -32,7 +32,7 @@ class Screens{
     void ApprovedStudentIdentification(int approved, cv::Mat screenshot, std::vector<cv::Mat> dbImg,  std::vector<int> inputID);
     //Missing Cuatec0
     void FaceVerificationMethod(const cv::Mat &img, const cv::String &id, int &approved, Cuatec &response);
-    void ApprovedStudentVerification(int approved, cv::Mat dbImg, cv::String id);
+    void ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::Mat dbImg, cv::String id);
     void confirmationFrame(std::string name, std::string age, std::string id, std::string path, cv::Mat image, int confirmation);
 };
 
