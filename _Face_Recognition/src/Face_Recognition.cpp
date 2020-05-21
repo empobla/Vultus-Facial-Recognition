@@ -79,16 +79,22 @@ void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &r
 
 void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<Cuatec> &result)
 {
-	// T1 implemenet your code here!
-	/*
-	1. Llamar a getFeatureDescriptors
-	2. Crear un vector de cuatecs y igualar eso a lo que regrese fastSearch
-	db->fastSearch*/
-
 	cv::Mat features;
 
-	features = getFeatureDescriptorsFromFrame(frame, features);
-	result = db->fastSearch(features, 10);
+    if (getFeatureDescriptorsFromFrame(frame, features))
+    {
+		//Matched the face 
+		response = 1;
+		//result = db->readOne(id);
+		result = db->fastSearch(features, 10);
+    }
+    
+    else
+    {
+        cout << "Error: Something went wrong in the identification process.\n";
+		//Can't match the face 
+        response = 0;
+    }
 }
 
 void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const std::string name, const int age, int &response)
