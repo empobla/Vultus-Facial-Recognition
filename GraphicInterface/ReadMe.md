@@ -7,8 +7,6 @@
 ## Description
 Graphical User Interface that allows an easy access to the system's functions.
 
-## Sections
-
 ## Instructions for Standalone Testing
 ### Docker installation
 Install Docker on the desired platform, open the terminal (and open the application for Windows and OSX) and input the following command:
