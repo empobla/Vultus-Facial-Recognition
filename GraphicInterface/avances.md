@@ -13,4 +13,6 @@
 - [ ] Utilizar los métodos del equipo 1 y 4 (Modificar para cuatecs) **Ale**
 - [ ] Mejorar el diseño de la interfaz (colores, botones con imágenes y posicionamiento) **Carlos**
 - [ ] Quit tiene error después de ir a otra ventana **Carla**
+- [ ] Manejo de excepciones en Enroll Student **Carla**
+
 
