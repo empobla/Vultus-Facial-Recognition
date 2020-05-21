@@ -50,7 +50,7 @@ int DBManagerInterface::create(Cuatec cuatec)
 int DBManagerInterface::create(std::string name, int age, std::string matricula1, cv::Mat imgMat, cv::Mat featuresMat)
 {
     // //WRITE yml to store
-    std::string matRoute = "../../Database/storage/MatFiles/" + matricula1 + ".xml";
+    std::string matRoute = "../../Database/storage/MatFiles/" + matricula1 + ".xml.gz";
     std::string imgRoute = "../../Database/storage/ImgFiles/" + matricula1 + ".xml.gz";
 
     auto builder = bsoncxx::builder::stream::document{};
@@ -212,10 +212,10 @@ int DBManagerInterface::deleteOne(std::string matricula)
     }
 }
 // 🔧 fast search in construction
-std::vector<cv::Mat> DBManagerInterface::fastSearch(cv::Mat featuresMat, int nearestNeighbors)
+std::vector<Cuatec> DBManagerInterface::fastSearch(cv::Mat featuresMat, int nearestNeighbors)
 {
+    cv::Mat dataset;
     //Reading dataset stored
-    // cv::Mat dataset;
     // std::string datasetString = "../storage/dataset/dataset.xml.gz";
     // cv::FileStorage fs(datasetString, cv::FileStorage::READ);
     // fs["data"] >> dataset;
@@ -229,6 +229,33 @@ std::vector<cv::Mat> DBManagerInterface::fastSearch(cv::Mat featuresMat, int nea
     //                                                       cvflann::FLANN_DIST_EUCLIDEAN);
     // flann_index.knnSearch(featuresMat, indices, distances, nearestNeighbors);
     //Store dataset[indices found] in knnMatches
-    std::vector<cv::Mat> knnMatches;
+    std::vector<Cuatec> knnMatches;
     return knnMatches;
+}
+// 🔧 index in construction
+void DBManagerInterface::createIndex(cv::Mat query)
+{
+    // cv::Mat dataset;
+    // cv::Mat tempFeatures();
+    // std::string featuresRoute;
+
+    //Reading all documents from DB
+    // mongocxx::cursor cursor = coll.find({});
+    // for (auto doc : cursor)
+    // {
+    //     featuresRoute = doc["identificacionFacial"].get_utf8().value.to_string();
+    //     cv::FileStorage fs(featuresRoute, cv::FileStorage::READ);
+    //     fs["data"] >> tempFeatures;
+    //     fs.release();
+    //     dataset.push_back(tempFeatures.t());
+    // }
+    // cv::FileStorage featureStorage("../../Database/storage/dataset.xml", cv::FileStorage::WRITE | cv::FileStorage::FORMAT_XML);
+    // featureStorage << "data" << dataset;
+    // featureStorage.release();
+
+    // cv::flann::Index index = cv::flann::Index();
+    // index.build(dataset, cv::flann::KDTreeIndexParams());
+    // cv::Mat indices, dists;
+    // int numKnn = 10;
+    // index.knnSearch(query, indices, dists, numKnn);
 }

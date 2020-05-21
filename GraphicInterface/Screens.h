@@ -1,33 +1,57 @@
+/*
+Code written by Alejandra Nissan, Carla Perez and Carlos Garcia
+Tecnologico de Monterrey, Santa Fe
+
+Header file, inclusion of libraries and function definitions for integration purposes
+*/
+
 #ifndef SCREENS_H
 #define SCREENS_H
 
-#include <opencv2/videoio.hpp>
-#include <opencv2/opencv.hpp>
+// Common libraries used
 #include <stdio.h>
-#include "cvui.h"
+#include <string>
 #include <list>
+#include <vector>
+
+// openCV
 #include <opencv2/face.hpp>
-#include <opencv2/imgcodecs.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/videoio.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
+#include <opencv2/imgcodecs.hpp>
+
+// GUI implementation based on openCV imshow and other graphics-oriented functions
+#include "cvui.h"
+
+// References to other scripts for integration purposes
 #include "../_Face_Recognition/src/Face_Recognition.hpp"
+#include "../Database/src/include/Cuatec.hpp"
 
-
+// Function definitions
 class Screens{
-    public:
-    FaceRecognition *f;
-    Screens();
-    void Menu();
-    void FaceVerificationWindow();
-    void FaceIdentificationWindow();
-    void EnrollStudentWindow();
-    void confirmationFrame(std::string name, std::string age, std::string id, std::string path, cv::Mat image, int confirmation);
-    int enrollStudent(string path, string name, string age, string id);
-    void CaptureFrame(cv::Mat frame);
-    void FaceIdentificationMethod(cv::Mat img);
-    void AprovedStudentVerification(int aproved, cv::Mat dbImg, cv::String id);
-    void AprovedStudentIdentification(int aproved, cv::Mat dbImg1, cv::Mat dbImg2, cv::Mat dbImg3, cv::Mat dbImg4, cv::Mat dbImg5, cv::Mat dbImg6, cv::Mat dbImg7, cv::Mat dbImg8, cv::Mat dbImg9, cv::Mat dbImg10);
-    void FaceVerificationMethod(cv::Mat img, cv::String id);
+    public: 
+        Screens(FaceRecognition *fr);
+        void MainWindow();
+
+    private:
+        FaceRecognition *f;
+        
+        // FaceVerification functions
+        void FaceVerificationWindow();
+        void FaceVerificationMethod(const cv::Mat &img, const cv::String &id, int &approved, Cuatec &response); //Missing Cuatec0
+        void ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::Mat dbImg, cv::String id, std::string inputID);
+
+        // FaceIdentification functions
+        void FaceIdentificationWindow();
+        void FaceIdentificationMethod(const cv::Mat &img, int &approved, std::vector<cv::Mat> &dbImg); //Missing Cuatec
+        void ApprovedStudentIdentification(int approved, cv::Mat screenshot, std::vector<cv::Mat> dbImg,  std::vector<string> inputID);
+        
+        // EnrollStudent functions
+        void EnrollStudentWindow();
+        int enrollStudent(std::string path, std::string name, std::string age, std::string id);
+        void confirmationFrame(std::string name, std::string age, std::string id, std::string path, cv::Mat image, int confirmation);
 };
 
 #endif

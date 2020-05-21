@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.14)
-message("GRAPHIC INTERFACE")
-project(GraphicInterface)
+project(GUI)
 
 ## OPEN CV
-find_package( OpenCV REQUIRED )
-include_directories( ${OpenCV_INCLUDE_DIRS} )
+find_package(OpenCV REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIRS})
 
 ## DLIB
 find_package( dlib REQUIRED )
+
 
 ## MONGO
 find_package(libmongocxx REQUIRED)
