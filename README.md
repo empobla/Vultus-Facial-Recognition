@@ -10,12 +10,17 @@
 - The system allows to authenticate (comparing) the data of the students with those of the credential.
 - The system will grant access if the data match.
 - The system will show an alert whether or not he is the person.
+- The system allows to enroll new students.
+- The system should either verify or identify the student.
+
 
 
 ### Non Functional
 - The system must run in Mac OS (10.14 +), Windows 10 + and Linux (Ubuntu 18.04 +)
 - The result must be given under 1 second
-- 
+- The system is planned to be delivered by June 8th
+- The name of the system: <name>
+- Data must stay safe and secure
 
 ## Dependencies
 
