@@ -18,7 +18,7 @@
 ### Non Functional
 - The system must run in Mac OS (10.14 +), Windows 10 + and Linux (Ubuntu 18.04 +)
 - The result must be given under 1 second
-- The system is planned to be delivered by June 8th
+- The system is planned to be delivered by May 28th
 - The name of the system: <name>
 - Data must stay safe and secure
 
