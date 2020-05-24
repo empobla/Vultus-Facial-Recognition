@@ -4,8 +4,17 @@
 
 ## Requirements
 
+### Functional 
+- The system will recognize members of Tecnológico de Monterrey CSF.
+- The system throws alerts in case the credential does not match the face.
+- The system allows to authenticate (comparing) the data of the students with those of the credential.
+- The system will grant access if the data match.
+
+
+### Non Functional
 - The system must run in Mac OS (10.14 +), Windows 10 + and Linux (Ubuntu 18.04 +)
 - The result must be given under 1 second
+- 
 
 ## Dependencies
 
