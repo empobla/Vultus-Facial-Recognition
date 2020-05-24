@@ -23,6 +23,7 @@
 - Data must stay safe and secure
 
 ## Dependencies
+Below are the dependencies used in this project:
 
 - [OpenCV](https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html)
 - [Dlib](https://github.com/davisking/dlib)
