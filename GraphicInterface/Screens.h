@@ -52,6 +52,7 @@ class Screens{
         void EnrollStudentWindow();
         int enrollStudent(std::string path, std::string name, std::string age, std::string id);
         void confirmationFrame(std::string name, std::string age, std::string id, std::string path, cv::Mat image, int confirmation);
+        void EnrollStudentScreenshot(); 
 };
 
 #endif
