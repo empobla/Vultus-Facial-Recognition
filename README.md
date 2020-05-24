@@ -9,6 +9,7 @@
 - The system throws alerts in case the credential does not match the face.
 - The system allows to authenticate (comparing) the data of the students with those of the credential.
 - The system will grant access if the data match.
+- The system will show an alert whether or not he is the person.
 
 
 ### Non Functional
