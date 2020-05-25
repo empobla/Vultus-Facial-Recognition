@@ -45,6 +45,79 @@ cd TC2004-FaceRecognition-Spring2020 && GraphicInterface && mkdir build && cmake
 
 ### GUI
 
+Inside the code, the main functions that are used are the following:
+
+***GUI.cpp***
+```c
+int main(){ 
+	// Calls the MainWindow() function contained inside Screens.cpp
+}
+```
+
+***Screens.cpp***
+```c
+void Screens::MainWindow(){ 
+	// Creates the buttons and calls the respective functions
+}
+
+
+// VERIFICATION METHODS
+void Screens::FaceVerificationWindow(){
+	// To verify an access given a capture and an ID
+}
+
+void Screens::InputID(std::string id){
+	// Opens a window for the user to input the ID
+}
+
+void Screens::FaceVerificationMethod(const cv::Mat &img, const cv::String &id, int &approved, Cuatec &response){
+	// Approves or denies an access attempt
+}
+
+void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::Mat dbImg, cv::String id, std::string inputID){
+	// Window after the automatic verification process, can approve or deny access manually
+}
+
+// IDENTIFICATION METHODS
+void Screens::FaceIdentificationWindow(){
+	// To verify an access given a capture and an the top 10 database closest images
+}
+
+void Screens::FaceIdentificationMethod(const cv::Mat &img, int &approved, std::vector<cv::Mat> &dbImg){
+	// Approves or denies an access attempt
+}
+
+void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, std::vector < cv::Mat > dbImg, std::vector < string > inputID) {
+	// Window after the automatic verification process, can approve or deny access manually
+}
+
+// ENROLL METHODS
+void Screens::EnrollStudentWindow(){
+	// Creates window with textboxes to be filled with the required user information
+}
+
+int Screens::enrollStudent(std::string path, std::string name, std::string age, std::string id){
+	// Uploads the data to the database
+}
+
+void Screens::confirmationFrame(std::string name, std::string age, std::string id, std::string path, cv::Mat image, int confirmation) {
+	// Displays the input data in another window
+}
+```
+
+Graphical User Interface that allows an easy access to the system's functions. For standalone testing go to the GraphicInterface subdirectory and input the following commands:
+```sh
+mkdir build
+cd build
+cmake ..
+make
+./GraphicInterface
+```
+***NOTE:*** There must be a camera attached to the computer for the program to work fully.
+
+Once the program is successfully compiled and is running, the navigation through the GUI is pretty simple. There will be buttons displayed which will run the different functions associated with them. 
+
+
 ### Verify
 
 ### Identify
