@@ -48,7 +48,7 @@ cd TC2004-FaceRecognition-Spring2020 && GraphicInterface && mkdir build && cmake
 ### Verify
 
 ### Identify
-## Compile
+#### Compile
 - Go to the directory where you cloned the repository
 - Use the following commands: 
     ```sh
@@ -59,7 +59,7 @@ cd TC2004-FaceRecognition-Spring2020 && GraphicInterface && mkdir build && cmake
     ./FaceDetection
     ```
 
-## Description
+#### Description
 The Face Recognition module does the function to detect multiple faces adn then store each of the faces as a Vector of Rectangles.
 
 The module consists of 3 codes:
@@ -67,7 +67,7 @@ The module consists of 3 codes:
 - FaceDetector.hpp
 - main.cpp
 
-## FaceDetector.cpp
+#### FaceDetector.cpp
 
 This codes function is to create, store and scalate the Vector of Rectangles object.
 
@@ -115,7 +115,7 @@ int FaceDetector::getScale(){
 }
 ```
 
-## FaceDetector.hpp 
+#### FaceDetector.hpp 
 This code function is to import the libraries that are needed to the module. 
 Also we define the privacy of the variables and methods used in FaceDetector.cpp.
 
@@ -145,7 +145,7 @@ public:
 };
 ```
 
-## main.cpp 
+#### main.cpp 
 This code function is to act as the GUI when is running, but the code in here uses the two previous mentiones codes to define some functionalities, such as the open of the camera, the draw of a rectangle if a fface is deteected and a function to close the program when Q key is type.
 
 ```c++
