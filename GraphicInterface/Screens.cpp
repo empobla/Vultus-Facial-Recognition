@@ -84,6 +84,7 @@ void Screens::FaceVerificationWindow() {
             if (cvui::button(frame, 500, 80, "Calculate")) {
                 cap >> screenshot;
                 // f->verify(screenshot, id, approved, response);
+                InputID(id);
                 FaceVerificationMethod(screenshot, id, approved, response); // This will be returned with the Cuatec
                 // cout << response;
                 cap.release();
@@ -95,8 +96,7 @@ void Screens::FaceVerificationWindow() {
                 return;
                 
             }
-            //InputID(id);
-            
+
             cvui::update();
             cv::imshow(WINDOW2_NAME, frame);
 
@@ -111,13 +111,25 @@ void Screens::FaceVerificationWindow() {
     }
 }
 
-// void Screens::InputID(id)
-//     cvui::init(WINWINDOW_VERIFY_ID    cv::Mat frame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);{
-//     cvui::text(frame, 80, 300, "Student ID:");
-//     cvui::input(frame, 80, 320, 100, "input", id);
-// }
-//     cvui::update();
-//     cv::imshow(WINDOW_VERIFY_ID, frame);              if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the                            }
+void Screens::InputID(std::string id){
+    cvui::init(WINDOW_VERIFY_ID);
+    cv::Mat frame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
+    while (true){
+		frame = cv::Scalar(245, 176, 66);
+        cvui::text(frame, 80, 240, "ID");
+        cvui::text(frame, 80, 260, id);
+
+        if (cvui::button(frame, 80, 450, "Confirm")) {
+                return;
+        }
+
+		cvui::imshow(WINDOW_CONFIRM, frame);
+
+		if (cv::waitKey(20) == 27) {
+			return;
+		}
+	}
+}
 
 void Screens::FaceVerificationMethod(const cv::Mat &img, const cv::String &id, int &approved, Cuatec &response){
     //cv::Mat input1 = cv::imread("Test_images/img1.png", 1);
