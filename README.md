@@ -2,25 +2,35 @@
 
 **Face Recognition System** is a C++ project to recognize members of Tecnológico de Monterrey CSF
 
-## Requirements
+## VULTUS software
 
-### Functional
+<div align="center">
+  <img alt="sample" src="./sample.gif" width="75%">
+</div>
 
-- The system will recognize members of Tecnológico de Monterrey CSF.
+### Description
+
+- The system recognize members of Tecnológico de Monterrey CSF.
 - The system throws alerts in case the credential does not match the face.
 - The system allows to authenticate (comparing) the data of the students with those of the credential.
-- The system will grant access if the data match.
-- The system will show an alert whether or not he is the person.
-- The system allows to enroll new students.
-- The system should either verify or identify the student.
+- The system grant access if the data match.
+- The system show an alert whether or not he is the person.
+- The system to enroll new students.
+- The system verify or identify the student.
 
-### Non Functional
+### Highlights
 
-- The system must run in Mac OS (10.14 +), Windows 10 + and Linux (Ubuntu 18.04 +)
-- The result must be given under 1 second
-- The system is planned to be delivered by May 28th
-- The name of the system: <name>
-- Data must stay safe and secure
+- The system runs in Mac OS (10.14 +), Windows 10 + and Linux (Ubuntu 18.04 +)
+- Data stay safe and secure
+- Written in C++
+
+#### TESTS
+
+|  Method  | Windows  |   Mac    | Linux |
+| :------: | :------: | :------: | :---: |
+|  Verify  | untested | untested | untested |
+| Identify | untested | untested | untested |
+|  Enroll  | untested | untested | untested |
 
 ## Dependencies
 
@@ -38,9 +48,17 @@ Below are the dependencies used in this project:
 git clone https://github.com/leonardochang36/TC2004-FaceRecognition-Spring2020.git
 
 cd TC2004-FaceRecognition-Spring2020 && GraphicInterface && mkdir build && cmake .. && make
-
-./GUI
 ```
+
+***NOTE:*** You must have installed all dependencies correctly
+
+## Run
+
+```sh
+./GraphicInterface
+```
+
+***NOTE:*** There must be a camera attached to the computer for the program to work fully.
 
 ## How to use
 
@@ -147,5 +165,9 @@ void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<
 ```
 
 ### Enroll user
+
+## Changelog
+
+- First release in May 28th
 
 _Copyright © 2020 ITESM CSF_
