@@ -23,8 +23,6 @@ include_directories("/usr/local/lib")
 ## Face Detection
 include_directories(../Face_Detection/source/)
 set(SOURCEDETECTION ../Face_Detection/source/FaceDetection.cpp)
-include_directories(../Face_Alignment/src/faceDetection/)
-set(SOURCEDETECTION2 ../Face_Alignment/src/faceDetection/module1.cpp)
 # Face Alignment
 include_directories(../Face_Alignment/src/faceAlignment)
 set(SOURCEALIGNMENT ../Face_Alignment/src/faceAlignment/align.cpp)
@@ -38,7 +36,6 @@ set(SOURCEDB ../Database/src/Cuatec.cpp ../Database/src/DBManagerInterface.cpp)
 add_executable(FaceRecognition
 ${PROJECT_SOURCE_DIR}/src/Face_Recognition.cpp
 ${SOURCEDETECTION}
-${SOURCEDETECTION2}
 ${SOURCEALIGNMENT}
 ${SOURCEEXTRACTION}
 ${SOURCEDB}

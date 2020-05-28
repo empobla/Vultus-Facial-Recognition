@@ -27,7 +27,33 @@ int main(int argc, char const *argv[])
 	}
 
 	// Tests start here!
-	FaceRecognition *fr = new FaceRecognition(0.5);
+	FaceRecognition *fr = new FaceRecognition(0.5, 10);
+
+	// Test for identify() T1
+	int identifyResponse;
+	std::vector<Cuatec> identifyResult;
+	fr->identify(image, identifyResponse, identifyResult);
+
+	if (identifyResponse == 1)
+	{
+		// Matched the face
+		cout << "Face matched..." << endl;
+		for (int i = 0; i < identifyResult.size(); i++)
+		{
+			cout << "-" + identifyResult[i].getNombre() << endl;
+		}
+	}
+	else if (identifyResponse == 0)
+	{
+		// Could not match the face
+		cout << "Face not matched." << endl;
+		return -1;
+	}
+	else
+	{
+		cout << "Error: Something went wrong in the identification process." << endl;
+		return -1;
+	}
 
 	//Test for verification method T4
 	// Cuatec cuatecResponse;
@@ -59,12 +85,12 @@ int main(int argc, char const *argv[])
 	// 	std::cout << "student enrolled succesfully " << std::endl;
 	// }
 	//Test for identify
-	int response = 0;
-	std::vector<Cuatec> result;
-	fr->identify(image, response, result);
-	Cuatec firstResult = result[0];
-	imshow("image", firstResult.getImg());
-	waitKey(0);
+	// int response = 0;
+	// std::vector<Cuatec> result;
+	// fr->identify(image, response, result);
+	// Cuatec firstResult = result[0];
+	// imshow("image", firstResult.getImg());
+	// waitKey(0);
 	// for(int i = 0; i < result.size(); i++){
 	// 	Cuatec firstResult = result[i];
 	// 	imshow("image", firstResult.getImg());
