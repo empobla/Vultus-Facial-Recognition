@@ -16,15 +16,9 @@ FaceRecognition::FaceRecognition()
 
 FaceRecognition::FaceRecognition(double acceptanceRate)
 {
-<<<<<<< HEAD
-	if (acceptanceRate >= 1 || acceptanceRate <= 0)
-	{
-		cout << "acceptanceRate must be between (0..1)\n";
-=======
 	if (acceptanceRate <= 0)
 	{
 		cout << "acceptanceRate must be greater than 0\n";
->>>>>>> 5cdc0438950716ecb108801bfb78ce82346f2860
 	}
 	acceptance_rate = acceptanceRate;
 	near_neighbors = 8;
@@ -124,19 +118,11 @@ void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<
 		//Matched the face
 		response = 1;
 		//result = db->readOne(id);
-<<<<<<< HEAD
-		result = db->fastSearch(features, 10);
-=======
 		result = db->fastSearch(features, abs(near_neighbors));
->>>>>>> 5cdc0438950716ecb108801bfb78ce82346f2860
 	}
 
 	else
 	{
-<<<<<<< HEAD
-		cout << "Error: Something went wrong in the identification process.\n";
-=======
->>>>>>> 5cdc0438950716ecb108801bfb78ce82346f2860
 		//Can't match the face
 		response = 0;
 	}
