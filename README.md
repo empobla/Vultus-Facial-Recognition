@@ -104,19 +104,6 @@ void Screens::confirmationFrame(std::string name, std::string age, std::string i
 }
 ```
 
-Graphical User Interface that allows an easy access to the system's functions. For standalone testing go to the GraphicInterface subdirectory and input the following commands:
-```sh
-mkdir build
-cd build
-cmake ..
-make
-./GraphicInterface
-```
-***NOTE:*** There must be a camera attached to the computer for the program to work fully.
-
-Once the program is successfully compiled and is running, the navigation through the GUI is pretty simple. There will be buttons displayed which will run the different functions associated with them. 
-
-
 ### Verify
 
 ### Identify
