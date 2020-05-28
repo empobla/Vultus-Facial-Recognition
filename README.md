@@ -60,7 +60,6 @@ void Screens::MainWindow(){
 	// Creates the buttons and calls the respective functions
 }
 
-
 // VERIFICATION METHODS
 void Screens::FaceVerificationWindow(){
 	// To verify an access given a capture and an ID
