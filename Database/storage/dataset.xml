@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <opencv_storage>
 <data type_id="opencv-matrix">
-  <rows>1664</rows>
-  <cols>1</cols>
+  <rows>13</rows>
+  <cols>128</cols>
   <dt>f</dt>
   <data>
     -8.37121382e-02 6.47552237e-02 9.39426124e-02 1.26962718e-02

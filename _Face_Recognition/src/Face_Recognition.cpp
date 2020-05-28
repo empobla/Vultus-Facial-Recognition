@@ -8,7 +8,10 @@ using namespace cv;
 
 FaceRecognition::FaceRecognition(double acceptanceRate)
 {
-	if(acceptanceRate >= 1 || acceptanceRate <= 0){ cout << "acceptanceRate must be between (0..1)\n"; }
+	if (acceptanceRate >= 1 || acceptanceRate <= 0)
+	{
+		cout << "acceptanceRate must be between (0..1)\n";
+	}
 	acceptance_rate = acceptanceRate;
 	faceDetector = new FaceDetector("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
 	//faceDetector = new Module1("../../Face_Detection/models/haarcascade_frontalface_alt.xml");
@@ -19,7 +22,10 @@ FaceRecognition::FaceRecognition(double acceptanceRate)
 
 FaceRecognition::FaceRecognition(const std::string cascadeClassifier, const std::string faceLandmark, const std::string resnetModel, double acceptanceRate)
 {
-	if(acceptanceRate >= 1 || acceptanceRate <= 0){ cout << "acceptanceRate must be between (0..1)\n"; }
+	if (acceptanceRate >= 1 || acceptanceRate <= 0)
+	{
+		cout << "acceptanceRate must be between (0..1)\n";
+	}
 	acceptance_rate = acceptanceRate;
 	faceDetector = new FaceDetector(cascadeClassifier);
 	//faceDetector = new Module1(cascadeClassifier);
@@ -81,20 +87,20 @@ void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<
 {
 	cv::Mat features;
 
-    if (getFeatureDescriptorsFromFrame(frame, features))
-    {
-		//Matched the face 
+	if (getFeatureDescriptorsFromFrame(frame, features))
+	{
+		//Matched the face
 		response = 1;
 		//result = db->readOne(id);
 		result = db->fastSearch(features, 10);
-    }
-    
-    else
-    {
-        cout << "Error: Something went wrong in the identification process.\n";
-		//Can't match the face 
-        response = 0;
-    }
+	}
+
+	else
+	{
+		cout << "Error: Something went wrong in the identification process.\n";
+		//Can't match the face
+		response = 0;
+	}
 }
 
 void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const std::string name, const int age, int &response)

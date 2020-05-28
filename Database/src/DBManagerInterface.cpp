@@ -9,6 +9,9 @@ DBManagerInterface::DBManagerInterface(std::string uri, std::string database, st
     db = conn[database];
     //Seleccionando la coleccion
     coll = db[collection];
+    //Constructing features index
+    index = cv::flann::Index();
+    createIndex();
 }
 
 DBManagerInterface::~DBManagerInterface()
@@ -212,50 +215,62 @@ int DBManagerInterface::deleteOne(std::string matricula)
     }
 }
 // 🔧 fast search in construction
-std::vector<Cuatec> DBManagerInterface::fastSearch(cv::Mat featuresMat, int nearestNeighbors)
+std::vector<Cuatec> DBManagerInterface::fastSearch(cv::Mat query, int nearestNeighbors)
 {
-    cv::Mat dataset;
-    //Reading dataset stored
-    // std::string datasetString = "../storage/dataset/dataset.xml.gz";
-    // cv::FileStorage fs(datasetString, cv::FileStorage::READ);
-    // fs["data"] >> dataset;
-    // fs.release();
-    // //Declaring Mats where results are going to be
-    // cv::Mat distances;
-    // cv::Mat indices;
-    // //Note: check if euclidian distance in float or int
-    // cv::flann::GenericIndex<cvflann::L2<int>> flann_index(dataset,
-    //                                                       cvflann::SavedIndexParams("../storage/dataset/index.xml.gz"),
-    //                                                       cvflann::FLANN_DIST_EUCLIDEAN);
-    // flann_index.knnSearch(featuresMat, indices, distances, nearestNeighbors);
-    //Store dataset[indices found] in knnMatches
+    createIndex();
+    //Declaring mat objects for results
+    cv::Mat indices, dists;
+    //knn-searching  O(logN+logM)
+    // std::cout << query.t() << std::endl;
+    index.knnSearch(query.t(), indices, dists, nearestNeighbors);
+    //Declaring Cuatec vector to store search results
     std::vector<Cuatec> knnMatches;
+    //Declaring temporary Cuatec object that will store Cuatecs received by the iteration
+    Cuatec temp;
+    for (size_t i = 0; i < nearestNeighbors; i++)
+    {
+        temp = readOne(matriculaIndex[indices.at<int>(i)]);
+        knnMatches.push_back(temp);
+    }
+    std::cout << indices << std::endl;
+    std::cout << dists << std::endl;
     return knnMatches;
 }
 // 🔧 index in construction
-void DBManagerInterface::createIndex(cv::Mat query)
+void DBManagerInterface::createIndex()
 {
-    // cv::Mat dataset;
-    // cv::Mat tempFeatures();
-    // std::string featuresRoute;
+    //Declaring dataset mat object to append all existing features in DB
+    cv::Mat dataset;
+    //Declaring temporary mat object where feature results are  going to be placed
+    cv::Mat tempFeatures;
+    //Declaring strings for file storage read
+    std::string featuresRoute;
+    std::string matricula;
 
-    //Reading all documents from DB
-    // mongocxx::cursor cursor = coll.find({});
-    // for (auto doc : cursor)
-    // {
-    //     featuresRoute = doc["identificacionFacial"].get_utf8().value.to_string();
-    //     cv::FileStorage fs(featuresRoute, cv::FileStorage::READ);
-    //     fs["data"] >> tempFeatures;
-    //     fs.release();
-    //     dataset.push_back(tempFeatures.t());
-    // }
-    // cv::FileStorage featureStorage("../../Database/storage/dataset.xml", cv::FileStorage::WRITE | cv::FileStorage::FORMAT_XML);
-    // featureStorage << "data" << dataset;
-    // featureStorage.release();
+    //Dropping matriculaIndex content to store new matriculas in parallel with new dataset mat object
+    matriculaIndex.clear();
 
-    // cv::flann::Index index = cv::flann::Index();
-    // index.build(dataset, cv::flann::KDTreeIndexParams());
-    // cv::Mat indices, dists;
-    // int numKnn = 10;
-    // index.knnSearch(query, indices, dists, numKnn);
+    // Reading all documents from DB
+    mongocxx::cursor cursor = coll.find({});
+    for (auto doc : cursor)
+    {
+        featuresRoute = doc["identificacionFacial"].get_utf8().value.to_string();
+        matricula = doc["matricula"].get_utf8().value.to_string();
+        cv::FileStorage fs(featuresRoute, cv::FileStorage::READ);
+        fs["data"] >> tempFeatures;
+        fs.release();
+        //This condition is to avoid any empty mat insertion to dataset (causes error)
+        if (!tempFeatures.empty())
+        {
+            matriculaIndex.push_back(matricula);
+            dataset.push_back(tempFeatures.t());
+        }
+    }
+    //Saving it
+    cv::FileStorage featureStorage("../../Database/storage/dataset.xml", cv::FileStorage::WRITE | cv::FileStorage::FORMAT_XML);
+    featureStorage << "data" << dataset;
+    featureStorage.release();
+
+    //Constructing index with a set of randomized kd-trees
+    index.build(dataset, cv::flann::KDTreeIndexParams());
 }
