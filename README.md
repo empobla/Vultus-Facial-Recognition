@@ -120,31 +120,15 @@ This method verifies if the subject in frame matches the subject in database for
 
 ### Identify
 
-This method unites the face detection, face alignment, feature extraction and database modules into one. As parameters, it receives the current frame ("frame") being shot by the camera, an integer ("response") that will either be saved as a 0 or 1, and the empty vector (result) of possible matches to the face in the current frame.
+This method unites the face detection, face alignment, feature extraction and database modules into one. 
 
-The method begins by creating an empty Mat object called "features", which will be used as an argument along with the current frame when calling "getFeatureDescriptorsFromFrame()". That method encapsulates the first three modules of this system (face detection, face alignment and feature extraction),takes "features" and "near_neighbors" as arguments and once all 3 modules have done their piece of work, a boolean variable is returned. If it was returned as a true, it means all 3 modules worked fine, so "response" is saved as a 1, and "result" will be filled with possible matches to the face in the current frame via a call to "fastSearch" (a method provided by the database module), which takes as arguments the now filled "features" Mat object and "near_neighbors" (the amount of possible matches desired to be seen). If the boolean returned from "getFeatureDescriptorsFromFrame()" was returned as false, the person using the system is notified through an "Error" message and "response" is saved as 0.
+#### Parameters
 
-```c++
-void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<Cuatec> &result)
-{
-	cv::Mat features;
+- frame: a Mat object of the current frame being captured.
+- response: an integer that will represent the response of the identification (0 for no match and 1 for a match).
+- result: a vector of type Cuatec that will contain all the possible matches from the face identification.
 
-	if (getFeatureDescriptorsFromFrame(frame, features))
-	{
-		//Matched the face
-		response = 1;
-		//result = db->readOne(id);
-		result = db->fastSearch(features, near_neighbors);
-	}
-
-	else
-	{
-		cout << "Error: Something went wrong in the identification process.\n";
-		//Can't match the face
-		response = 0;
-	}
-}
-```
+The method begins by creating an empty Mat object called `features`, which will be used as an argument along with the current frame when calling `getFeatureDescriptorsFromFrame()`. That method encapsulates the first three modules of this system (face detection, face alignment and feature extraction),takes `features` and `near_neighbors` as arguments and once all 3 modules have done their piece of work, a boolean variable is returned. If it was returned as a true, it means all 3 modules worked fine, so `response` is saved as a 1, and `result` will be filled with possible matches to the face in the current frame via a call to `fastSearch()` (a method provided by the database module), which takes as arguments the now filled `features` Mat object and `near_neighbors` (the amount of possible matches desired to be seen). If the boolean returned from `getFeatureDescriptorsFromFrame()` was returned as false, the person using the system is notified through an "Error" message and `response` is saved as 0.
 
 ### Enroll user
 
