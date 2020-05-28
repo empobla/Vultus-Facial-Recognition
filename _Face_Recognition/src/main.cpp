@@ -29,6 +29,26 @@ int main(int argc, char const *argv[])
 	// Tests start here!
 	FaceRecognition *fr = new FaceRecognition(0.5, 10);
 
+	// Test for identify() T1
+	int identifyResponse;
+	std::vector<Cuatec> identifyResult;
+	fr->identify(image, identifyResponse, identifyResult);
+
+	if(identifyResponse == 1){
+		// Matched the face
+		cout << "Face matched..." << endl;
+		for(int i = 0; i < identifyResult.size(); i++){
+			cout << "-"+identifyResult[i].getNombre() << endl;
+		}
+	}else if(identifyResponse == 0){
+		// Could not match the face
+		cout << "Face not matched." << endl;
+		return -1;
+	}else{
+		cout << "Error: Something went wrong in the identification process." << endl;
+		return -1;
+	}
+
 	//Test for verification method T4
 	Cuatec cuatecResponse;
 	int queryResponse;
