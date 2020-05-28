@@ -63,7 +63,6 @@ void Screens::MainWindow(){
 	// Creates the buttons and calls the respective functions
 }
 
-
 // VERIFICATION METHODS
 void Screens::FaceVerificationWindow(){
 	// To verify an access given a capture and an ID
@@ -107,20 +106,6 @@ void Screens::confirmationFrame(std::string name, std::string age, std::string i
 	// Displays the input data in another window
 }
 ```
-
-Graphical User Interface that allows an easy access to the system's functions. For standalone testing go to the GraphicInterface subdirectory and input the following commands:
-
-```sh
-mkdir build
-cd build
-cmake ..
-make
-./GraphicInterface
-```
-
-**_NOTE:_** There must be a camera attached to the computer for the program to work fully.
-
-Once the program is successfully compiled and is running, the navigation through the GUI is pretty simple. There will be buttons displayed which will run the different functions associated with them.
 
 ### Verify
 
