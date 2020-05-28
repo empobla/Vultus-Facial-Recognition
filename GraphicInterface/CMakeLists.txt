@@ -23,8 +23,6 @@ include_directories("/usr/local/lib")
 ## Face Detection
 include_directories(../Face_Detection/source/)
 set(SOURCEDETECTION ../Face_Detection/source/FaceDetection.cpp)
-include_directories(../Face_Alignment/src/faceDetection/)
-set(SOURCEDETECTION2 ../Face_Alignment/src/faceDetection/module1.cpp)
 # Face Alignment
 include_directories(../Face_Alignment/src/faceAlignment)
 set(SOURCEALIGNMENT ../Face_Alignment/src/faceAlignment/align.cpp)
@@ -41,7 +39,6 @@ set(SOURCEFR ../_Face_Recognition/src/Face_Recognition.cpp)
 add_executable(GraphicInterface
 ${PROJECT_SOURCE_DIR}/GUI.cpp
 ${SOURCEDETECTION}
-${SOURCEDETECTION2}
 ${SOURCEALIGNMENT}
 ${SOURCEEXTRACTION}
 ${SOURCEDB}

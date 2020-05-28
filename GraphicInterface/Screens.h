@@ -42,6 +42,7 @@ class Screens{
         void FaceVerificationWindow();
         void FaceVerificationMethod(const cv::Mat &img, const cv::String &id, int &approved, Cuatec &response); //Missing Cuatec0
         void ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::Mat dbImg, cv::String id, std::string inputID);
+        void InputId(cv::String &id);
 
         // FaceIdentification functions
         void FaceIdentificationWindow();
@@ -51,7 +52,8 @@ class Screens{
         // EnrollStudent functions
         void EnrollStudentWindow();
         int enrollStudent(std::string path, std::string name, std::string age, std::string id);
-        void confirmationFrame(std::string name, std::string age, std::string id, std::string path, cv::Mat image, int confirmation);
+        void confirmationFrame(std::string name, std::string age, std::string id, std::string path, cv::Mat &image, int confirmation);
+        void EnrollStudentScreenshot(std::string name, std::string age, std::string id); 
 };
 
 #endif

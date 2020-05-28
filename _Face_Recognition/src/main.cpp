@@ -27,29 +27,55 @@ int main(int argc, char const *argv[])
 	}
 
 	// Tests start here!
-	FaceRecognition *fr = new FaceRecognition(0.5);
+	FaceRecognition *fr = new FaceRecognition(0.5, -10);
 
-	//Test for verification method T4
-	Cuatec cuatecResponse;
-	int queryResponse;
-	fr->verify(image, "T01020001", queryResponse, cuatecResponse);
-	if (queryResponse == 1)
+	// Test for identify() T1
+	int identifyResponse;
+	std::vector<Cuatec> identifyResult;
+	fr->identify(image, identifyResponse, identifyResult);
+
+	if (identifyResponse == 1)
 	{
-		//Cuatec matched
-		std::cout << "Cuatec matched, showing image..." << std::endl;
-		imshow("Cuatec", cuatecResponse.getImg());
-		waitKey();
+		// Matched the face
+		cout << "Face matched..." << endl;
+		for (int i = 0; i < identifyResult.size(); i++)
+		{
+			cout << "-" + identifyResult[i].getNombre() << endl;
+		}
 	}
-	else if (queryResponse == 0)
+	else if (identifyResponse == 0)
 	{
-		//Cuatec not matched
-		std::cout << "Cuatec not matched." << std::endl;
+		// Could not match the face
+		cout << "Face not matched." << endl;
+		return -1;
 	}
 	else
 	{
-		//Cuatec matched
-		std::cout << "Something went wrong! :(" << std::endl;
+		cout << "Error: Something went wrong in the identification process." << endl;
+		return -1;
 	}
+
+	//Test for verification method T4
+	// Cuatec cuatecResponse;
+	// int queryResponse;
+	// fr->verify(image, "T01020001", queryResponse, cuatecResponse);
+	// if (queryResponse == 1)
+	// {
+	// 	//Cuatec matched
+	// 	std::cout << "Cuatec matched, showing image..." << std::endl;
+	// 	imshow("Cuatec", cuatecResponse.getImg());
+	// 	waitKey();
+	// }
+	// else if (queryResponse == 0)
+	// {
+	// 	//Cuatec not matched
+	// 	std::cout << "Cuatec not matched." << std::endl;
+	// }
+	// else
+	// {
+	// 	//Cuatec matched
+	// 	std::cout << "Something went wrong! :(" << std::endl;
+	// }
 
 	//Test for enroll student T3
 	// int verify = 0;
@@ -57,6 +83,18 @@ int main(int argc, char const *argv[])
 	// if (verify == 1)
 	// {
 	// 	std::cout << "student enrolled succesfully " << std::endl;
+	// }
+	//Test for identify
+	// int response = 0;
+	// std::vector<Cuatec> result;
+	// fr->identify(image, response, result);
+	// Cuatec firstResult = result[0];
+	// imshow("image", firstResult.getImg());
+	// waitKey(0);
+	// for(int i = 0; i < result.size(); i++){
+	// 	Cuatec firstResult = result[i];
+	// 	imshow("image", firstResult.getImg());
+	// 	waitKey(0);
 	// }
 
 	// uncomment to show the image

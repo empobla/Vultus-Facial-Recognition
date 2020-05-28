@@ -1,11 +1,7 @@
-/*
-Code written by Alejandra Nissan, Carla Perez and Carlos Garcia
-Tecnologico de Monterrey, Santa Fe
-
-Main code
-*/
-
 #include "Screens.h"
+//g++ *.cpp -o output `pkg-config --cflags --libs opencv4`
+
+
 using namespace std;
 
 int main() {
