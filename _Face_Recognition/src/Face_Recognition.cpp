@@ -2,6 +2,7 @@
 #include <opencv2/core.hpp>
 #include <dlib/image_processing.h>
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 using namespace cv;
@@ -117,12 +118,11 @@ void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<
 		//Matched the face
 		response = 1;
 		//result = db->readOne(id);
-		result = db->fastSearch(features, near_neighbors);
+		result = db->fastSearch(features, abs(near_neighbors));
 	}
 
 	else
 	{
-		cout << "Error: Something went wrong in the identification process.\n";
 		//Can't match the face
 		response = 0;
 	}

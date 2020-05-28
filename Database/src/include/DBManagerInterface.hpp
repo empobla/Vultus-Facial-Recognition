@@ -30,6 +30,8 @@ public:
     mongocxx::database db;
     mongocxx::client conn;
     mongocxx::collection coll;
+    std::vector<std::string> matriculaIndex;
+    cv::flann::Index index;
     DBManagerInterface(std::string uri, std::string db, std::string coll);
     ~DBManagerInterface();
     int create(Cuatec cuatec);
@@ -44,8 +46,8 @@ public:
     int updateName(std::string matricula, std::string nuevoNombre);
     int updateMatricula(std::string matricula, std::string nuevaMatricula);
     int deleteOne(std::string matricula);
-    void createIndex(cv::Mat query);
-    std::vector<Cuatec> fastSearch(cv::Mat featuresMat, int nearestNeighbors);
+    void createIndex();
+    std::vector<Cuatec> fastSearch(cv::Mat query, int nearestNeighbors);
 };
 
 #endif
