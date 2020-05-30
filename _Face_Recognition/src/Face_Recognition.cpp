@@ -99,6 +99,7 @@ void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &r
 			{
 				//Different person
 				response = 0;
+				result = db->readOne(id);
 			}
 		}
 		else
