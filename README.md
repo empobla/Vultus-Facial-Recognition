@@ -2,25 +2,35 @@
 
 **Face Recognition System** is a C++ project to recognize members of Tecnológico de Monterrey CSF
 
-## Requirements
+## VULTUS Software
 
-### Functional
+<div align="center">
+	<img alt="sample" src="./sample.gif" width="75%">
+</div>
 
-- The system will recognize members of Tecnológico de Monterrey CSF.
+### Description 
+
+- The system recognizes members of Tecnológico de Monterrey CSF.
 - The system throws alerts in case the credential does not match the face.
 - The system allows to authenticate (comparing) the data of the students with those of the credential.
-- The system will grant access if the data match.
-- The system will show an alert whether or not he is the person.
-- The system allows to enroll new students.
-- The system should either verify or identify the student.
+- The system grants access if the data matches.
+- The system shows an alert whether or not he/she is the person.
+- The system allows the enrollment of new students.
+- The system verifies or identifies the student.
 
-### Non Functional
+### Highlights 
 
-- The system must run in Mac OS (10.14 +), Windows 10 + and Linux (Ubuntu 18.04 +)
-- The result must be given under 1 second
-- The system is planned to be delivered by May 28th
-- The name of the system: <name>
-- Data must stay safe and secure
+- The system runs in macOS (10.14+), Windows 10 and Linux (Ubuntu 18.04+).
+- Data in the system stays safe and secure.
+- The system was written in C++.
+
+#### Tests
+
+|  Method  | Windows  |   Mac    | Linux |
+| :------: | :------: | :------: | :---: |
+|  Verify  | untested | untested | untested |
+| Identify | untested | untested | untested |
+|  Enroll  | untested | untested | untested |
 
 ## Dependencies
 
@@ -38,9 +48,16 @@ Below are the dependencies used in this project:
 git clone https://github.com/leonardochang36/TC2004-FaceRecognition-Spring2020.git
 
 cd TC2004-FaceRecognition-Spring2020 && GraphicInterface && mkdir build && cmake .. && make
-
-./GUI
 ```
+***NOTE:*** You must have installed all dependencies correctly
+
+## Run
+
+```sh
+./GraphicInterface
+```
+
+***NOTE:*** There must be a camera attached to the computer for the program to work fully.
 
 ## How to use
 
@@ -120,32 +137,35 @@ This method verifies if the subject in frame matches the subject in database for
 
 ### Identify
 
-This method unites the face detection, face alignment, feature extraction and database modules into one. As parameters, it receives the current frame ("frame") being shot by the camera, an integer ("response") that will either be saved as a 0 or 1, and the empty vector (result) of possible matches to the face in the current frame.
+This method unites the face detection, face alignment, feature extraction and database modules into one. It identifies a face and returns an amount of possible matches to said face.
 
-The method begins by creating an empty Mat object called "features", which will be used as an argument along with the current frame when calling "getFeatureDescriptorsFromFrame()". That method encapsulates the first three modules of this system (face detection, face alignment and feature extraction),takes "features" and "near_neighbors" as arguments and once all 3 modules have done their piece of work, a boolean variable is returned. If it was returned as a true, it means all 3 modules worked fine, so "response" is saved as a 1, and "result" will be filled with possible matches to the face in the current frame via a call to "fastSearch" (a method provided by the database module), which takes as arguments the now filled "features" Mat object and "near_neighbors" (the amount of possible matches desired to be seen). If the boolean returned from "getFeatureDescriptorsFromFrame()" was returned as false, the person using the system is notified through an "Error" message and "response" is saved as 0.
+#### Parameters
 
-```c++
-void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<Cuatec> &result)
-{
-	cv::Mat features;
+- frame: a Mat object of the current frame being captured.
+- response: an integer that will contain the response of the identification (1 for a match and 0 for no match).
+- result: a vector of type Cuatec that will save all the possible matches of the identification.
 
-	if (getFeatureDescriptorsFromFrame(frame, features))
-	{
-		//Matched the face
-		response = 1;
-		//result = db->readOne(id);
-		result = db->fastSearch(features, near_neighbors);
-	}
-
-	else
-	{
-		cout << "Error: Something went wrong in the identification process.\n";
-		//Can't match the face
-		response = 0;
-	}
-}
-```
+The method begins by creating an empty Mat object called "features", which will be used as an argument along with the current frame when calling `getFeatureDescriptorsFromFrame()`. That method encapsulates the first three modules of this system (face detection, face alignment and feature extraction),takes "features" and "near_neighbors" as arguments and once all 3 modules have done their piece of work, a boolean variable is returned. If it was returned as a true, it means all 3 modules worked fine, so "response" is saved as a 1, and "result" will be filled with possible matches to the face in the current frame via a call to `fastSearch()`(a method provided by the database module), which takes as arguments the now filled "features" Mat object and "near_neighbors" (the amount of possible matches desired to be seen). If the boolean returned from `getFeatureDescriptorsFromFrame()` was returned as false, the person using the system is notified through an "Error" message and "response" is saved as 0.
 
 ### Enroll user
+
+This methods allows the user to enroll a new student. In order to enroll the student, the methods recieves the name (string), age (int) and id (string) as a unique key. While the MAT object, comes from the picture taken by the opeaning camara. In order to insert in the database, the picture must: detect the face to be inserted, align the picture and detect a vector of 128 dimension with its features. We use the "getFeaturesDescriptorsFromFrame" function to determine its feature vector. The response (int) parameter in function determines whether the insertion was successful (1)  or unsuccesful (0).   
+
+#### Parameters
+- Age: an int that is an input from user
+- Id : string recieved from user and key in database 
+- Name: string that is an input from user
+- Response: an int that indicates whether student was successfully enrolled or not. 
+
+#### Example
+An example of an implementation of this method: 
+
+```c++
+	fr->enrollStudent(image, "T01020013", "Elon Musk", 48, verify);
+		if (verify == 1)
+		{
+		 td::cout << "student enrolled succesfully " << std::endl;
+		}
+```
 
 _Copyright © 2020 ITESM CSF_

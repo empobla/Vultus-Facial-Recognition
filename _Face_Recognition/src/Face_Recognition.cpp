@@ -131,7 +131,7 @@ void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<
 
 void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const std::string name, const int age, int &response)
 {
-
+	std::cout<<"1 a"<<std::endl;
 	cv::Mat features;
 	if (getFeatureDescriptorsFromFrame(frame, features))
 	{
@@ -161,6 +161,7 @@ bool FaceRecognition::getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::M
 {
 	//showMat(frame);
 
+
 	// using module 1
 	std::vector<cv::Rect> faces = faceDetector->detection(frame);
 
@@ -172,6 +173,7 @@ bool FaceRecognition::getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::M
 
 	if (faces.size() < 0)
 	{
+
 		cout << "There is no face in the frame\n";
 		return false;
 	}
@@ -181,6 +183,7 @@ bool FaceRecognition::getFeatureDescriptorsFromFrame(const cv::Mat &frame, cv::M
 	//showMat(frame(faces[i]));
 	//cout << faces[i] << "\n";
 	faceAligner->alignFace(frame, faces[0], 150, tempRes);
+
 	//showMat(tempRes);
 	featureDescriptors = featureDetector->getFeatures2(tempRes);
 	//cout << "Features inside: " << featureDescriptors << "\n";
