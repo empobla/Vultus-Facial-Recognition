@@ -119,7 +119,6 @@ void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<
 		//Matched the face
 		response = 1;
 		//result = db->readOne(id);
-		result = db->fastSearch(features, abs(near_neighbors));
 	}
 
 	else
@@ -127,6 +126,20 @@ void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<
 		//Can't match the face
 		response = 0;
 	}
+	
+	if(response == 1)
+	{
+	result = db->fastSearch(features, abs(near_neighbors));	
+	}
+	else if(response == 0)
+	{
+	result = db->fastSearch(features, abs(near_neighbors));
+	}
+	else
+	{
+	response = -1;
+	}
+		
 }
 
 void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const std::string name, const int age, int &response)
