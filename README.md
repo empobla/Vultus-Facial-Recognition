@@ -75,54 +75,13 @@ int main(){
 
 **_Screens.cpp_**
 
-```c
-void Screens::MainWindow(){
-	// Creates the buttons and calls the respective functions
-}
+Inside this script the menu buttons are displayed and the respective functions are executed once the button is pressed. The buttons and funtionalities of each are teh following:
 
-// VERIFICATION METHODS
-void Screens::FaceVerificationWindow(){
-	// To verify an access given a capture and an ID
-}
+- "Face Verification": Calls the main verify method (full description below).
+- "Face identification": Calls the main identify method (full description below).
+- "Enroll a Student": Calls the main enroll method, it allows for a new user to be registered in the database. It needs the name, ID, age and picture of the before-mentioned user.
+- "Quit": Exits the program.
 
-void Screens::InputID(std::string id){
-	// Opens a window for the user to input the ID
-}
-
-void Screens::FaceVerificationMethod(const cv::Mat &img, const cv::String &id, int &approved, Cuatec &response){
-	// Approves or denies an access attempt
-}
-
-void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::Mat dbImg, cv::String id, std::string inputID){
-	// Window after the automatic verification process, can approve or deny access manually
-}
-
-// IDENTIFICATION METHODS
-void Screens::FaceIdentificationWindow(){
-	// To verify an access given a capture and an the top 10 database closest images
-}
-
-void Screens::FaceIdentificationMethod(const cv::Mat &img, int &approved, std::vector<cv::Mat> &dbImg){
-	// Approves or denies an access attempt
-}
-
-void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, std::vector < cv::Mat > dbImg, std::vector < string > inputID) {
-	// Window after the automatic verification process, can approve or deny access manually
-}
-
-// ENROLL METHODS
-void Screens::EnrollStudentWindow(){
-	// Creates window with textboxes to be filled with the required user information
-}
-
-int Screens::enrollStudent(std::string path, std::string name, std::string age, std::string id){
-	// Uploads the data to the database
-}
-
-void Screens::confirmationFrame(std::string name, std::string age, std::string id, std::string path, cv::Mat image, int confirmation) {
-	// Displays the input data in another window
-}
-```
 
 ### Verify
 
