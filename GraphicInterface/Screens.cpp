@@ -190,12 +190,11 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::
     deniedFrame = cv::Scalar(245, 176, 66);
     restrictedAccess = cv::Scalar(245, 176, 66);
     problemOcurred= cv::Scalar(245, 176, 66);
-    
+
     cv::Mat deniedAccessImage = cv::imread("../Resources/access_denied.jpg", 1);
     cv::Size size(300, 200);
     cv::resize(deniedAccessImage, deniedAccessImage, size);
     
-    approved=-1;
     while (true) {
         if (approved == 0) {
             screenshot.copyTo(deniedFrame(cv::Rect(0, 0, 640, 480)));
