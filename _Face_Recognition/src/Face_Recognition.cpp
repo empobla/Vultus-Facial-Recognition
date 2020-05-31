@@ -112,34 +112,25 @@ void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &r
 
 void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<Cuatec> &result)
 {
+	/*
+	Va, entonces lo de las fotos q se regresen las más parecidas aunq no haya match con 0
+	Y -1 si es q hubo algún error
+	*/
 	cv::Mat features;
 
 	if (getFeatureDescriptorsFromFrame(frame, features))
 	{
-		//Matched the face
-		response = 1;
 		//result = db->readOne(id);
+		// Returned list with possible matches
+		response = 1;
+		result = db->fastSearch(features, abs(near_neighbors));
 	}
 
 	else
 	{
-		//Can't match the face
+		// There were no faces detected 
 		response = 0;
 	}
-	
-	if(response == 1)
-	{
-	result = db->fastSearch(features, abs(near_neighbors));	
-	}
-	else if(response == 0)
-	{
-	result = db->fastSearch(features, abs(near_neighbors));
-	}
-	else
-	{
-	response = -1;
-	}
-		
 }
 
 void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const std::string name, const int age, int &response)

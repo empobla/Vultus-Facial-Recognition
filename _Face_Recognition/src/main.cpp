@@ -29,7 +29,7 @@ int main(int argc, char const *argv[])
 	}
 
 	// Tests start here!
-	FaceRecognition *fr = new FaceRecognition(0.5, -10);
+	FaceRecognition *fr = new FaceRecognition(0.5, 10);
 
 	// Test for identify() T1
 	int identifyResponse;
