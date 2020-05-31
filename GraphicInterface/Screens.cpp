@@ -18,7 +18,24 @@ Screens::Screens(FaceRecognition *fr) {
 }
 
 
+void Screens::Init(){
+    // int check = 1;
+    // while(check==1){
+    //     std::cout<<"To continue enter 1"<<std::endl;
+    //     std::cout<<"To stop enter -1"<<std::endl;
+    //     cin >> check;
+    //     MainWindow();
+        
+    // }
 
+    while(true){
+        MainWindow();
+
+        if (cv::waitKey(20) == 27) {
+            return;
+        }
+    }
+};
 //! --- MENU WINDOW FUNCTION ---
 
 void Screens::MainWindow(){
@@ -32,17 +49,21 @@ void Screens::MainWindow(){
 
         if (cvui::button(frame, 100, 80, "Face verification")) { // To manually verify an unauthorized access
             FaceVerificationWindow();
-            cv::destroyWindow(WINDOW2_NAME);
+            //cv::destroyWindow(WINDOW2_NAME);
+            cv::destroyAllWindows();
+            return;
             //break;
         }
         if (cvui::button(frame, 100, 160, "Face identification")) { // Detects the 10 closest matches to the faces database
             // The button was clicked, so let's increment our counter.
            FaceIdentificationWindow();
+           return;
             //break;
 
         }
         if (cvui::button(frame, 100, 240, "Enroll a student")) { // To feed the database with new values
            EnrollStudentWindow();
+           return;
            //break;
         }
         if (cvui::button(frame, 100, 300, "&Quit")) { 
@@ -50,6 +71,7 @@ void Screens::MainWindow(){
             return;
         }
         cvui::imshow(WINDOW1_NAME, frame);
+        cvui::update();
         if (cv::waitKey(20) == 27) {
             return;
         }
@@ -57,7 +79,6 @@ void Screens::MainWindow(){
         // std::cout<<"volvi a correr"<<std::endl;
     }
 }
-
 
 
 //! --- FACE VERIFICATION FUNCTIONS ---
@@ -68,7 +89,9 @@ void Screens::FaceVerificationWindow() {
     cvui::init(WINDOW2_NAME);
     cv::Mat frame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     Cuatec response;
-    cv::String id = "456";
+    cv::String id = "";
+    std::cout<<"Please enter your id"<<std::endl;
+    std::cin>>id;
 
     while (true) {
         cv::VideoCapture cap;
@@ -90,6 +113,7 @@ void Screens::FaceVerificationWindow() {
                 //InputId(id);
                 //cv::destroyWindow(WINDOW_VERIFY_ID);
                 f->verify(screenshot, id, approved, response);
+                std::cout<<approved<<std::endl;
                 // FaceVerificationMethod(screenshot, id, approved, response); // This will be returned with the Cuatec
                 // cout << response;
                 cap.release();
@@ -160,10 +184,18 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::
     cv::Mat acceptedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     cv::Mat deniedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     cv::Mat restrictedAccess = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
+    cv::Mat problemOcurred = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
+
+    acceptedFrame = cv::Scalar(245, 176, 66);
+    deniedFrame = cv::Scalar(245, 176, 66);
+    restrictedAccess = cv::Scalar(245, 176, 66);
+    problemOcurred= cv::Scalar(245, 176, 66);
+    
     cv::Mat deniedAccessImage = cv::imread("../Resources/access_denied.jpg", 1);
     cv::Size size(300, 200);
     cv::resize(deniedAccessImage, deniedAccessImage, size);
-    deniedFrame = cv::Scalar(245, 176, 66);
+    
+    approved=-1;
     while (true) {
         if (approved == 0) {
             screenshot.copyTo(deniedFrame(cv::Rect(0, 0, 640, 480)));
@@ -220,6 +252,17 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::
             cv::imshow(WINDOW_AP, restrictedAccess);
 
         }
+        if(approved == -1){
+            cvui::text(problemOcurred, 0, 300, "A problem ocurred, try again", 2.5, 0xff0000);
+            cv::imshow(WINDOW_AP, problemOcurred);
+            if (cvui::button(problemOcurred, 200, 700, "Back to Menu ")) {
+                return;
+                if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the window
+                    return;
+                }
+
+            }
+        }
 
         cvui::update();
        
@@ -240,6 +283,8 @@ void Screens::FaceIdentificationWindow() {
 
     int approved = -2;
     std::vector<cv::Mat> dbImg;
+    std::vector<string> idVector;
+    cv::Size size(150, 150);
 
     while (true) {
 
@@ -253,20 +298,36 @@ void Screens::FaceIdentificationWindow() {
         }
 
         cv::Mat screenshot;
-        //std::vector<Cuatec> result;
+        std::vector<Cuatec> result;
         while (1){
             cap.read(frame);
             if (cvui::button(frame, 500, 80, "Calculate")) {
                 cap >> screenshot;
                 cap.release();
-                // f->identify(screen, approved, result);
-                FaceIdentificationMethod(screenshot, approved, dbImg);
-
-                std::vector<string> idVector; 
-
-                for (int i = 0; i < 10; i++){ // Will be replaced by Cuatecs' attributes
-                    idVector.push_back("A1025948");
+                std::cout<<"0"<<std::endl;
+                f->identify(screenshot, approved, result);
+                std::cout<<"1"<<std::endl;
+                //FaceIdentificationMethod(screenshot, approved, dbImg);
+                if(!result.empty()){
+                    std::cout<<"2"<<std::endl;
+                    for(int i=0; i< result.size(); i++){
+                        std::cout<<"3"<<std::endl;
+                        cv::Mat temporalImg;
+                        cv::resize(result[i].getImg(), temporalImg, size);
+                        dbImg.push_back(temporalImg);
+                        
+                        //std::cout<<"Mat "<<i<<": "<<dbImg[i]<<std::endl;
+                        //dbImg.push_back(result[i].getImg());
+                        idVector.push_back(result[i].getMatricula());
+                    }
                 }
+                else{
+                    std::cout<<"Is empty"<<std::endl;
+                }
+
+                std::cout<<"Approved: "<<approved<<std::endl;
+                //FaceIdentificationMethod(screenshot, approved, dbImg);
+                 
             if (cvui::button(frame, 500, 120, "Back to Menu ")) {
                 MainWindow();
                 return;
@@ -330,47 +391,39 @@ void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, st
     cv::Mat deniedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     cv::Mat restrictedAccess = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     cv::Mat deniedAccessImage = cv::imread("../Resources/access_denied.jpg", 1);
+    acceptedFrame=cv::Scalar(245, 176, 66);
+    restrictedAccess=cv::Scalar(245, 176, 66);
     cv::Size size(300, 200);
     cv::resize(deniedAccessImage, deniedAccessImage, size);
     deniedFrame = cv::Scalar(245, 176, 66);
+    int posX = 650;
+    int posY= 180;
+    int cont = 0;
+
     while (true) {
         if (approved == 0) {
             // Print of the 10 images with the closest relation to the capture, hard-coded and will be automated when database implementation replaces it
             screenshot.copyTo(deniedFrame(cv::Rect(0, 0, 640, 480)));
-            std::string outputID = "";
-            outputID = inputID[0];
-            dbImg[0].copyTo(deniedFrame(cv::Rect(650, 0, 150, 150)));
-            outputID = inputID[0];
-            cvui::text(deniedFrame, 650, 0, outputID, 1.5, 0xff0000);
-            cvui::text(deniedFrame, 650, 0, outputID);
-            dbImg[2].copyTo(deniedFrame(cv::Rect(650, 300, 150, 150)));
-            outputID = inputID[1];
-            cvui::text(deniedFrame, 650, 300, outputID);
-            dbImg[1].copyTo(deniedFrame(cv::Rect(650, 150, 150, 150)));
-            outputID = inputID[2];
-            cvui::text(deniedFrame, 650, 150, outputID);
-            dbImg[3].copyTo(deniedFrame(cv::Rect(650, 450, 150, 150)));
-            outputID = inputID[3];
-            cvui::text(deniedFrame, 650, 450, outputID);
-            dbImg[4].copyTo(deniedFrame(cv::Rect(800, 0, 150, 150)));
-            outputID = inputID[4];
-            cvui::text(deniedFrame, 800, 0, outputID);
-            dbImg[5].copyTo(deniedFrame(cv::Rect(800, 150, 150, 150)));
-            outputID = inputID[5];
-            cvui::text(deniedFrame, 800, 150, outputID);
-            dbImg[6].copyTo(deniedFrame(cv::Rect(800, 300, 150, 150)));
-            outputID = inputID[6];
-            cvui::text(deniedFrame, 800, 300, outputID);
-            dbImg[7].copyTo(deniedFrame(cv::Rect(800, 450, 150, 150)));
-            outputID = inputID[7];
-            cvui::text(deniedFrame, 800, 450, outputID);
-            dbImg[8].copyTo(deniedFrame(cv::Rect(950, 0, 150, 150)));
-            outputID = inputID[8];
-            cvui::text(deniedFrame, 950, 0, outputID);
-            dbImg[9].copyTo(deniedFrame(cv::Rect(950, 150, 150, 150)));
-            outputID = inputID[9];
-            deniedAccessImage.copyTo(deniedFrame(cv::Rect(950, 300, 300, 200)));
-            cvui::text(deniedFrame, 950, 150, outputID);
+            posX = 650;
+            posY= 180;
+            cont = 0;
+
+            for(int i =0; cont<dbImg.size(); i++){
+                
+                if(posY*i==720){
+                    if((posX+150)<=1280 && ((posY*i))<=720){
+                        i=0; 
+                        posX += 180;                   
+                    }
+                    else{
+                        break;
+                    }
+                }
+                //std::cout<<"Pos x: "<<posX<<" Pos y: "<<posY*i<<std::endl;
+                dbImg[cont].copyTo(deniedFrame(cv::Rect(posX, posY*i, 150, 150)));
+                cvui::text(deniedFrame, posX, posY*i, inputID[cont], 0.5, 0xff0000);
+                cont++;
+            }
             cvui::text(deniedFrame, 640, 700, "Not a match, please aprove manually");
 
             if (cvui::button(deniedFrame, 800, 600, "Accept")) { // Manually accepts the incoming person
@@ -388,39 +441,29 @@ void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, st
         }
 
         if (approved == 1) { // Very similar to the block mentioned beforehand, but the approval is given directly by the system  
-            std::string outputID = "";
-            outputID = inputID[0];
             screenshot.copyTo(acceptedFrame(cv::Rect(0, 0, 640, 480)));
-            dbImg[0].copyTo(acceptedFrame(cv::Rect(650, 0, 150, 150)));
-            outputID = inputID[0];
-            cvui::text(acceptedFrame, 650, 0, outputID);
-            dbImg[2].copyTo(acceptedFrame(cv::Rect(650, 300, 150, 150)));
-            outputID = inputID[1];
-            cvui::text(acceptedFrame, 650, 300, outputID);
-            dbImg[1].copyTo(acceptedFrame(cv::Rect(650, 150, 150, 150)));
-            outputID = inputID[2];
-            cvui::text(acceptedFrame, 650, 150, outputID);
-            dbImg[3].copyTo(acceptedFrame(cv::Rect(650, 450, 150, 150)));
-            outputID = inputID[3];
-            cvui::text(acceptedFrame, 650, 450, outputID);
-            dbImg[4].copyTo(acceptedFrame(cv::Rect(800, 0, 150, 150)));
-            outputID = inputID[4];
-            cvui::text(acceptedFrame, 800, 0, outputID);
-            dbImg[5].copyTo(acceptedFrame(cv::Rect(800, 150, 150, 150)));
-            outputID = inputID[5];
-            cvui::text(acceptedFrame, 800, 150, outputID);
-            dbImg[6].copyTo(acceptedFrame(cv::Rect(800, 300, 150, 150)));
-            outputID = inputID[6];
-            cvui::text(acceptedFrame, 800, 300, outputID);
-            dbImg[7].copyTo(acceptedFrame(cv::Rect(800, 450, 150, 150)));
-            outputID = inputID[7];
-            cvui::text(acceptedFrame, 800, 450, outputID);
-            dbImg[8].copyTo(acceptedFrame(cv::Rect(950, 0, 150, 150)));
-            outputID = inputID[8];
-            cvui::text(acceptedFrame, 950, 0, outputID);
-            dbImg[9].copyTo(acceptedFrame(cv::Rect(950, 150, 150, 150)));
-            outputID = inputID[9];
-            cvui::text(acceptedFrame, 950, 150, outputID);
+            posX = 650;
+            posY= 180;
+            cont = 0;
+
+            for(int i =0; cont<dbImg.size(); i++){
+                
+                if(posY*i==720){
+                    if((posX+150)<=1280 && ((posY*i))<=720){
+                        i=0; 
+                        posX += 180;                   
+                    }
+                    else{
+                        break;
+                    }
+                }
+                //std::cout<<"Pos x: "<<posX<<" Pos y: "<<posY*i<<std::endl;
+                dbImg[cont].copyTo(acceptedFrame(cv::Rect(posX, posY*i, 150, 150)));
+                cvui::text(acceptedFrame, posX, posY*i, inputID[cont], 0.5, 0xff0000);
+                // cvui::text(acceptedFrame, posX, posY*i, inputID[cont]);
+                cont++;
+            }
+
             cvui::text(acceptedFrame, 640, 700, "Match, go ahead!");
 
             if (cvui::button(acceptedFrame, 200, 600, "Back to Menu ")) {

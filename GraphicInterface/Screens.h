@@ -34,10 +34,14 @@ class Screens{
     public: 
         Screens(FaceRecognition *fr);
         void MainWindow();
+        void Init();
 
     private:
         FaceRecognition *f;
         
+        //This function initialices the main window
+        
+
         // FaceVerification functions
         void FaceVerificationWindow();
         void FaceVerificationMethod(const cv::Mat &img, const cv::String &id, int &approved, Cuatec &response); //Missing Cuatec0
