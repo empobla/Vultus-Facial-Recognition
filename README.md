@@ -28,9 +28,9 @@
 
 |  Method  | Windows  |   Mac    | Linux |
 | :------: | :------: | :------: | :---: |
-|  Verify  | untested | untested | untested |
-| Identify | untested | untested | untested |
-|  Enroll  | untested | untested | untested |
+|  Verify  | untested | tested | tested |
+| Identify | untested | tested | tested |
+|  Enroll  | untested | tested | tested |
 
 ## Dependencies
 
