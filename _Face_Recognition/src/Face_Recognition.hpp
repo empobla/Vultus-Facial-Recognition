@@ -76,8 +76,9 @@ public:
 	 * @param frame => current captured image
 	 * 
 	 * @return response:
-	 * * 0 : No faces detected
-	 * * 1 : List with possible matches was returned
+	 * * 0 : No identified Cuatec
+	 * * 1 : Cuatec has been identified
+	 * * -1 : Error in identification process
 	 * @return result: matched Cuatect or possible
 	*/
 	void identify(const cv::Mat &frame, int &response, std::vector<Cuatec> &result);

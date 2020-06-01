@@ -120,16 +120,31 @@ void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<
 
 	if (getFeatureDescriptorsFromFrame(frame, features))
 	{
-		//result = db->readOne(id);
 		// Returned list with possible matches
-		response = 1;
 		result = db->fastSearch(features, abs(near_neighbors));
+
+		int verifyResponse;
+		string cuatecID = result[0].getMatricula();
+		Cuatec cuatecResult;
+		
+		verify(frame, cuatecID, verifyResponse, cuatecResult);
+
+		if (verifyResponse == 1){
+			response = 1;
+			cout << "The Cuatec has been identified." << endl;
+		}
+
+		else if (verifyResponse == 0){
+			response = 0; 
+			cout << "The Cuatec was not identified." << endl;
+		}
 	}
 
 	else
 	{
 		// There were no faces detected 
-		response = 0;
+		response = -1;
+		cout << "There was an error in the identification process." << endl;
 	}
 }
 
