@@ -129,4 +129,12 @@ dlib
 # compiled
 output
 out
-FaceRecognition
+
+#storage
+
+*xml.gz
+*zip
+
+# DB tests
+build_docker/
+Database/storage
