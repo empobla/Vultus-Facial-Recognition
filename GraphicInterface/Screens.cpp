@@ -65,7 +65,8 @@ void Screens::FaceVerificationWindow() {
     cvui::init(WINDOW2_NAME);
     cv::Mat frame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     Cuatec response;
-    cv::String id = "";
+    //cv::String id = "";
+    std::string id;
 
     while (true) {
         cv::VideoCapture cap;
@@ -74,8 +75,8 @@ void Screens::FaceVerificationWindow() {
         cvui::text(frame, 10, 10, "FaceVerification");
 
         cv::Mat screenshot;
-
-        while (!cap.isOpened()){
+    if(!cap.isOpened()){
+        while (1){
             printf("--(!)Error opening video capture\n");
             printf("Please enter the path of the image\n");
             std::cin>>path;
@@ -84,13 +85,21 @@ void Screens::FaceVerificationWindow() {
                 break;
             }
         }
+        id = IdAdd();
+        cv::destroyWindow(WINDOW_INSERT_IDD);
+        f->verify(screenshot, id, approved, response);
+        std::string inputID = id;
+        ApprovedStudentVerification(approved, screenshot, response.getImg(), id, inputID);
+        cv::destroyWindow(WINDOW_AP);
+        return;
 
-
+    }
+    else{
         while (1){
             cap.read(frame);
             if (cvui::button(frame, 100, 80, "Calculate")) {
                 cap >> screenshot;
-                std::string id = IdAdd();
+                id = IdAdd();
                 cv::destroyWindow(WINDOW_INSERT_IDD);
                 f->verify(screenshot, id, approved, response);
                 cap.release();
@@ -116,10 +125,11 @@ void Screens::FaceVerificationWindow() {
         }
     }
 }
+}
 
 
 cv::String Screens::IdAdd() {
-    cv::destroyAllWindows();
+    //cv::destroyAllWindows();
     cv::Mat frame_id_add = cv::Mat(cv::Size(500, 400), CV_8UC3);
 	cvui::init(WINDOW_INSERT_IDD, 20);
     cv::String name = "";
@@ -246,55 +256,89 @@ void Screens::FaceIdentificationWindow() {
     cv::Mat frame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
     std::vector<cv::Mat> dbImg;
     std::vector<string> idVector;
+    cv::Mat screenshot;
+    std::vector<Cuatec> result;
+    std::string path="";
     cv::Size size(150, 150);
 
     while (true) {
-
         cv::VideoCapture cap;
         cap = cv::VideoCapture(0);
         cap.open(0);
-        cvui::text(frame, 10, 10, "FaceIdentification");
 
-        if (!cap.isOpened()){
-            printf("--(!)Error opening video capture\n");
+        if(!cap.isOpened()){
+            while (1){
+                printf("--(!)Error opening video capture\n");
+                printf("Please enter the path of the image\n");
+                std::cin>>path;
+                screenshot=cv::imread(path);
+                if(!screenshot.empty()){
+                    break;
+                }
+            }
+            std::cout<<"Check 1"<<std::endl;
+            f->identify(screenshot, approved, result);
+            std::cout<<"Check 2"<<std::endl;
+            for(int i=0; i< result.size(); i++){
+                std::cout<<"4"<<std::endl;
+                cv::Mat temporalImg;
+                cv::resize(result[i].getImg(), temporalImg, size);
+                dbImg.push_back(temporalImg);
+                idVector.push_back(result[i].getMatricula());
+            }
+            ApprovedStudentIdentification(approved, screenshot, dbImg, idVector); 
+            cv::destroyWindow(WINDOW_ID);
+            return;
         }
-        cv::Mat screenshot;
-        std::vector<Cuatec> result;
-        while (1){
-            
-            cap.read(frame);
-            if (cvui::button(frame, 100, 80, "Calculate")) {
-                cap >> screenshot;
-                cap.release();
-                f->identify(screenshot, approved, result);
-                if(!result.empty()){
-                    for(int i=0; i< result.size(); i++){
-                        cv::Mat temporalImg;
-                        cv::resize(result[i].getImg(), temporalImg, size);
-                        dbImg.push_back(temporalImg);
-                        idVector.push_back(result[i].getMatricula());
+        else{
+
+
+            cvui::text(frame, 10, 10, "FaceIdentification");
+
+            if (!cap.isOpened()){
+                printf("--(!)Error opening video capture\n");
+            }
+
+            while (1){
+                
+                cap.read(frame);
+                if (cvui::button(frame, 100, 80, "Calculate")) {
+                    cap >> screenshot;
+                    cap.release();
+                    std::cout<<"1"<<std::endl;
+                    f->identify(screenshot, approved, result);
+                    std::cout<<"2"<<std::endl;
+                    if(!result.empty()){
+                        std::cout<<"3"<<std::endl;
+                        for(int i=0; i< result.size(); i++){
+                            std::cout<<"4"<<std::endl;
+                            cv::Mat temporalImg;
+                            cv::resize(result[i].getImg(), temporalImg, size);
+                            dbImg.push_back(temporalImg);
+                            idVector.push_back(result[i].getMatricula());
+                        }
                     }
+                    else{
+                        std::cout<<"Is empty"<<std::endl;
+                    }
+                    
+            
+                    ApprovedStudentIdentification(approved, screenshot, dbImg, idVector); 
+                    cv::destroyWindow(WINDOW_ID);
+                    return;
                 }
-                else{
-                    std::cout<<"Is empty"<<std::endl;
+                if (cvui::button(frame, 100, 120, "Back to Menu ")) {
+                    return;
                 }
-                 
-        
-                ApprovedStudentIdentification(approved, screenshot, dbImg, idVector); 
-                cv::destroyWindow(WINDOW_ID);
-                return;
+                cv::imshow(WINDOW3_NAME, frame);
+                if (cv::waitKey(20) == 27) {
+                    return;
+                }
             }
-            if (cvui::button(frame, 100, 120, "Back to Menu ")) {
-                return;
-            }
-            cv::imshow(WINDOW3_NAME, frame);
+
             if (cv::waitKey(20) == 27) {
                 return;
             }
-        }
-
-        if (cv::waitKey(20) == 27) {
-            return;
         }
     }
 }
@@ -302,7 +346,7 @@ void Screens::FaceIdentificationWindow() {
 
 
 void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, std::vector < cv::Mat > dbImg, std::vector < string > inputID) {
-    cv::destroyAllWindows();
+    //cv::destroyAllWindows();
     cvui::init(WINDOW_ID);
     cv::Mat acceptedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     cv::Mat deniedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
@@ -508,42 +552,56 @@ void Screens::EnrollStudentScreenshot(std::string name, std::string age, std::st
     cvui::init(WINDOW_PICTURE_ENROLL);
     cv::Mat frame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     cv::Mat screenshot;
+    std::string path="";
     while (true) {
         cv::VideoCapture cap;
         cap = cv::VideoCapture(0);
         cap.open(0);
         cvui::text(frame, 10, 10, "Enroll student");
 
-        if (!cap.isOpened()){
-            printf("--(!)Error opening video capture\n");
-            return;
-        }
-
-        while (1){
-            cap.read(frame);
-            if (cvui::button(frame, 100, 80, "Save Image")) {
-                cap >> screenshot;
-                cv::imwrite( "ImageDataBase.jpg", screenshot);
-                if(!screenshot.data){
-                    std::cout<<"no se lee bien la imagen"<<std::endl;
+        if(!cap.isOpened()){
+            while (!cap.isOpened()){
+                printf("--(!)Error opening video capture\n");
+                printf("Please enter the path of the image\n");
+                std::cin>>path;
+                screenshot=cv::imread(path);
+                if(!screenshot.empty()){
+                    break;
                 }
-                confirmationFrame(name, age, id, "ImageDataBase.jpg", screenshot, enrollStudent("ImageDataBase.jpg", name, age, id));
-                cv::destroyWindow(WINDOW_CONFIRM);
-                cap.release();
-                return;
             }
-            
-            cvui::update();
-            cv::imshow(WINDOW_PICTURE_ENROLL, frame);
+            cv::imwrite( "ImageDataBase.jpg", screenshot);
+            confirmationFrame(name, age, id, "ImageDataBase.jpg", screenshot, enrollStudent("ImageDataBase.jpg", name, age, id));
+            cv::destroyWindow(WINDOW_CONFIRM);
+            return;
 
+        }
+        else{
+            while (1){
+                cap.read(frame);
+                if (cvui::button(frame, 100, 80, "Save Image")) {
+                    cap >> screenshot;
+                    cv::imwrite( "ImageDataBase.jpg", screenshot);
+                    if(!screenshot.data){
+                        std::cout<<"no se lee bien la imagen"<<std::endl;
+                    }
+                    confirmationFrame(name, age, id, "ImageDataBase.jpg", screenshot, enrollStudent("ImageDataBase.jpg", name, age, id));
+                    cv::destroyWindow(WINDOW_CONFIRM);
+                    cap.release();
+                    return;
+                }
+                
+                cvui::update();
+                cv::imshow(WINDOW_PICTURE_ENROLL, frame);
+
+
+                if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the window
+                    return;
+                }
+            }
 
             if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the window
                 return;
             }
         }
-
-        if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the window
-            return;
-        }
-    }
+    }    
 }

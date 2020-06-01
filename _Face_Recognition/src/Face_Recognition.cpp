@@ -116,11 +116,18 @@ void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<
 
 	if (getFeatureDescriptorsFromFrame(frame, features))
 	{
+		/*if(features.empty()){
+			cout << "FEATURES IS EMPTY" << endl;
+		} else {
+			cout << "FEATURES IS NOT EMPTY" << endl;
+		}*/
+
 		// Returned list with possible matches
 		result = db->fastSearch(features, abs(near_neighbors));
 
 		int verifyResponse;
 		Cuatec cuatecResult;
+		//string cuatecID = "A01027265";
 
 		string cuatecID = result[0].getMatricula();
 		
