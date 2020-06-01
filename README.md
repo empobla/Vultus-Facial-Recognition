@@ -54,11 +54,34 @@ git clone https://github.com/leonardochang36/TC2004-FaceRecognition-Spring2020.g
 cd TC2004-FaceRecognition-Spring2020 && cd GraphicInterface && mkdir build && cd build && cmake .. && make
 ```
 
-##### Option 2 (docker)
-
-
-
 ***NOTE:*** You must have installed all dependencies correctly
+
+#### Option 2 (docker)
+
+https://hub.docker.com/repository/docker/robtry/face-recognition
+
+```sh
+docker pull robtry/face-recognition
+
+# Enable xhost ! (Mac & Linux)
+xhost +
+
+# Get the system
+git clone https://github.com/leonardochang36/TC2004-FaceRecognition-Spring2020.git
+
+# Linux
+docker run --privileged --device /dev/video0:/dev/video0 -v $(pwd):/root/workspace -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -p 5000:5000 -p 8888:8888 -it robtry/face-recognition
+
+# Mac
+docker run -it -v $(pwd):/root/workspace -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=docker.for.mac.host.internal:0  -p 5000:5000 -p 8888:8888 robtry/face-recognition
+
+# Compile and run it
+cd TC2004-FaceRecognition-Spring2020 && cd GraphicInterface && mkdir build && cd build && cmake .. && make
+```
+
+- ***NOTE:*** To use webcam you must be in linux.
+- ***NOTE:*** GUI can be use in Mac.
+- ***NOTE:*** You can only use CLI if you're on Windows.
 
 ### Set up database
 
@@ -82,7 +105,10 @@ Inside the code, the main functions that are used are the following:
 
 **_GUI.cpp_**
 
-![main.cpp](./GUI.png)
+<div align="center">
+	<img alt="sample" src="./GUI.png" width="75%">
+</div>
+
 
 **_Screens.cpp_**
 
