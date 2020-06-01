@@ -116,9 +116,13 @@ void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<
 
 	if (getFeatureDescriptorsFromFrame(frame, features))
 	{
+		std::cout<<"hola 0"<<std::endl;
 		result = db->fastSearch(features, abs(near_neighbors));	
+		std::cout<<"hola 0.5"<<std::endl;
 		Cuatec temp;
+		std::cout<<"hola 1"<<std::endl;
 		verify(frame, result[0].getMatricula(), response, temp);
+		std::cout<<"hola 2"<<std::endl;
 	}
 
 	else
