@@ -112,40 +112,34 @@ void FaceRecognition::verify(const cv::Mat &frame, const std::string &id, int &r
 
 void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<Cuatec> &result)
 {
-	/*
-	Va, entonces lo de las fotos q se regresen las más parecidas aunq no haya match con 0
-	Y -1 si es q hubo algún error
-	*/
 	cv::Mat features;
 
 	if (getFeatureDescriptorsFromFrame(frame, features))
 	{
-		// Returned list with possible matches
-		result = db->fastSearch(features, abs(near_neighbors));
-
-		int verifyResponse;
-		string cuatecID = result[0].getMatricula();
-		Cuatec cuatecResult;
-		
-		verify(frame, cuatecID, verifyResponse, cuatecResult);
-
-		if (verifyResponse == 1){
-			response = 1;
-			cout << "The Cuatec has been identified." << endl;
-		}
-
-		else if (verifyResponse == 0){
-			response = 0; 
-			cout << "The Cuatec was not identified." << endl;
-		}
+		//Matched the face
+		response = 1;
+		//result = db->readOne(id);
 	}
 
 	else
 	{
-		// There were no faces detected 
-		response = -1;
-		cout << "There was an error in the identification process." << endl;
+		//Can't match the face
+		response = 0;
 	}
+	
+	if(response == 1)
+	{
+	result = db->fastSearch(features, abs(near_neighbors));	
+	}
+	else if(response == 0)
+	{
+	result = db->fastSearch(features, abs(near_neighbors));
+	}
+	else
+	{
+	response = -1;
+	}
+		
 }
 
 void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const std::string name, const int age, int &response)
