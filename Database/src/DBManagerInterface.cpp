@@ -47,6 +47,7 @@ int DBManagerInterface::create(Cuatec cuatec)
         imgStorage << "data" << cuatec.getImg();
         featureStorage.release();
         imgStorage.release();
+        createIndex();
         return 1;
     }
 }
@@ -79,6 +80,7 @@ int DBManagerInterface::create(std::string name, int age, std::string matricula1
         imgStorage << "data" << imgMat;
         featureStorage.release();
         imgStorage.release();
+        createIndex();
         return 1;
     }
 }
@@ -217,7 +219,11 @@ int DBManagerInterface::deleteOne(std::string matricula)
 // 🔧 fast search in construction
 std::vector<Cuatec> DBManagerInterface::fastSearch(cv::Mat query, int nearestNeighbors)
 {
-    createIndex();
+    cv::Mat dataset;
+    cv::FileStorage fs("../../Database/storage/dataset.xml", cv::FileStorage::READ);
+    fs["data"] >> dataset;
+    fs.release();
+    index.build(dataset, cv::flann::KDTreeIndexParams());
     //Declaring mat objects for results
     cv::Mat indices, dists;
     //knn-searching  O(logN+logM)
@@ -239,6 +245,7 @@ std::vector<Cuatec> DBManagerInterface::fastSearch(cv::Mat query, int nearestNei
 // 🔧 index in construction
 void DBManagerInterface::createIndex()
 {
+    std::cout << "creating index" << std::endl;
     //Declaring dataset mat object to append all existing features in DB
     cv::Mat dataset;
     //Declaring temporary mat object where feature results are  going to be placed

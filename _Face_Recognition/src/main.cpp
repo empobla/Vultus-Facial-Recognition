@@ -30,6 +30,12 @@ int main(int argc, char const *argv[])
 
 	// Tests start here!
 	FaceRecognition *fr = new FaceRecognition(0.5, 10);
+	int verify = 0;
+	fr->enrollStudent(image, "A02222222", "AMLO", 72, verify);
+	if (verify == 1)
+	{
+		std::cout << "Amlo enrolled succesfully " << std::endl;
+	}
 
 	// Test for identify() T1
 	int identifyResponse;
@@ -55,6 +61,7 @@ int main(int argc, char const *argv[])
 	{
 		// Could not match the face
 		cout << "Face not matched." << endl;
+		cout << "-" + identifyResult[0].getNombre() << endl;
 		return -1;
 	}
 	else
