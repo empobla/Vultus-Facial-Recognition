@@ -8,6 +8,7 @@
 #define WINDOW_CONFIRM "VULTUS - Confirmation"
 #define WINDOW_AP "VULTUS - Approved Verification"
 #define WINDOW_ID "VULTUS - Approved Identification"
+#define WINDOW_INSERT_IDD "Vultus- What is your id?"
 #define WINDOW_PICTURE_ENROLL "VULTUS - take picture"
 
 
@@ -17,28 +18,9 @@ Screens::Screens(FaceRecognition *fr) {
     f = fr;
 }
 
-
-void Screens::Init(){
-    // int check = 1;
-    // while(check==1){
-    //     std::cout<<"To continue enter 1"<<std::endl;
-    //     std::cout<<"To stop enter -1"<<std::endl;
-    //     cin >> check;
-    //     MainWindow();
-        
-    // }
-
-    while(true){
-        MainWindow();
-        if (cv::waitKey() == 27) {
-            break;
-        }
-    }
-};
 //! --- MENU WINDOW FUNCTION ---
 
 void Screens::MainWindow(){
-    cv::destroyAllWindows();
     cvui::init(WINDOW1_NAME);
     cv::Mat frame = cv::Mat(cv::Size(500, 500), CV_8UC3);
     int count = 0;
@@ -48,32 +30,27 @@ void Screens::MainWindow(){
 
         if (cvui::button(frame, 100, 80, "Face verification")) { // To manually verify an unauthorized access
             FaceVerificationWindow();
-            //cv::destroyWindow(WINDOW2_NAME);
-            cv::destroyAllWindows();
-            return;
-            //break;
+            cvui::init(WINDOW1_NAME);
+            cv::destroyWindow(WINDOW2_NAME);
         }
         if (cvui::button(frame, 100, 160, "Face identification")) { // Detects the 10 closest matches to the faces database
-            // The button was clicked, so let's increment our counter.
            FaceIdentificationWindow();
-           cv::destroyAllWindows();
-           return;
-            //break;
-
+           cvui::init(WINDOW1_NAME);
+           cv::destroyWindow(WINDOW3_NAME);
         }
         if (cvui::button(frame, 100, 240, "Enroll a student")) { // To feed the database with new values
            EnrollStudentWindow();
-           cv::destroyAllWindows();
-           return;
-           //break;
+            cvui::init(WINDOW1_NAME);
+           cv::destroyWindow(WINDOW_ENROLL);
+        }
+        if (cvui::button(frame, 100, 280, "Quit")) { // To feed the database with new values
+           break;
         }
         cvui::imshow(WINDOW1_NAME, frame);
         cvui::update();
         if (cv::waitKey(20) == 27) {
-            return;
+            break;
         }
-        // cvui::update();
-        // std::cout<<"volvi a correr"<<std::endl;
     }
 }
 
@@ -81,16 +58,14 @@ void Screens::MainWindow(){
 //! --- FACE VERIFICATION FUNCTIONS ---
 
 void Screens::FaceVerificationWindow() {
-    int approved= -2;
+    int approved= -1;
     std::string path="";
     
-    //cv::destroyAllWindows();
+    cv::destroyAllWindows();
     cvui::init(WINDOW2_NAME);
     cv::Mat frame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     Cuatec response;
     cv::String id = "";
-    std::cout<<"Please enter your id"<<std::endl;
-    std::cin>>id;
 
     while (true) {
         cv::VideoCapture cap;
@@ -113,38 +88,27 @@ void Screens::FaceVerificationWindow() {
 
         while (1){
             cap.read(frame);
-            if (cvui::button(frame, 500, 80, "Calculate")) {
+            if (cvui::button(frame, 100, 80, "Calculate")) {
                 cap >> screenshot;
-                //InputId(id);
-                //cv::destroyWindow(WINDOW_VERIFY_ID);
+                std::string id = IdAdd();
+                cv::destroyWindow(WINDOW_INSERT_IDD);
                 f->verify(screenshot, id, approved, response);
-                std::cout<<approved<<std::endl;
-                // FaceVerificationMethod(screenshot, id, approved, response); // This will be returned with the Cuatec
-                // cout << response;
                 cap.release();
                 std::string inputID = id;
                 ApprovedStudentVerification(approved, screenshot, response.getImg(), id, inputID);
                 cv::destroyWindow(WINDOW_AP);
                 return;
-                if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the window
-                    return;
-                }
             }
-            if (cvui::button(frame, 500, 120, "Back to Menu ")) {
-                //MainWindow();
+            if (cvui::button(frame, 100, 120, "Back to Menu ")) {
                 return;
-                if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the window
-                    return;
-                }
-                
             }
             
             cvui::update();
             cv::imshow(WINDOW2_NAME, frame);
-
             if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the window
-                return;
+            return;
             }
+    
         }
 
         if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the window
@@ -153,48 +117,52 @@ void Screens::FaceVerificationWindow() {
     }
 }
 
-void Screens::InputId(std::string &id){
-    cvui::init(WINDOW_VERIFY_ID);
-    cv::Mat frameId = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
 
-    while (true){
-		frameId = cv::Scalar(245, 176, 66);
+cv::String Screens::IdAdd() {
+    cv::destroyAllWindows();
+    cv::Mat frame_id_add = cv::Mat(cv::Size(500, 400), CV_8UC3);
+	cvui::init(WINDOW_INSERT_IDD, 20);
+    cv::String name = "";
+    cv::String id = "";
+    cv::String age = "";
+    cv::String img_path = "";
+    int offset = 80;
 
-            cvui::text(frameId, 80, 240, "Matricula");
+	while (true) { // Displays the textfields as well as the necessary function buttons
+		frame_id_add = cv::Scalar(245, 176, 66);
 
-            cvui::input(frameId, 140, 80, 100, "input4", id);
-            cvui::update();
-        if (cvui::button(frameId, 80, 400, "Confirm")) {
-                 return;
-        }
+        cvui::text(frame_id_add  , 40, offset+10, "Please write the id below:", 1, 0xffffff);
+		cvui::text(frame_id_add  , 40, offset+50, "ID", 0.5, 0xffffff);
+        
+		cvui::input(frame_id_add , 140, offset+40, 100, "input1", id);
 
-
-		cvui::imshow(WINDOW_VERIFY_ID, frameId);
-		if (cv::waitKey(20) == 27) {
-			return;
+        if (cvui::button(frame_id_add , 200, offset+150, "Calculate")) {
+            return id;
 		}
+        if (cvui::button(frame_id_add , 200, offset+200, "Add Manually through terminal")) {
+            std::cout<<"Add id here "<<std::endl;
+            std::cin>>id;
+            return id;
+		}
+
+		cvui::update();
+		cv::imshow(WINDOW_INSERT_IDD, frame_id_add);
 	}
 }
 
-// void Screens::FaceVerificationMethod(const cv::Mat &img, const cv::String &id, int &approved, Cuatec &response){
-//     //cv::Mat input1 = cv::imread("Test_images/img1.png", 1);
-//     approved = 0;
-//     //ApprovedStudentVerification(0, input1, id);
-// }
-
 void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::Mat dbImg, cv::String id, std::string inputID) {
-    //cv::destroyAllWindows();
     cvui::init(WINDOW_AP);
+
 
     cv::Mat acceptedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     cv::Mat deniedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
-    cv::Mat restrictedAccess = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
-    cv::Mat problemOcurred = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
+    cv::Mat restrictedAccess = cv::Mat::zeros(cv::Size(700, 720), CV_8UC3);
+    cv::Mat problemOcurred = cv::Mat::zeros(cv::Size(600, 400), CV_8UC3);
 
     acceptedFrame = cv::Scalar(245, 176, 66);
     deniedFrame = cv::Scalar(245, 176, 66);
     restrictedAccess = cv::Scalar(245, 176, 66);
-    problemOcurred= cv::Scalar(245, 176, 66);
+    problemOcurred= cv::Scalar(3, 86, 252);
 
     cv::Mat deniedAccessImage = cv::imread("../Resources/access_denied.jpg", 1);
     cv::Size size(300, 200);
@@ -202,7 +170,9 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::
     
     cv::Size size2(640, 480);
     cv::resize(screenshot, screenshot, size2);
-    cv::resize(dbImg, dbImg, size2);
+    if(approved != -1){
+        cv::resize(dbImg, dbImg, size2);
+    }
     
     while (true) {
         if (approved == 0) {
@@ -215,12 +185,10 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::
 
             if (cvui::button(deniedFrame, 700, 500, "Accept")) {
                 approved = 1;
-                //cvui::text(acceptedFrame, 900, 700, "Go ahead!");
             }
 
             if (cvui::button(deniedFrame, 700, 550, "Restrict Access")) {
                 approved = 2;
-                //cvui::text(acceptedFrame, 900, 700, "Go ahead!");
             }
 
             cv::imshow(WINDOW_AP, deniedFrame);
@@ -235,11 +203,7 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::
             cvui::text(acceptedFrame, 500, 700, id);
             cvui::text(acceptedFrame, 640, 700, "Match, go ahead!", 0.5);
             if (cvui::button(acceptedFrame, 400, 600, "Back to Menu ")) {
-                //MainWindow();
                 return;
-                if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the window
-                    return;
-                }
             }
             cv::imshow(WINDOW_AP, acceptedFrame);
 
@@ -249,27 +213,20 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::
             deniedAccessImage.copyTo(restrictedAccess(cv::Rect(0, 490, 300, 200)));
             cvui::text(restrictedAccess, 640, 700, "Access denied! :(");
 
-            if (cvui::button(restrictedAccess, 200, 700, "Back to Menu ")) {
-                //MainWindow();
+            if (cvui::button(restrictedAccess, 400, 500, "Back to Menu ")) {
                 return;
-                if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the window
-                    return;
-                }
-
             }
             cv::imshow(WINDOW_AP, restrictedAccess);
 
         }
         if(approved == -1){
-            cvui::text(problemOcurred, 0, 300, "A problem ocurred, try again", 2.5, 0xff0000);
-            cv::imshow(WINDOW_AP, problemOcurred);
-            if (cvui::button(problemOcurred, 200, 700, "Back to Menu ")) {
+            cvui::text(problemOcurred, 80, 100, "A problem ocurred,  try again", 1, 0xffffff);
+            cvui::text(problemOcurred, 80, 150, "Recommendation: Check if id is in database", 0.5, 0xffffff);
+            if (cvui::button(problemOcurred, 200, 200, "Back to Menu ")) {
                 return;
-                if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the window
-                    return;
-                }
-
             }
+            cv::imshow(WINDOW_AP, problemOcurred);
+
         }
 
         cvui::update();
@@ -285,11 +242,10 @@ void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::
 //! --- FACE IDENTIFICATION FUNCTIONS ---
 
 void Screens::FaceIdentificationWindow() {
-    //  cv::destroyAllWindows();
+    cv::destroyAllWindows();
+    int approved = -1;
     cvui::init(WINDOW3_NAME);
     cv::Mat frame = cv::Mat(cv::Size(1280, 720), CV_8UC3);
-
-    int approved = -2;
     std::vector<cv::Mat> dbImg;
     std::vector<string> idVector;
     cv::Size size(150, 150);
@@ -304,18 +260,17 @@ void Screens::FaceIdentificationWindow() {
         if (!cap.isOpened()){
             printf("--(!)Error opening video capture\n");
         }
-
         cv::Mat screenshot;
         std::vector<Cuatec> result;
         while (1){
+            
             cap.read(frame);
-            if (cvui::button(frame, 500, 80, "Calculate")) {
+            if (cvui::button(frame, 100, 80, "Calculate")) {
                 cap >> screenshot;
                 cap.release();
                 std::cout<<"0"<<std::endl;
                 f->identify(screenshot, approved, result);
                 std::cout<<"1"<<std::endl;
-                //FaceIdentificationMethod(screenshot, approved, dbImg);
                 if(!result.empty()){
                     std::cout<<"2"<<std::endl;
                     for(int i=0; i< result.size(); i++){
@@ -323,9 +278,6 @@ void Screens::FaceIdentificationWindow() {
                         cv::Mat temporalImg;
                         cv::resize(result[i].getImg(), temporalImg, size);
                         dbImg.push_back(temporalImg);
-                        
-                        //std::cout<<"Mat "<<i<<": "<<dbImg[i]<<std::endl;
-                        //dbImg.push_back(result[i].getImg());
                         idVector.push_back(result[i].getMatricula());
                     }
                 }
@@ -334,17 +286,15 @@ void Screens::FaceIdentificationWindow() {
                 }
 
                 std::cout<<"Approved: "<<approved<<std::endl;
-                //FaceIdentificationMethod(screenshot, approved, dbImg);
                  
-            if (cvui::button(frame, 500, 120, "Back to Menu ")) {
-                //MainWindow();
-                return;
-            }
+        
                 ApprovedStudentIdentification(approved, screenshot, dbImg, idVector); 
                 cv::destroyWindow(WINDOW_ID);
                 return;
             }
-            
+            if (cvui::button(frame, 100, 120, "Back to Menu ")) {
+                return;
+            }
             cv::imshow(WINDOW3_NAME, frame);
             if (cv::waitKey(20) == 27) {
                 return;
@@ -358,44 +308,8 @@ void Screens::FaceIdentificationWindow() {
 }
 
 
-// void Screens::FaceIdentificationMethod(const cv::Mat &img, int &approved, std::vector<cv::Mat> &dbImg){
-//     std::string name;
-
-//     cv::Size size(150, 150);
-
-//     // Hard-coded method to input the values in the vector variable, will be automated when the database is connected to the function
-//     cv::Mat input = cv::imread("../Test_images/img1.png", 1);
-//     dbImg.push_back(input);
-//     input = cv::imread("../Test_images/img2.png", 1);
-//     dbImg.push_back(input);
-//     input = cv::imread("../Test_images/img3.png", 1);
-//     dbImg.push_back(input);
-//     input = cv::imread("../Test_images/img4.jpg", 1);
-//     cv::resize(input, input, size);
-//     dbImg.push_back(input);
-//     input = cv::imread("../Test_images/img5.jpg", 1);
-//     cv::resize(input, input, size);
-//     dbImg.push_back(input);
-//     input = cv::imread("../Test_images/img6.jpg", 1);
-//     cv::resize(input, input, size);
-//     dbImg.push_back(input);
-//     input = cv::imread("../Test_images/img8.png", 1);
-//     cv::resize(input, input, size);
-//     dbImg.push_back(input);
-//     input = cv::imread("../Test_images/obama.png", 1);
-//     cv::resize(input, input, size);
-//     dbImg.push_back(input);
-//     input = cv::imread("../Test_images/obama_2.png", 1);
-//     cv::resize(input, input, size);
-//     dbImg.push_back(input);
-//     input = cv::imread("../Test_images/img9.jpg", 1);
-//     cv::resize(input, input, size);
-//     dbImg.push_back(input);
-//     approved=0;
-// }
 
 void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, std::vector < cv::Mat > dbImg, std::vector < string > inputID) {
-    //cv::destroyAllWindows();
     cvui::init(WINDOW_ID);
     cv::Mat acceptedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     cv::Mat deniedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
@@ -442,12 +356,9 @@ void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, st
 
             if (cvui::button(deniedFrame, 800, 600, "Accept")) { // Manually accepts the incoming person
                 approved = 1;
-                // std::cout<<"entre aqui"<<std::endl;
-                // cvui::text(acceptedFrame, 900, 700, "Go ahead!");
             }
             if (cvui::button(deniedFrame, 800, 650, "Restrict Access")) { // Manually rejects the incoming person
                 approved = 2;
-                //cvui::text(acceptedFrame, 900, 700, "Denied, please do not allow the access to the installations.");
             }
 
             cv::imshow(WINDOW_ID, deniedFrame);
@@ -500,10 +411,6 @@ void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, st
             cv::imshow(WINDOW_AP, problemOcurred);
             if (cvui::button(problemOcurred, 200, 700, "Back to Menu ")) {
                 return;
-                if (cv::waitKey(20) == 27) { // Waits for the escape key to be pressed in order to exit the window
-                    return;
-                }
-
             }
         }
         cvui::update();
@@ -525,7 +432,6 @@ void Screens::EnrollStudentWindow() {
     cv::String name = "";
     cv::String id = "";
     cv::String age = "";
-    cv::String img_path = "";
     int offset = 80;
 
 	while (true) { // Displays the textfields as well as the necessary function buttons
@@ -542,6 +448,11 @@ void Screens::EnrollStudentWindow() {
 
 		if (cvui::button(frame_enroll , 300, offset+250, "Back to Menu")) {
             return;
+		}
+        if (cvui::button(frame_enroll , 100, offset+250, "Clear")) {
+            name = "";
+            id = "";
+            age = "";
 		}
 
         if (cvui::button(frame_enroll , 300, offset+200, "Take picture")) {
@@ -620,7 +531,7 @@ void Screens::EnrollStudentScreenshot(std::string name, std::string age, std::st
 
         while (1){
             cap.read(frame);
-            if (cvui::button(frame, 500, 80, "Calculate")) {
+            if (cvui::button(frame, 100, 80, "Save Image")) {
                 cap >> screenshot;
                 cv::imwrite( "ImageDataBase.jpg", screenshot);
                 if(!screenshot.data){

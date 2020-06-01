@@ -7,7 +7,6 @@ using namespace std;
 int main() {
     FaceRecognition *fr = new FaceRecognition(0.5);
     Screens * wOpener = new Screens(fr);
-    //wOpener->MainWindow();
-    wOpener->Init();
+    wOpener->MainWindow();
     return 0;
 }
