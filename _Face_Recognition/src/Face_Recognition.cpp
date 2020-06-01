@@ -116,22 +116,33 @@ void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<
 
 	if (getFeatureDescriptorsFromFrame(frame, features))
 	{
-		std::cout<<"hola 0"<<std::endl;
-		result = db->fastSearch(features, abs(near_neighbors));	
-		std::cout<<"hola 0.5"<<std::endl;
-		Cuatec temp;
-		std::cout<<"hola 1"<<std::endl;
-		verify(frame, result[0].getMatricula(), response, temp);
-		std::cout<<"hola 2"<<std::endl;
+		// Returned list with possible matches
+		result = db->fastSearch(features, abs(near_neighbors));
+
+		int verifyResponse;
+		Cuatec cuatecResult;
+
+		string cuatecID = result[0].getMatricula();
+		
+		verify(frame, cuatecID, verifyResponse, cuatecResult);
+
+		if (verifyResponse == 1){
+			response = 1;
+			cout << "The Cuatec has been identified." << endl;
+		}
+
+		else if (verifyResponse == 0){
+			response = 0; 
+			cout << "The Cuatec was not identified." << endl;
+		}
 	}
 
 	else
 	{
-			cout << "Error: Something went wrong in Identificatin process.\n";
-			response = -1;
+		// There were no faces detected 
+		response = -1;
+		cout << "There was an error in the identification process." << endl;
 	}
-	
-		
 }
 
 void FaceRecognition::enrollStudent(cv::Mat frame, const std::string id, const std::string name, const int age, int &response)
