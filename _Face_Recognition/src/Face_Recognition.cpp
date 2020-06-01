@@ -120,8 +120,9 @@ void FaceRecognition::identify(const cv::Mat &frame, int &response, std::vector<
 		result = db->fastSearch(features, abs(near_neighbors));
 
 		int verifyResponse;
-		string cuatecID = result[0].getMatricula();
 		Cuatec cuatecResult;
+
+		string cuatecID = result[0].getMatricula();
 		
 		verify(frame, cuatecID, verifyResponse, cuatecResult);
 
