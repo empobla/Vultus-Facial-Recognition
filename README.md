@@ -101,6 +101,10 @@ cd TC2004-FaceRecognition-Spring2020 && cd GraphicInterface && mkdir build && cd
 
 #### GUI
 
+<div align="center">
+	<img alt="sample" src="./Flow_GUI.png" width="75%">
+</div>
+
 Inside the code, the main functions that are used are the following:
 
 **_GUI.cpp_**
