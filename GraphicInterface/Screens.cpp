@@ -276,7 +276,9 @@ void Screens::FaceIdentificationWindow() {
                     break;
                 }
             }
+            std::cout<<"Check 1"<<std::endl;
             f->identify(screenshot, approved, result);
+            std::cout<<"Check 2"<<std::endl;
             for(int i=0; i< result.size(); i++){
                 std::cout<<"4"<<std::endl;
                 cv::Mat temporalImg;
@@ -344,7 +346,7 @@ void Screens::FaceIdentificationWindow() {
 
 
 void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, std::vector < cv::Mat > dbImg, std::vector < string > inputID) {
-    cv::destroyAllWindows();
+    //cv::destroyAllWindows();
     cvui::init(WINDOW_ID);
     cv::Mat acceptedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
     cv::Mat deniedFrame = cv::Mat::zeros(cv::Size(1280, 720), CV_8UC3);
