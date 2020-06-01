@@ -5,7 +5,7 @@
 ## VULTUS Software
 
 <div align="center">
-	<img alt="sample" src="./sample.gif" width="75%">
+    <img alt="sample" src="./sample.gif" width="75%">
 </div>
 
 ### Description
@@ -101,16 +101,12 @@ cd TC2004-FaceRecognition-Spring2020 && cd GraphicInterface && mkdir build && cd
 
 #### GUI
 
-<div align="center">
-	<img alt="sample" src="./Flow_GUI.png" width="75%">
-</div>
-
 Inside the code, the main functions that are used are the following:
 
 **_GUI.cpp_**
 
 <div align="center">
-	<img alt="sample" src="./GUI.png" width="75%">
+    <img alt="sample" src="./GUI.png" width="75%">
 </div>
 
 
@@ -144,7 +140,7 @@ This method unites the face detection, face alignment, feature extraction and da
 - response: an integer that will contain the response of the identification (1 for a match and 0 for no match).
 - result: a vector of type Cuatec that will save all the possible matches of the identification.
 
-The method begins by creating an empty Mat object called "features", which will be used as an argument along with the current frame when calling `getFeatureDescriptorsFromFrame()`. That method encapsulates the first three modules of this system (face detection, face alignment and feature extraction),takes "features" and "near_neighbors" as arguments and once all 3 modules have done their piece of work, a boolean variable is returned. If it was returned as a true, it means all 3 modules worked fine, so "response" is saved as a 1, and "result" will be filled with possible matches to the face in the current frame via a call to `fastSearch()`(a method provided by the database module), which takes as arguments the now filled "features" Mat object and "near_neighbors" (the amount of possible matches desired to be seen). If the boolean returned from `getFeatureDescriptorsFromFrame()` was returned as false, the person using the system is notified through an "Error" message and "response" is saved as 0.
+The method begins by creating an empty Mat object called "features", which will be used as an argument along with the current frame when calling `getFeatureDescriptorsFromFrame()`. That method encapsulates the first three modules of this system (face detection, face alignment and feature extraction),takes "features" and "near_neighbors" as arguments and once all 3 modules have done their piece of work, a boolean variable is returned. If it was returned as true, it means all 3 modules worked fine, so "result" will be filled with possible matches to the face in the current frame via a call to `fastSearch()`(a method provided by the database module), which takes as arguments the now filled "features" Mat object and "near_neighbors" (the amount of possible matches desired to be seen). Provided the first position inside of "result" will have the most likely match of the person being identified, a call is made to `verify()`, which will take as arguments the same received frame, the cuatecID of the first person in "result", newly defined and initialized "verfiedResponse" integer and an object of type "Cuatec" named "cuatecRseult". The response value that comes from `verify()` will determine the value for "response". If its equal to 1, then so is "response" and there was a match. If its equal to 0, then so is "response" and there was no match. If the boolean returned from `getFeatureDescriptorsFromFrame()` was returned as false, the person using the system is notified through an "Error" message and "response" is saved as 0.
 
 #### Enroll user
 
