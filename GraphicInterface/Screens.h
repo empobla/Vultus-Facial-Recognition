@@ -38,11 +38,15 @@ class Screens{
     private:
         FaceRecognition *f;
         
+        //This function initialices the main window
+        
+
         // FaceVerification functions
         void FaceVerificationWindow();
         void FaceVerificationMethod(const cv::Mat &img, const cv::String &id, int &approved, Cuatec &response); //Missing Cuatec0
         void ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::Mat dbImg, cv::String id, std::string inputID);
-        void InputId(cv::String &id);
+        cv::String IdAdd();
+
 
         // FaceIdentification functions
         void FaceIdentificationWindow();

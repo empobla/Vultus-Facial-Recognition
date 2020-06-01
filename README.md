@@ -8,7 +8,7 @@
 	<img alt="sample" src="./sample.gif" width="75%">
 </div>
 
-### Description 
+### Description
 
 - The system recognizes members of Tecnológico de Monterrey CSF.
 - The system throws alerts in case the credential does not match the face.
@@ -18,11 +18,11 @@
 - The system allows the enrollment of new students.
 - The system verifies or identifies the student.
 
-### Highlights 
+### Highlights
 
-- The system runs in macOS (10.14+), Windows 10 and Linux (Ubuntu 18.04+).
+- The system runs in macOS (10.14+), Linux (Ubuntu 18.04+), (Windows not officially supported, but might work).
 - Data in the system stays safe and secure.
-- The system was written in C++.
+- Written in C++.
 
 #### Tests
 
@@ -42,16 +42,54 @@ Below are the dependencies used in this project:
 - [MongoDB](https://www.mongodb.com/download-center/community)
 - [CMake](https://cmake.org/download/)
 
-## Install
+## Get started
+
+### Install
+
+#### Option 1 (from source)
 
 ```sh
 git clone https://github.com/leonardochang36/TC2004-FaceRecognition-Spring2020.git
 
-cd TC2004-FaceRecognition-Spring2020 && GraphicInterface && mkdir build && cmake .. && make
+cd TC2004-FaceRecognition-Spring2020 && cd GraphicInterface && mkdir build && cd build && cmake .. && make
 ```
+
 ***NOTE:*** You must have installed all dependencies correctly
 
-## Run
+#### Option 2 (docker)
+
+https://hub.docker.com/repository/docker/robtry/face-recognition
+
+```sh
+docker pull robtry/face-recognition
+
+# Enable xhost ! (Mac & Linux)
+xhost +
+
+# Get the system
+git clone https://github.com/leonardochang36/TC2004-FaceRecognition-Spring2020.git
+
+# Linux
+docker run --privileged --device /dev/video0:/dev/video0 -v $(pwd):/root/workspace -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$DISPLAY -p 5000:5000 -p 8888:8888 -it robtry/face-recognition
+
+# Mac
+docker run -it -v $(pwd):/root/workspace -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=docker.for.mac.host.internal:0  -p 5000:5000 -p 8888:8888 robtry/face-recognition
+
+# Compile and run it
+cd TC2004-FaceRecognition-Spring2020 && cd GraphicInterface && mkdir build && cd build && cmake .. && make
+```
+
+- ***NOTE:*** To use webcam you must be in linux.
+- ***NOTE:*** GUI can be use in Mac.
+- ***NOTE:*** You can only use CLI if you're on Windows.
+
+### Set up database
+
+1. Download info [here](https://drive.google.com/open?id=1wuv9Cy0vV7tKd2-CxW3BoRb9rgM2S2km)
+2. Decompress `ImgFiles.zip` and `MatFiles.zip`
+3. Substitute in `Database/storage/`
+
+### Run
 
 ```sh
 ./GraphicInterface
@@ -59,87 +97,44 @@ cd TC2004-FaceRecognition-Spring2020 && GraphicInterface && mkdir build && cmake
 
 ***NOTE:*** There must be a camera attached to the computer for the program to work fully.
 
-## How to use
+### How to use
 
-### GUI
+#### GUI
 
 Inside the code, the main functions that are used are the following:
 
 **_GUI.cpp_**
 
-```c
-int main(){
-	// Calls the MainWindow() function contained inside Screens.cpp
-}
-```
+<div align="center">
+	<img alt="sample" src="./GUI.png" width="75%">
+</div>
+
 
 **_Screens.cpp_**
 
-```c
-void Screens::MainWindow(){
-	// Creates the buttons and calls the respective functions
-}
+Inside this script the menu buttons are displayed and the respective functions are executed once the button is pressed. The buttons and funtionalities of each are teh following:
 
-// VERIFICATION METHODS
-void Screens::FaceVerificationWindow(){
-	// To verify an access given a capture and an ID
-}
+- "Face Verification": Calls the main verify method (full description below).
+- "Face identification": Calls the main identify method (full description below).
+- "Enroll a Student": Calls the main enroll method, it allows for a new user to be registered in the database. It needs the name, ID, age and picture of the before-mentioned user.
+- "Quit": Exits the program.
 
-void Screens::InputID(std::string id){
-	// Opens a window for the user to input the ID
-}
-
-void Screens::FaceVerificationMethod(const cv::Mat &img, const cv::String &id, int &approved, Cuatec &response){
-	// Approves or denies an access attempt
-}
-
-void Screens::ApprovedStudentVerification(int approved, cv::Mat screenshot, cv::Mat dbImg, cv::String id, std::string inputID){
-	// Window after the automatic verification process, can approve or deny access manually
-}
-
-// IDENTIFICATION METHODS
-void Screens::FaceIdentificationWindow(){
-	// To verify an access given a capture and an the top 10 database closest images
-}
-
-void Screens::FaceIdentificationMethod(const cv::Mat &img, int &approved, std::vector<cv::Mat> &dbImg){
-	// Approves or denies an access attempt
-}
-
-void Screens::ApprovedStudentIdentification(int approved, cv::Mat screenshot, std::vector < cv::Mat > dbImg, std::vector < string > inputID) {
-	// Window after the automatic verification process, can approve or deny access manually
-}
-
-// ENROLL METHODS
-void Screens::EnrollStudentWindow(){
-	// Creates window with textboxes to be filled with the required user information
-}
-
-int Screens::enrollStudent(std::string path, std::string name, std::string age, std::string id){
-	// Uploads the data to the database
-}
-
-void Screens::confirmationFrame(std::string name, std::string age, std::string id, std::string path, cv::Mat image, int confirmation) {
-	// Displays the input data in another window
-}
-```
-
-### Verify
+#### Verify
 
 This method verifies if the subject in frame matches the subject in database for a given ID. It uses the modules Face Detection, Face Alignment and Features Extraction modules to get the features of the subject in frame, then uses the module Database to get the features saved for the ID given and compares both features.
 
-#### Parameters
+##### Parameters
 
 - Frame: cv::Mat object of the frame captured.
 - ID: std::string of Id
 - Response: integer that will contain the response of the verification. 1 for same person, 0 for not matched and -1 for method error.
 - Result: Cuatec object that, in case of match, will contain the matching Cuatec found in DB.
 
-### Identify
+#### Identify
 
 This method unites the face detection, face alignment, feature extraction and database modules into one. It identifies a face and returns an amount of possible matches to said face.
 
-#### Parameters
+##### Parameters
 
 - frame: a Mat object of the current frame being captured.
 - response: an integer that will contain the response of the identification (1 for a match and 0 for no match).
@@ -147,25 +142,23 @@ This method unites the face detection, face alignment, feature extraction and da
 
 The method begins by creating an empty Mat object called "features", which will be used as an argument along with the current frame when calling `getFeatureDescriptorsFromFrame()`. That method encapsulates the first three modules of this system (face detection, face alignment and feature extraction),takes "features" and "near_neighbors" as arguments and once all 3 modules have done their piece of work, a boolean variable is returned. If it was returned as a true, it means all 3 modules worked fine, so "response" is saved as a 1, and "result" will be filled with possible matches to the face in the current frame via a call to `fastSearch()`(a method provided by the database module), which takes as arguments the now filled "features" Mat object and "near_neighbors" (the amount of possible matches desired to be seen). If the boolean returned from `getFeatureDescriptorsFromFrame()` was returned as false, the person using the system is notified through an "Error" message and "response" is saved as 0.
 
-### Enroll user
+#### Enroll user
 
-This methods allows the user to enroll a new student. In order to enroll the student, the methods recieves the name (string), age (int) and id (string) as a unique key. While the MAT object, comes from the picture taken by the opeaning camara. In order to insert in the database, the picture must: detect the face to be inserted, align the picture and detect a vector of 128 dimension with its features. We use the "getFeaturesDescriptorsFromFrame" function to determine its feature vector. The response (int) parameter in function determines whether the insertion was successful (1)  or unsuccesful (0).   
+This methods allows the user to enroll a new student. In order to enroll the student, the methods recieves the name (string), age (int) and id (string) as a unique key. While the MAT object, comes from the picture taken by the opeaning camara. In order to insert in the database, the picture must: detect the face to be inserted, align the picture and detect a vector of 128 dimension with its features. We use the "getFeaturesDescriptorsFromFrame" function to determine its feature vector. The response (int) parameter in function determines whether the insertion was successful (1)  or unsuccesful (0).
 
-#### Parameters
+##### Parameters
+
 - Age: an int that is an input from user
 - Id : string recieved from user and key in database 
 - Name: string that is an input from user
-- Response: an int that indicates whether student was successfully enrolled or not. 
+- Response: an int that indicates whether student was successfully enrolled or not.
 
-#### Example
-An example of an implementation of this method: 
+## Authors
 
-```c++
-	fr->enrollStudent(image, "T01020013", "Elon Musk", 48, verify);
-		if (verify == 1)
-		{
-		 td::cout << "student enrolled succesfully " << std::endl;
-		}
-```
+- [Leonardo Chang](https://github.com/leonardochang36) | Project Manager.
+- [Team 1](https://github.com/sergio-hernandez-castillo/FaceDetection) : Face Detection | One to Many comparison.
+- [Team 2](https://github.com/robtry/face-alignment) : Face Alignment | Integration.
+- [Team 3](https://github.com/cxrlos/Computer_Vision) : Feature Extraction | GUI.
+- [Team 4](https://github.com/saulmontesdeoca/faceRecognitionDB) : Database | One to One comparison.
 
 _Copyright © 2020 ITESM CSF_
