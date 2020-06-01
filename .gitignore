@@ -129,4 +129,8 @@ dlib
 # compiled
 output
 out
-FaceRecognition
+
+#storage
+
+*xml.gz
+*zip
